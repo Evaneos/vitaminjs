@@ -3,6 +3,9 @@ const APP_PATH = process.cwd();
 const SRC_DIR = path.join(APP_PATH, 'src');
 const BUILD_DIR = path.join(APP_PATH, 'public');
 
+const fondationResolve = (filename) => path.resolve(process.env.RACKT_PATH, filename);
+const MODULES_DIRECTORIES = ['node_modules', fondationResolve('node_modules')];
+
 module.exports = {
     // TODO : manage the case when several pages are used (construct entry dynamically -- cf espace perso)
     context: SRC_DIR,
@@ -21,15 +24,20 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: 'node_modules',
+                loader: 'babel',
                 query: {
-                    extends: path.resolve(process.env.RACKT_PATH, '.babelrc'),
+                    extends: fondationResolve('.babelrc')
                 },
-                loader: path.resolve(process.env.RACKT_PATH, 'node_modules/babel-loader'),
             }
         ]
     },
 
+    resolveLoader: {
+        modulesDirectories: MODULES_DIRECTORIES,
+    },
+
     resolve: {
+        modulesDirectories: MODULES_DIRECTORIES,
         extensions: ['', '.js', '.jsx'],
     }
 
