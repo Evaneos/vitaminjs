@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Usage: fondation <command> [<args>]"
+echo ""
+echo "Commands:"
+# echo "  init <name>   Creates a folder called <name> and generates a component structure."
+echo "  build         Build the application bundles"
+# echo "  dev           Start the dev server using port 8080."
+# echo "  release       Publish a new release to npm. Use --preview to preview release"
+# echo "  test          Run the test suite. Use --single-run for single run."
+# echo "  pages         Deploys the examples to gh-pages."
+echo ""
+echo "Options:"
+echo "  --help      Prints usage and options."
+echo "  --version   Prints current version."

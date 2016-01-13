@@ -1,0 +1,20 @@
+{
+  "name": "fondation",
+  "version": "1.0.0",
+  "description": "Mutualized toolchain & foundation for react application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "toolchain",
+    "react",
+    "redux"
+  ],
+  "author": "Johan Girod <johan@evaneos.com>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "webpack": "^1.12.11",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
