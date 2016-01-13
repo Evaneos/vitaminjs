@@ -20,13 +20,23 @@ module.exports = {
     // devtool: 'source-map',
 
     module: {
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'eslint',
+                exclude: /node_modules/,
+                query: {
+                    fix: true,
+                },
+            }
+        ],
         loaders: [
             {
                 test: /\.jsx?$/,
-                exclude: 'node_modules',
                 loader: 'babel',
+                exclude: /node_modules/,
                 query: {
-                    extends: fondationResolve('.babelrc')
+                    extends: fondationResolve('.babelrc'),
                 },
             }
         ]
@@ -39,7 +49,5 @@ module.exports = {
     resolve: {
         modulesDirectories: MODULES_DIRECTORIES,
         extensions: ['', '.js', '.jsx'],
-    }
-
-
+    },
 }
