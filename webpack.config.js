@@ -9,14 +9,28 @@ module.exports = {
     entry: './app',
     output: {
         path: BUILD_DIR,
-        filename: 'bundle-[hash].js',
+        // TODO : put hash in name
+        filename: 'bundle.js',
     },
 
     // If compilation gets slow, change strategy for prod & dev
     devtool: 'source-map',
 
+    module: {
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                exclude: 'node_modules',
+                query: {
+                    extends: path.resolve(process.env.RACKT_PATH, '.babelrc'),
+                },
+                loader: path.resolve(process.env.RACKT_PATH, 'node_modules/babel-loader'),
+            }
+        ]
+    },
+
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx'],
     }
 
 
