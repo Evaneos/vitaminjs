@@ -2,14 +2,15 @@ const fondationResolve = require('./src/utils').fondationResolve;
 const path = require('path');
 const APP_PATH = process.cwd();
 const SRC_DIR = path.join(APP_PATH, 'src');
+
+const INCLUDES = [SRC_DIR, /fondation\/src/];
 const BUILD_DIR = path.join(APP_PATH, 'public');
 
 const MODULES_DIRECTORIES = ['node_modules', fondationResolve('node_modules')];
-
 module.exports = {
     // TODO : manage the case when several pages are used (construct entry dynamically -- cf espace perso)
     context: SRC_DIR,
-    entry: './app',
+    entry: './client',
     output: {
         path: BUILD_DIR,
         // TODO : put hash in name
@@ -34,12 +35,12 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loader: 'babel',
-                exclude: /node_modules/,
+                include: INCLUDES,
                 query: {
                     extends: fondationResolve('.babelrc.browser'),
                 },
-            }
-        ]
+            },
+        ],
     },
 
     resolveLoader: {

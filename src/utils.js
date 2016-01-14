@@ -1,2 +1,9 @@
 const path = require('path');
-exports.fondationResolve = (filename) => path.resolve(process.env.RACKT_PATH, filename);
+
+exports.fondationResolve = function () {
+	return path.resolve(process.env.RACKT_PATH, ...arguments)
+};
+
+exports.appResolve = function () {
+	return path.resolve(process.cwd(), ...arguments)
+};
