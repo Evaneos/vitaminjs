@@ -1,5 +1,5 @@
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import { compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 export function bootstrapClient (appDescriptor) {
@@ -7,7 +7,10 @@ export function bootstrapClient (appDescriptor) {
 	const initialState = window.__INITIAL_STATE__;
 
 	// Create Redux store with initial state
-	const store = createStore(_=>_, initialState);
+	const finalCreateStore = compose(
+		window.devToolsExtension ? window.devToolsExtension() : f => f
+	)(createStore);
+	const store = finalCreateStore(appDescriptor.reducer, initialState);
 
 	render(
 	  	<Provider store={store}>

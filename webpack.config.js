@@ -18,7 +18,7 @@ module.exports = {
     },
 
     // If compilation gets slow, change strategy for prod & dev
-    // devtool: 'source-map',
+    devtool: 'source-map',
 
     module: {
         preLoaders: [

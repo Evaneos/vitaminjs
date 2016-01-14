@@ -14,12 +14,14 @@ import assert from 'assert';
 // Need commonJS for dynamic modules
 const serverDescriptor = require(appResolve('src', 'app_descriptor')).default;
 assert(React.isValidElement(serverDescriptor.rootComponent));
-
+let reducer = serverDescriptor.reducer;
+reducer = reducer || (state => state);
+assert(typeof reducer === 'function');
 
 const app = koa();
 app.use(serve(appResolve('public')));
 app.use(function *(){
-    const store = createStore(_ => _)
+    const store = createStore(reducer)
     const html = renderToString(
         <Provider store={store}>
             {serverDescriptor.rootComponent}
