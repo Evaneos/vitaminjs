@@ -1,9 +1,9 @@
+const fondationResolve = require('./src/utils').fondationResolve;
 const path = require('path');
 const APP_PATH = process.cwd();
 const SRC_DIR = path.join(APP_PATH, 'src');
 const BUILD_DIR = path.join(APP_PATH, 'public');
 
-const fondationResolve = (filename) => path.resolve(process.env.RACKT_PATH, filename);
 const MODULES_DIRECTORIES = ['node_modules', fondationResolve('node_modules')];
 
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
                 loader: 'babel',
                 exclude: /node_modules/,
                 query: {
-                    extends: fondationResolve('.babelrc'),
+                    extends: fondationResolve('.babelrc.browser'),
                 },
             }
         ]
@@ -49,5 +49,14 @@ module.exports = {
     resolve: {
         modulesDirectories: MODULES_DIRECTORIES,
         extensions: ['', '.js', '.jsx'],
+    },
+
+    devServer: {
+        proxy: {
+            '*': {
+                target: 'http://localhost:3000',
+                secure: false,
+            },
+        },
     },
 }

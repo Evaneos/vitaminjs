@@ -1,5 +1,7 @@
 #!/bin/bash
 
 server=$RACKT_PATH/node_modules/.bin/webpack-dev-server
+backend_server=$RACKT_PATH/src/server_bootstrap.js
 
+node $backend_server &
 $server --inline --hot --config $RACKT_PATH/webpack.config.js --content-base public/ "$@"
