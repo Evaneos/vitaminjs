@@ -31,11 +31,13 @@
     "babel-preset-es2015-node": "^5.0.2",
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.4.3",
+    "history": "^1.17.0",
     "koa": "^1.1.2",
     "koa-static": "^2.0.0",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
+    "react-router": "^1.0.3",
     "redux": "^3.0.5"
   }
 }

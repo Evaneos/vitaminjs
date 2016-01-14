@@ -1,6 +1,7 @@
 import { render } from 'react-dom';
 import { compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
 
 export function bootstrapClient (appDescriptor) {
 	// Grab the state from a global injected into server-generated HTML
@@ -14,7 +15,9 @@ export function bootstrapClient (appDescriptor) {
 
 	render(
 	  	<Provider store={store}>
-	    	{appDescriptor.rootComponent}
+	  		<Router history={browserHistory}>
+	    		{appDescriptor.routes}
+	    	</Router>
 	  	</Provider>,
 	  	document.getElementById('app')
 	);

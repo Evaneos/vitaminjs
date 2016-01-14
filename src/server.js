@@ -5,7 +5,8 @@ import {renderToString} from 'react-dom/server';
 import path from 'path';
 import { appResolve } from './utils';
 
-// Redux
+import { match, RoutingContext } from 'react-router';
+
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
@@ -13,23 +14,42 @@ import assert from 'assert';
 
 // Need commonJS for dynamic modules
 const serverDescriptor = require(appResolve('src', 'app_descriptor')).default;
-assert(React.isValidElement(serverDescriptor.rootComponent));
+
+const routes = serverDescriptor.routes;
+
 let reducer = serverDescriptor.reducer;
 reducer = reducer || (state => state);
 assert(typeof reducer === 'function');
 
 const app = koa();
 app.use(serve(appResolve('public')));
+
 app.use(function *(){
-    const store = createStore(reducer)
+    match({ routes, location: this.req.url }, (error, redirectLocation, renderProps) => {
+        if (error) {
+            this.status = 500
+            this.body = error.message;
+        } else if (redirectLocation) {
+            this.redirect(redirectLocation.pathname + redirectLocation.search)
+        } else if (renderProps) {
+            this.status = 200;
+            this.body = renderBody(renderProps);
+        } else {
+            this.status = 404
+            this.body = 'Not found';
+        }
+    })
+});
+
+function renderBody(renderProps) {
+    const store = createStore(reducer);
     const html = renderToString(
         <Provider store={store}>
-            {serverDescriptor.rootComponent}
+            <RoutingContext {...renderProps} />
         </Provider>
     );
-
-    this.body = renderFullPage(html, store.getState());
-});
+    return renderFullPage(html, store.getState());
+}
 
 function renderFullPage(html, initialState) {
     return `
