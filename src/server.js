@@ -1,48 +1,39 @@
 import koa from 'koa';
 import serve from 'koa-static';
-import {createServer} from 'http';
-import {renderToString} from 'react-dom/server';
-import path from 'path';
+import { renderToString } from 'react-dom/server';
 import { appResolve } from './utils';
 
 import { match, RoutingContext } from 'react-router';
+import { Provider } from 'react-redux';
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-
-import assert from 'assert';
+import { serverStoreCreator } from './storeCreator';
 
 // Need commonJS for dynamic modules
-const serverDescriptor = require(appResolve('src', 'app_descriptor')).default;
-
-const routes = serverDescriptor.routes;
-
-let reducer = serverDescriptor.reducer;
-reducer = reducer || (state => state);
-assert(typeof reducer === 'function');
+const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
+const routes = appDescriptor.routes;
 
 const app = koa();
 app.use(serve(appResolve('public')));
 
-app.use(function *(){
+app.use(() => {
     match({ routes, location: this.req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
-            this.status = 500
+            this.status = 500;
             this.body = error.message;
         } else if (redirectLocation) {
-            this.redirect(redirectLocation.pathname + redirectLocation.search)
+            this.redirect(redirectLocation.pathname + redirectLocation.search);
         } else if (renderProps) {
             this.status = 200;
             this.body = renderBody(renderProps);
         } else {
-            this.status = 404
+            this.status = 404;
             this.body = 'Not found';
         }
-    })
+    });
 });
 
 function renderBody(renderProps) {
-    const store = createStore(reducer);
+    const store = serverStoreCreator(appDescriptor.reducer);
     const html = renderToString(
         <Provider store={store}>
             <RoutingContext {...renderProps} />
@@ -66,7 +57,7 @@ function renderFullPage(html, initialState) {
             <script src="bundle.js"></script>
         </body>
     </html>
-    `
+    `;
 }
 
 app.listen(3000);

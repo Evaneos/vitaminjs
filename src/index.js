@@ -1,24 +1,21 @@
 import { render } from 'react-dom';
-import { compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { Router } from 'react-router';
+import { clientStoreCreator } from './storeCreator';
+import { createHistory } from 'history';
 
-export function bootstrapClient (appDescriptor) {
-	// Grab the state from a global injected into server-generated HTML
-	const initialState = window.__INITIAL_STATE__;
+export function bootstrapClient(appDescriptor) {
+    // Grab the state from a global injected into server-generated HTML
+    const initialState = window.__INITIAL_STATE__;
+    const history = createHistory();
+    const store = clientStoreCreator(appDescriptor, history, initialState);
 
-	// Create Redux store with initial state
-	const finalCreateStore = compose(
-		window.devToolsExtension ? window.devToolsExtension() : f => f
-	)(createStore);
-	const store = finalCreateStore(appDescriptor.reducer, initialState);
-
-	render(
-	  	<Provider store={store}>
-	  		<Router history={browserHistory}>
-	    		{appDescriptor.routes}
-	    	</Router>
-	  	</Provider>,
-	  	document.getElementById('app')
-	);
+    render(
+        <Provider store={store}>
+            <Router history={history}>
+                {appDescriptor.routes}
+            </Router>
+        </Provider>,
+        document.getElementById('app')
+    );
 }
