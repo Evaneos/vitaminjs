@@ -15,7 +15,7 @@ const routes = appDescriptor.routes;
 const app = koa();
 app.use(serve(appResolve('public')));
 
-app.use(() => {
+app.use(function* () {
     match({ routes, location: this.req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
             this.status = 500;
