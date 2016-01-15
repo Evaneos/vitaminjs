@@ -27,8 +27,8 @@ module.exports = {
                 loader: 'eslint',
                 exclude: /node_modules/,
                 query: {
-                    fix: true,
-                },
+                    configFile: fondationResolve('.eslintrc'),
+                }
             }
         ],
         loaders: [
