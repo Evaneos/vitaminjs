@@ -1,0 +1,36 @@
+#!/bin/bash
+
+npm init
+mkdir -p src/components
+mkdir -p src/reducers
+cat > src/appDescriptor.js << EOF
+import { Route } from 'react-router';
+export default {
+    // Export here the main reducer of you app
+    reducer: () => 0,
+    // Here export your routes
+    routes: <Route path="/" />,
+};
+EOF
+
+cat >.eslintrc << EOF
+{
+    "extends": "./node_modules/fondation/.eslintrc"
+}
+EOF
+
+cat >.gitignore << EOF
+/node_modules/
+/public/bundle.js
+/public/bundle.js.map
+EOF
+cat > src/client.js << EOF
+import { bootstrapClient } from 'fondation';
+import appDescriptor from './appDescriptor';
+
+bootstrapClient(appDescriptor);
+EOF
+
+npm install redux react react-router redux react-redux react-dom
+npm link fondation
+
