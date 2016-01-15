@@ -8,7 +8,7 @@ export function bootstrapClient(appDescriptor) {
     // Grab the state from a global injected into server-generated HTML
     const initialState = window.__INITIAL_STATE__;
     const history = createHistory();
-    const store = clientStoreCreator(appDescriptor, history, initialState);
+    const store = clientStoreCreator(appDescriptor.reducer, history, initialState);
 
     render(
         <Provider store={store}>
