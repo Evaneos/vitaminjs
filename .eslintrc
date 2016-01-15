@@ -1,23 +1,17 @@
 {
     "extends": "airbnb/base",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-    },
 
-    "env" : {
-        "es6": true,
-        "browser": true,
-        "node": true,
+    "ecmaFeatures": {
+        "generators": true,
     },
     "plugins": [
         "react"
     ],
     "rules": {
         "indent": [2, 4],
-        "func-name": 0,
-        "no-use-before-define": [2, "nofunc" ],
+        "func-names": 0,
+        "no-use-before-define": [2, "nofunc"],
+
         "react/forbid-prop-types": 1,
         "react/jsx-boolean-value": 1,
         "react/jsx-closing-bracket-location": 1,
