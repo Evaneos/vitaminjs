@@ -3,7 +3,11 @@ const path = require('path');
 const APP_PATH = process.cwd();
 const SRC_DIR = path.join(APP_PATH, 'src');
 
-const INCLUDES = [SRC_DIR, /fondation\/src/];
+const INCLUDES = [
+    SRC_DIR,
+    /fondation\/actions\.js/,
+    /fondation\/src/,
+];
 const BUILD_DIR = path.join(APP_PATH, 'public');
 
 const MODULES_DIRECTORIES = ['node_modules', fondationResolve('node_modules')];

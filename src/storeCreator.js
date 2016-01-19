@@ -6,9 +6,10 @@ import {
 } from 'redux';
 import { routeReducer, syncHistory } from 'redux-simple-router';
 import { storeEnhancer } from './devTools';
+import { auth } from './reducers';
 
 function createRootReducer(app) {
-    const reducer = combineReducers({ app });
+    const reducer = combineReducers({ app, auth });
     // Composing main reducer with route reducer
     // We don't want to nest state from routeReducer
     return (state, action) => (

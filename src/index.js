@@ -19,3 +19,5 @@ export function bootstrapClient(appDescriptor) {
         document.getElementById('app')
     );
 }
+
+export { default as requireAuthentication } from './components/requireAuthentication';
