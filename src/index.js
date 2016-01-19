@@ -1,8 +1,8 @@
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { clientStoreCreator } from './storeCreator';
 import { createHistory } from 'history';
+import { clientStoreCreator } from './storeCreator';
 
 export function bootstrapClient(appDescriptor) {
     // Grab the state from a global injected into server-generated HTML
