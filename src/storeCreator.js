@@ -17,20 +17,15 @@ function createRootReducer(app) {
     );
 }
 
-export function clientStoreCreator(reducer, history, initialState) {
-    const reduxRouterMiddleware = syncHistory(history);
-    // Create Redux store with initial state
-    const finalCreateStore = compose(
-        applyMiddleware(reduxRouterMiddleware),
+export default function storeCreator(reducer, history, initialState) {
+    const router = syncHistory(history);
+    const middleware = [ router ];
+    const createStoreWithMiddleware = compose(
+        applyMiddleware(...middleware),
         storeEnhancer
     )(createStore);
 
-    return finalCreateStore(
-        createRootReducer(reducer),
-        initialState
-    );
-}
+    const rootReducer = createRootReducer(reducer);
 
-export function serverStoreCreator(reducer) {
-    return createStore(createRootReducer(reducer));
+    return createStoreWithMiddleware(rootReducer, initialState);
 }

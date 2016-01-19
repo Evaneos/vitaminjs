@@ -2,11 +2,10 @@ import koa from 'koa';
 import serve from 'koa-static';
 import { renderToString } from 'react-dom/server';
 import { appResolve } from './utils';
-
+import { createMemoryHistory } from 'history';
 import { match, RoutingContext } from 'react-router';
 import { Provider } from 'react-redux';
-
-import { serverStoreCreator } from './storeCreator';
+import storeCreator from './storeCreator';
 
 // Need commonJS for dynamic modules
 const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
@@ -16,7 +15,8 @@ const app = koa();
 app.use(serve(appResolve('public')));
 
 app.use(function* () {
-    match({ routes, location: this.req.url }, (error, redirectLocation, renderProps) => {
+    const url = this.req.url;
+    match({ routes, location: url }, (error, redirectLocation, renderProps) => {
         if (error) {
             this.status = 500;
             this.body = error.message;
@@ -24,7 +24,7 @@ app.use(function* () {
             this.redirect(redirectLocation.pathname + redirectLocation.search);
         } else if (renderProps) {
             this.status = 200;
-            this.body = renderBody(renderProps);
+            this.body = renderBody(url, renderProps);
         } else {
             this.status = 404;
             this.body = 'Not found';
@@ -32,8 +32,9 @@ app.use(function* () {
     });
 });
 
-function renderBody(renderProps) {
-    const store = serverStoreCreator(appDescriptor.reducer);
+function renderBody(url, renderProps) {
+    const history = createMemoryHistory(url);
+    const store = storeCreator(appDescriptor.reducer, history);
     const html = renderToString(
         <Provider store={store}>
             <RoutingContext {...renderProps} />
