@@ -5,15 +5,13 @@ import { appResolve } from './utils';
 import { createMemoryHistory } from 'history';
 import { match, RoutingContext } from 'react-router';
 import { Provider } from 'react-redux';
+import appDescriptor from './appDescriptor';
 import storeCreator from './storeCreator';
-
-// Need commonJS for dynamic modules
-const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
-const routes = appDescriptor.routes;
 
 const app = koa();
 app.use(serve(appResolve('public')));
 
+const routes = appDescriptor.routes;
 app.use(function* () {
     const url = this.req.url;
     match({ routes, location: url }, (error, redirectLocation, renderProps) => {
