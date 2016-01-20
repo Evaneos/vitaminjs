@@ -3,7 +3,8 @@
     "plugins": [
         // Make optional the explicit import of React in JSX files
         "react-require",
-        "transform-object-rest-spread"
+        "transform-object-rest-spread",
+        "transform-class-properties",
     ],
     "env": {
         "development": {
