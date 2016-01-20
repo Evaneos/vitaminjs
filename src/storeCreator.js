@@ -5,23 +5,19 @@ import {
     applyMiddleware,
 } from 'redux';
 import { routeReducer, syncHistory } from 'redux-simple-router';
+import thunk from 'redux-thunk';
 import { storeEnhancer } from './devTools';
 import { auth } from './reducers';
 
 function createRootReducer(app) {
-    const reducer = combineReducers({ app, auth });
-    // Composing main reducer with route reducer
-    // We don't want to nest state from routeReducer
-    return (state, action) => (
-        reducer(routeReducer(state, action), action)
-    );
+    return combineReducers({ app, auth, routing: routeReducer });
 }
 
+// TODO take reducer directly from app descriptor
 export default function storeCreator(reducer, history, initialState) {
     const router = syncHistory(history);
-    const middleware = [ router ];
     const createStoreWithMiddleware = compose(
-        applyMiddleware(...middleware),
+        applyMiddleware(thunk, router),
         storeEnhancer
     )(createStore);
 

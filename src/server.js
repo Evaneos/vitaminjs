@@ -1,62 +1,23 @@
 import koa from 'koa';
+import bodyParser from 'koa-bodyparser';
+import Router from 'koa-router';
 import serve from 'koa-static';
-import { renderToString } from 'react-dom/server';
+import validate from 'koa-validate';
+import { authenticate } from './auth';
 import { appResolve } from './utils';
-import { createMemoryHistory } from 'history';
-import { match, RoutingContext } from 'react-router';
-import { Provider } from 'react-redux';
 import appDescriptor from './appDescriptor';
-import storeCreator from './storeCreator';
+import renderer from './renderer';
+
+const router = new Router();
+router.use(validate());
+router.use(bodyParser());
+const authServerURL = process.env.AUTH_SERVER_URL || 'https://tipi-api-mock.herokuapp.com';
+const secret = process.env.SECRET || 'shhhhh';
+router.post('/authenticate', authenticate(authServerURL, secret));
 
 const app = koa();
+app.use(router.routes());
+app.use(router.allowedMethods());
 app.use(serve(appResolve('public')));
-
-const routes = appDescriptor.routes;
-app.use(function* () {
-    const url = this.req.url;
-    match({ routes, location: url }, (error, redirectLocation, renderProps) => {
-        if (error) {
-            this.status = 500;
-            this.body = error.message;
-        } else if (redirectLocation) {
-            this.redirect(redirectLocation.pathname + redirectLocation.search);
-        } else if (renderProps) {
-            this.status = 200;
-            this.body = renderBody(url, renderProps);
-        } else {
-            this.status = 404;
-            this.body = 'Not found';
-        }
-    });
-});
-
-function renderBody(url, renderProps) {
-    const history = createMemoryHistory(url);
-    const store = storeCreator(appDescriptor.reducer, history);
-    const html = renderToString(
-        <Provider store={store}>
-            <RoutingContext {...renderProps} />
-        </Provider>
-    );
-    return renderFullPage(html, store.getState());
-}
-
-function renderFullPage(html, initialState) {
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>Redux Universal Example</title>
-        </head>
-        <body>
-            <div id="app">${html}</div>
-            <script>
-                window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
-            </script>
-            <script src="bundle.js"></script>
-        </body>
-    </html>
-    `;
-}
-
+app.use(renderer(appDescriptor));
 app.listen(3000);

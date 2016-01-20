@@ -34,14 +34,20 @@
     "babel-preset-es2015-node": "^5.0.2",
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.4.3",
+    "base-error": "^2.0.5",
     "history": "^1.17.0",
     "koa": "^1.1.2",
+    "koa-bodyparser": "^2.0.1",
+    "koa-router": "^5.3.0",
     "koa-static": "^2.0.0",
+    "koa-validate": "^0.2.11",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
     "react-router": "^1.0.3",
     "redux": "^3.0.5",
-    "redux-simple-router": "^2.0.2"
+    "redux-simple-router": "^2.0.2",
+    "redux-thunk": "^1.0.3",
+    "superagent": "^1.7.0"
   }
 }
