@@ -4,7 +4,7 @@ exports.fondationResolve = function fondationResolve() {
     return path.resolve(process.env.RACKT_PATH, ...arguments);
 };
 
-exports.appResolve = function fondationResolve() {
+exports.appResolve = function appResolve() {
     return path.resolve(process.cwd(), ...arguments);
 };
 
@@ -15,4 +15,4 @@ exports.concat = function concat(left, right) {
         }
     }
     return left.concat(right);
-}
+};
