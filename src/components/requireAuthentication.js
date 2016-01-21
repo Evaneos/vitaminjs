@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { routeActions } from 'redux-simple-router';
+import { loginNextState } from '..';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -9,7 +10,7 @@ function getDisplayName(WrappedComponent) {
 
 function mapStateToProps(state) {
     return {
-        location: state.location,
+        location: state.routing.location,
         isAuthenticated: state.auth.isAuthenticated,
     };
 }
@@ -35,7 +36,7 @@ export default function requireAuthentication(WrappedComponent) {
             if (!isAuthenticated) {
                 replace({
                     pathname: '/login',
-                    state: { nextPathname: location.pathname }
+                    state: loginNextState(location),
                 });
             }
         }
@@ -46,7 +47,7 @@ export default function requireAuthentication(WrappedComponent) {
                 ...others
             } = this.props;
             return isAuthenticated
-                ? <Component {...others} />
+                ? <WrappedComponent {...others} />
                 : null;
         }
     }

@@ -4,4 +4,4 @@ server=$RACKT_PATH/node_modules/.bin/webpack-dev-server
 backend_server=$RACKT_PATH/src/serverBootstrap.js
 
 node $backend_server &
-$server --inline --hot --config $RACKT_PATH/webpack.config.js --content-base public/ "$@"
+$server --inline --hot --config $RACKT_PATH/webpack.config.es5.js --content-base public/ "$@"

@@ -21,3 +21,9 @@ export function bootstrapClient(appDescriptor) {
 }
 
 export { default as requireAuthentication } from './components/requireAuthentication';
+
+export function loginNextState(location) {
+    return {
+        nextPathname: location.pathname
+    };
+}

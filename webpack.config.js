@@ -1,8 +1,10 @@
 const fondationResolve = require('./src/utils').fondationResolve;
 const path = require('path');
+const plugins = require('./src/appDescriptor').plugins;
+const pluginLoaders = require('./src/plugin').pluginLoaders;
+
 const APP_PATH = process.cwd();
 const SRC_DIR = path.join(APP_PATH, 'src');
-
 const INCLUDES = [
     SRC_DIR,
     /fondation\/actions\.js/,
@@ -44,7 +46,7 @@ module.exports = {
                     extends: fondationResolve('.babelrc.browser'),
                 },
             },
-        ],
+        ].concat(pluginLoaders(plugins)),
     },
 
     resolveLoader: {
