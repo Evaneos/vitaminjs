@@ -1,2 +1,2 @@
 require('./src/transpile');
-module.exports = require('./config');
+module.exports = require('./webpack.config');
