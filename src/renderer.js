@@ -5,6 +5,7 @@ import { match, RoutingContext } from 'react-router';
 import storeCreator from './storeCreator';
 import { appResolve } from './utils';
 import { authenticationSuccess } from './actions';
+import CSSProvider from'./components/CSSProvider';
 
 export default function renderer(appDescriptor) {
     return function* renderer() {
@@ -35,20 +36,25 @@ export default function renderer(appDescriptor) {
 }
 
 function renderBody(store, renderProps) {
+    const css = [];
+    const insertCss = (styles) => css.push(styles._getCss());
     const html = renderToString(
         <Provider store={store}>
-            <RoutingContext {...renderProps} />
+            <CSSProvider insertCss={insertCss}>
+                <RoutingContext {...renderProps} />
+            </CSSProvider>
         </Provider>
     );
-    return renderFullPage(html, store.getState());
+    return renderFullPage(html, store.getState(), css);
 }
 
-function renderFullPage(html, initialState) {
+function renderFullPage(html, initialState, css) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>Redux Universal Example</title>
+            <style type="text/css">${css.join('')}</style>
         </head>
         <body>
             <div id="app">${html}</div>

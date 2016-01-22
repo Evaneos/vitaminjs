@@ -38,6 +38,7 @@
     "babel-plugin-react-require": "^2.1.0",
     "babel-plugin-transform-class-properties": "^6.4.0",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
+    "babel-polyfill": "^6.3.14",
     "babel-preset-es2015-node": "^5.0.2",
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.4.3",

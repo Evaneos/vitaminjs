@@ -11,9 +11,9 @@ const APP_SOURCE_DIR = path.join(APP_PATH, 'src');
 const BUILD_PUBLIC_DIR = path.join(APP_PATH, 'public');
 const FONDATION_ROOT = __dirname;
 
-const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
+// const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
 
-const externalPlugins = pluginLoaders(appDescriptor.plugins || []);
+const externalPlugins = [];
 
 const INCLUDES = [
     APP_SOURCE_DIR,
@@ -55,14 +55,24 @@ const config = {
     devtool: 'source-map',
 
     module: {
-        preLoaders: [
+        // preLoaders: [
+        //     {
+        //         test: /\.js$/,
+        //         loader: 'eslint',
+        //         exclude: /node_modules/,
+        //         query: {
+        //             configFile: fondationResolve('.eslintrc'),
+        //         },
+        //     },
+        // ],
+        loaders: [
             {
-                test: /\.js$/,
-                loader: 'eslint',
-                exclude: /node_modules/,
-                query: {
-                    configFile: fondationResolve('.eslintrc'),
-                },
+                test: /\.css$/,
+                loaders: [
+                    'isomorphic-style-loader',
+                    'css-loader?module',
+                    // 'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]',
+                ],
             },
         ],
         // TODO : Add Isomorphic CSS
@@ -86,7 +96,7 @@ const config = {
 
 // Configuration client-side (client.js)
 
-const clientConfig = mergeWith({}, config, {
+const clientConfig = {
     context: APP_SOURCE_DIR,
     entry: './client',
     output: {
@@ -96,10 +106,15 @@ const clientConfig = mergeWith({}, config, {
     },
 
     module: {
+        preLoaders: config.module.preLoaders,
         loaders: [
+            ...config.module.loaders,
             createBabelLoaderConfig('.babelrc.browser'),
         ].concat(externalPlugins),
     },
+    devtool: config.devtool,
+    resolve: config.resolve,
+    resolveLoader: config.resolveLoader,
 
     devServer: {
         proxy: {
@@ -110,11 +125,11 @@ const clientConfig = mergeWith({}, config, {
         },
     },
 
-}, customizer);
+};
 
 // Configuration server-side (server.js)
 
-const serverConfig = mergeWith({}, config, {
+const serverConfig = {
     entry: 'fondation/src/server',
     output: {
         path: './build',
@@ -123,7 +138,9 @@ const serverConfig = mergeWith({}, config, {
     },
     externals: externalModules,
     module: {
+        preLoaders: config.module.preLoaders,
         loaders: [
+            ...config.module.loaders,
             createBabelLoaderConfig('.babelrc.node'),
         ].concat(externalPlugins),
     },
@@ -136,6 +153,9 @@ const serverConfig = mergeWith({}, config, {
         __filename: false,
         __dirname: false,
     },
-}, customizer);
+    devtool: config.devtool,
+    resolve: config.resolve,
+    resolveLoader: config.resolveLoader,
+};
 
 export default [clientConfig, serverConfig];
