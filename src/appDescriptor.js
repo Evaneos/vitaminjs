@@ -4,7 +4,6 @@
 // TODO Export normalized representation
 
 // TODO : Fallback in webpack env
-// const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
 const appDescriptor = require('__app_descriptor__').default;
 
 const defaults = {
@@ -13,4 +12,4 @@ const defaults = {
     routes: [],
 };
 
-module.exports = Object.assign(defaults, appDescriptor)
+module.exports = Object.assign(defaults, appDescriptor);

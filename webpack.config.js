@@ -1,18 +1,12 @@
 import { fondationResolve, appResolve } from './src/utils';
 import path from 'path';
 import fs from 'fs';
-// import { plugins } from './src/appDescriptor';
-import { pluginLoaders } from './src/plugin';
 
 
 const APP_PATH = process.cwd();
 const APP_SOURCE_DIR = path.join(APP_PATH, 'src');
 const BUILD_PUBLIC_DIR = path.join(APP_PATH, 'public');
 const FONDATION_ROOT = __dirname;
-
-// const appDescriptor = require(appResolve('src', 'appDescriptor')).default;
-
-const externalPlugins = [];
 
 const INCLUDES = [
     APP_SOURCE_DIR,
@@ -48,16 +42,16 @@ const config = {
     devtool: 'source-map',
 
     module: {
-        // preLoaders: [
-        //     {
-        //         test: /\.js$/,
-        //         loader: 'eslint',
-        //         exclude: /node_modules/,
-        //         query: {
-        //             configFile: fondationResolve('.eslintrc'),
-        //         },
-        //     },
-        // ],
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'eslint',
+                exclude: /node_modules/,
+                query: {
+                    configFile: fondationResolve('.eslintrc'),
+                },
+            },
+        ],
         loaders: [
             {
                 test: /\.css$/,
@@ -66,8 +60,15 @@ const config = {
                     'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]',
                 ],
             },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
+                loader: 'url-loader?limit=10000',
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader',
+            },
         ],
-        // TODO : Add JSON, raw, images, font and files loaders
     },
 
     resolveLoader: {
@@ -101,7 +102,7 @@ const clientConfig = {
         loaders: [
             ...config.module.loaders,
             createBabelLoaderConfig('.babelrc.browser'),
-        ].concat(externalPlugins),
+        ],
     },
     devtool: config.devtool,
     resolve: config.resolve,
@@ -135,7 +136,7 @@ const serverConfig = {
         loaders: [
             ...config.module.loaders,
             createBabelLoaderConfig('.babelrc.node'),
-        ].concat(externalPlugins),
+        ],
     },
     target: 'node',
     node: {

@@ -22,10 +22,13 @@
     "eslint-config-airbnb": "^3.1.0",
     "eslint-loader": "^1.2.0",
     "eslint-plugin-react": "^3.15.0",
+    "file-loader": "^0.8.5",
     "isomorphic-style-loader": "0.0.7",
+    "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.1",
     "react-transform-hmr": "^1.0.1",
     "supertest": "^1.1.0",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
