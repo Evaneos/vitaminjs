@@ -24,7 +24,7 @@ function authenticationRequest(email, password) {
     return {
         type: AUTH_REQUEST,
         email,
-        password
+        password,
     };
 }
 
@@ -42,7 +42,7 @@ function authenticationFailure(error) {
     return {
         type: AUTH_FAILURE,
         message,
-    }
+    };
 }
 
 function redirectToTarget() {
@@ -52,7 +52,7 @@ function redirectToTarget() {
             location.state
             && location.state.nextPathname
         ) || '/';
-        dispatch(routeActions.replace(to))
+        dispatch(routeActions.replace(to));
     };
 }
 
@@ -79,7 +79,7 @@ export function signIn(email, password) {
             .catch(error => {
                 dispatch(authenticationFailure(error));
             });
-    }
+    };
 }
 
 

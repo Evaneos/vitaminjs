@@ -36,6 +36,7 @@ fi
 
 # set ENV vars
 export RACKT_PATH=$SCRIPT_PATH/../
+export APP_PATH="`pwd`";
 
 # DO IT!
 $TASK_PATH "$@"
