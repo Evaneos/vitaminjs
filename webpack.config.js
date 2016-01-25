@@ -1,6 +1,5 @@
 import { fondationResolve, appResolve } from './src/utils';
 import path from 'path';
-import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
 // import { plugins } from './src/appDescriptor';
 import { pluginLoaders } from './src/plugin';
@@ -34,12 +33,6 @@ const createBabelLoaderConfig = (babelConfig) => {
     };
 };
 
-const customizer = (objValue, srcValue) => {
-    if (Array.isArray(objValue)) {
-        return objValue.concat(srcValue);
-    }
-};
-
 const externalModules = fs
     .readdirSync(fondationResolve('node_modules'))
     .filter(m => m !== '.bin')
@@ -70,12 +63,10 @@ const config = {
                 test: /\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?module',
-                    // 'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]',
+                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]',
                 ],
             },
         ],
-        // TODO : Add Isomorphic CSS
         // TODO : Add JSON, raw, images, font and files loaders
     },
 
@@ -97,8 +88,8 @@ const config = {
 // Configuration client-side (client.js)
 
 const clientConfig = {
-    context: APP_SOURCE_DIR,
-    entry: './client',
+    name: 'browser',
+    entry: './src/client',
     output: {
         path: BUILD_PUBLIC_DIR,
         // TODO : put hash in name
@@ -115,6 +106,7 @@ const clientConfig = {
     devtool: config.devtool,
     resolve: config.resolve,
     resolveLoader: config.resolveLoader,
+    debug: true,
 
     devServer: {
         proxy: {
@@ -130,6 +122,7 @@ const clientConfig = {
 // Configuration server-side (server.js)
 
 const serverConfig = {
+    name: 'server-side rendering',
     entry: 'fondation/src/server',
     output: {
         path: './build',

@@ -1,6 +1,4 @@
 #!/bin/bash -e
 
-nd="/home/lucas/evaneos/applications/esper.evaneos.com/web/front/node_modules/.bin/node-debug"
-# nd=""
-webpack="$nd $RACKT_PATH/node_modules/.bin/webpack"
+webpack=$RACKT_PATH/node_modules/.bin/webpack
 eval "$webpack --config $RACKT_PATH/webpack.config.es5.js"
