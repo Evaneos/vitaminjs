@@ -3,11 +3,8 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RoutingContext } from 'react-router';
 import storeCreator from './storeCreator';
-<<<<<<< ea3c0315fa9c7d6e7d5a179ad4cb144eb2138f1a
 import { appResolve } from './utils';
 import { authenticationSuccess } from './actions';
-=======
->>>>>>> cleaning and adding loaders
 import CSSProvider from'./components/CSSProvider';
 
 export default function renderer(appDescriptor) {
