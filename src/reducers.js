@@ -2,7 +2,7 @@ import {
     AUTH_REQUEST,
     AUTH_SUCCESS,
     AUTH_FAILURE,
-    AUTH_SIGN_OUT,
+    AUTH_SIGN_OUT_SUCCESS,
 } from './actions';
 
 const initialAuthState = {
@@ -35,7 +35,7 @@ export function auth(state = initialAuthState, action) {
                 lastError: action.message,
             };
 
-        case AUTH_SIGN_OUT:
+        case AUTH_SIGN_OUT_SUCCESS:
             return {
                 ...state,
                 ...initialAuthState

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { match, RoutingContext } from 'react-router';
 import storeCreator from './storeCreator';
 import { appResolve } from './utils';
+import { authenticationSuccess } from './actions';
 
 export default function renderer(appDescriptor) {
     return function* renderer() {
@@ -18,6 +19,11 @@ export default function renderer(appDescriptor) {
                 this.status = 200;
                 const history = createMemoryHistory(url);
                 const store = storeCreator(appDescriptor.reducer, history);
+
+                if (this.state.token) {
+                    store.dispatch(authenticationSuccess());
+                }
+
                 this.body = renderBody(store, renderProps);
             } else {
                 // TODO yield down the middleware chain

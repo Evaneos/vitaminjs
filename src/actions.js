@@ -4,9 +4,21 @@ import Error from 'base-error';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
-export const AUTH_SIGN_OUT = 'AUTH_SIGN_OUT';
+export const AUTH_SIGN_OUT_REQUEST = 'AUTH_SIGN_OUT_REQUEST';
+export const AUTH_SIGN_OUT_SUCCESS = 'AUTH_SIGN_OUT_SUCCESS';
+export const AUTH_SIGN_OUT_FAILURE = 'AUTH_SIGN_OUT_FAILURE';
 
 class AuthenticationError extends Error {}
+
+function assertSuccessfulResponse(response) {
+    return response.json()
+    .then(payload => {
+        if (!payload.ok) {
+            throw new AuthenticationError(payload.message);
+        }
+    });
+}
+
 
 function authenticationRequest(email, password) {
     return {
@@ -16,10 +28,9 @@ function authenticationRequest(email, password) {
     };
 }
 
-function authenticationSuccess(token) {
+export function authenticationSuccess() {
     return {
-        type: AUTH_SUCCESS,
-        token
+        type: AUTH_SUCCESS
     };
 }
 
@@ -45,14 +56,13 @@ function redirectToTarget() {
     };
 }
 
-
 export function signIn(email, password) {
     return (dispatch, getState) => {
         if (getState().isAuthenticating) {
             return;
         }
         dispatch(authenticationRequest(email, password));
-        return fetch('/authenticate', {
+        return fetch('/login', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -61,11 +71,8 @@ export function signIn(email, password) {
             credentials: 'same-origin',
             body: JSON.stringify({ email, password }),
         })
-            .then(response => response.json())
-            .then(payload => {
-                if (!payload.ok) {
-                    throw new AuthenticationError(payload.message);
-                }
+            .then(assertSuccessfulResponse)
+            .then(() => {
                 dispatch(authenticationSuccess());
                 dispatch(redirectToTarget());
             })
@@ -75,6 +82,39 @@ export function signIn(email, password) {
     }
 }
 
+
+function deauthenticationRequest() {
+    return { type: AUTH_SIGN_OUT_REQUEST };
+}
+
+function deauthenticationSuccess() {
+    return { type: AUTH_SIGN_OUT_SUCCESS };
+}
+
+function deauthenticationFailure(error) {
+    let message;
+    if (error instanceof AuthenticationError) {
+        message = error.message;
+    }
+    return { type: AUTH_SIGN_OUT_FAILURE, message };
+}
+
 export function signOut() {
-    return { type: AUTH_SIGN_OUT }
+    return (dispatch, getState) => {
+        dispatch(deauthenticationRequest());
+        return fetch('/logout', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'same-origin'
+        })
+            .then(assertSuccessfulResponse)
+            .then(() => {
+                dispatch(deauthenticationSuccess());
+            })
+            .catch(error => {
+                dispatch(deauthenticationFailure(error));
+            });
+    }
 }
