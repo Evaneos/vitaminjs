@@ -22,8 +22,11 @@ export function bootstrapClient(appDescriptor) {
 
 export { default as requireAuthentication } from './components/requireAuthentication';
 
-export function loginNextState(location) {
-    return {
-        nextPathname: location.pathname
-    };
+// loginNextState(location: object) => object?
+export function loginNextState({ pathname }) {
+    // TODO Prevent hardcoded logout URL
+    if (pathname === '/logout') {
+        return null;
+    }
+    return { nextPathname: pathname };
 }
