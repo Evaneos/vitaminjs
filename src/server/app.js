@@ -3,9 +3,10 @@ import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import serve from 'koa-static';
 import validate from 'koa-validate';
+
 import auth from './auth';
-import { appResolve } from './utils';
-import appDescriptor from './appDescriptor';
+import { appResolve } from '../utils';
+import serverConfig from '../appDescriptor/server';
 import renderer from './renderer';
 
 
@@ -23,5 +24,6 @@ app.use(authenticator.check());
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(serve(appResolve('public')));
-app.use(renderer(appDescriptor));
-app.listen(3000);
+(serverConfig.middlewares || []).forEach((m) => app.use(m));
+app.use(renderer());
+export default app;

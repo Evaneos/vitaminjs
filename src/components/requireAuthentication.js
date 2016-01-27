@@ -1,11 +1,11 @@
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { routeActions } from 'redux-simple-router';
 import { loginNextState } from '..';
 
 function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
+    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
 function mapStateToProps(state) {
@@ -17,12 +17,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        replace: compose(dispatch, routeActions.replace)
-    }
+        replace: compose(dispatch, routeActions.replace),
+    };
 }
 
 export default function requireAuthentication(WrappedComponent) {
     class Authenticated extends Component {
+
         componentWillMount() {
             this.checkAuth(this.props);
         }
@@ -44,7 +45,7 @@ export default function requireAuthentication(WrappedComponent) {
         render() {
             const {
                 isAuthenticated,
-                ...others
+                ...others,
             } = this.props;
             return isAuthenticated
                 ? <WrappedComponent {...others} />
@@ -52,8 +53,11 @@ export default function requireAuthentication(WrappedComponent) {
         }
     }
 
-    Authenticated.displayName = `Authenticated(${getDisplayName(WrappedComponent)})`
-    Authenticated.WrappedComponent = WrappedComponent
+    Authenticated.displayName = `Authenticated(${getDisplayName(WrappedComponent)})`;
+    Authenticated.WrappedComponent = WrappedComponent;
+    Authenticated.propTypes = {
+        isAuthenticated: PropTypes.bool,
+    };
 
     return connect(mapStateToProps, mapDispatchToProps)(Authenticated);
 }

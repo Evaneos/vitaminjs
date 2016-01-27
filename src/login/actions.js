@@ -30,7 +30,7 @@ function authenticationRequest(email, password) {
 
 export function authenticationSuccess() {
     return {
-        type: AUTH_SUCCESS
+        type: AUTH_SUCCESS,
     };
 }
 
@@ -62,10 +62,10 @@ export function signIn(email, password) {
             return;
         }
         dispatch(authenticationRequest(email, password));
-        return fetch('/login', {
+        fetch('/login', {
             method: 'post',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             credentials: 'same-origin',
@@ -100,14 +100,14 @@ function deauthenticationFailure(error) {
 }
 
 export function signOut() {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         dispatch(deauthenticationRequest());
         return fetch('/logout', {
             method: 'post',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
-            credentials: 'same-origin'
+            credentials: 'same-origin',
         })
             .then(assertSuccessfulResponse)
             .then(() => {
@@ -116,5 +116,5 @@ export function signOut() {
             .catch(error => {
                 dispatch(deauthenticationFailure(error));
             });
-    }
+    };
 }

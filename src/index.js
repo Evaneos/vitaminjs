@@ -1,21 +1,24 @@
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+
 import { createHistory } from 'history';
 import storeCreator from './storeCreator';
 import CSSProvider from './components/CSSProvider';
 import 'babel-polyfill';
+import appConfig from './appDescriptor/app';
 
-export function bootstrapClient(appDescriptor) {
+export function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = window.__INITIAL_STATE__;
+    const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
     const history = createHistory();
-    const store = storeCreator(appDescriptor.reducer, history, initialState);
+    const store = storeCreator(history, initialState);
+    const insertCss = styles => styles._insertCss();
     render(
         <Provider store={store}>
-            <CSSProvider insertCss={styles => styles._insertCss()}>
+            <CSSProvider insertCss={insertCss}>
                 <Router history={history}>
-                    {appDescriptor.routes}
+                    {appConfig.routes}
                 </Router>
             </CSSProvider>
         </Provider>,
@@ -24,6 +27,7 @@ export function bootstrapClient(appDescriptor) {
 }
 
 export { default as requireAuthentication } from './components/requireAuthentication';
+
 
 // loginNextState(location: object) => object?
 export function loginNextState({ pathname }) {

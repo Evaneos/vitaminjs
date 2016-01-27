@@ -30,7 +30,7 @@ function setAuthCookie(cookies, token) {
 function clearAuthCookie(cookies) {
     cookies.set(COOKIE_NAME, '', {
         expires: new Date(1 /* timestamp*/),
-        httpOnly: true
+        httpOnly: true,
     });
 }
 
@@ -38,14 +38,14 @@ export default function auth(secret) {
     function authenticate(authServerURL) {
         function upstreamAuthenticate(email, password) {
             return request
-                .post(`${authServerURL}/authenticate`)
+                .post(`${authServerURL}/koaAuthenticate`)
                 .auth(email, password)
                 .set('Accept', 'application/json');
         }
 
         const createToken = (payload) => sign(payload, secret);
 
-        function *authenticate() {
+        function *authenticateMiddleware() {
             const { email, password } = this.request.body;
             let response;
             try {
@@ -54,7 +54,7 @@ export default function auth(secret) {
                 if (err.response.unauthorized) {
                     this.body = {
                         ok: false,
-                        message: 'Invalid credentials'
+                        message: 'Invalid credentials',
                     };
                     return;
                 }
@@ -64,13 +64,13 @@ export default function auth(secret) {
             const token = createToken({ upstream: response.body.token });
             setAuthCookie(this.cookies, token);
             this.body = { ok: true };
-        };
+        }
 
-        return compose([acceptsJSONOnly, validate, authenticate]);
+        return compose([acceptsJSONOnly, validate, authenticateMiddleware]);
     }
 
     function deauthenticate() {
-        return function *deauthenticate() {
+        return function *() {
             clearAuthCookie(this.cookies);
             this.body = { ok: true };
         };
@@ -81,7 +81,7 @@ export default function auth(secret) {
             secret,
             key: 'token',
             cookie: COOKIE_NAME,
-            passthrough: true
+            passthrough: true,
         });
     }
 
@@ -89,6 +89,5 @@ export default function auth(secret) {
         authenticate,
         deauthenticate,
         check,
-    }
+    };
 }
-

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+backend_server=$RACKT_PATH/src/server/index.js
+NODE_ENV=development;$RACKT_PATH/tasks/build-dev && node $backend_server

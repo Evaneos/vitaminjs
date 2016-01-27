@@ -2,15 +2,16 @@ import { createMemoryHistory } from 'history';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { match, RoutingContext } from 'react-router';
-import storeCreator from './storeCreator';
-import { appResolve } from './utils';
-import { authenticationSuccess } from './actions';
-import CSSProvider from'./components/CSSProvider';
 
-export default function renderer(appDescriptor) {
-    return function* renderer() {
+import { authenticationSuccess } from '../login/actions';
+import appConfig from '../appDescriptor/app';
+import CSSProvider from'../components/CSSProvider';
+import storeCreator from '../storeCreator';
+
+export default function renderer() {
+    return function* rendererMiddleware() {
         const url = this.req.url;
-        match({ routes: appDescriptor.routes, location: url },
+        match({ routes: appConfig.routes, location: url },
         (error, redirectLocation, renderProps) => {
             if (error) {
                 this.status = 500;
@@ -20,13 +21,13 @@ export default function renderer(appDescriptor) {
             } else if (renderProps) {
                 this.status = 200;
                 const history = createMemoryHistory(url);
-                const store = storeCreator(appDescriptor.reducer, history);
+                const store = storeCreator(history);
 
                 if (this.state.token) {
                     store.dispatch(authenticationSuccess());
                 }
 
-                this.body = renderBody(store, renderProps);
+                this.body = renderBody(store, renderProps, appConfig.stateSerializer);
             } else {
                 // TODO yield down the middleware chain
                 this.status = 404;
@@ -36,7 +37,8 @@ export default function renderer(appDescriptor) {
     };
 }
 
-function renderBody(store, renderProps) {
+
+function renderBody(store, renderProps, stateSerializer) {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
     const html = renderToString(
@@ -46,10 +48,10 @@ function renderBody(store, renderProps) {
             </CSSProvider>
         </Provider>
     );
-    return renderFullPage(html, store.getState(), css);
+    return renderFullPage(html, stateSerializer.stringify(store.getState()), css);
 }
 
-function renderFullPage(html, initialState, css) {
+function renderFullPage(html, serializedState, css) {
     return `
     <!doctype html>
     <html>
@@ -60,10 +62,10 @@ function renderFullPage(html, initialState, css) {
         <body>
             <div id="app">${html}</div>
             <script>
-                window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+                window.__INITIAL_STATE__ = ${JSON.stringify(serializedState)}
             </script>
-            <script src="bundle.js"></script>
-        </body>
+            <script src="/bundle.js"></script>
+            </body>
     </html>
     `;
 }

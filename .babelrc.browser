@@ -7,7 +7,7 @@
         "transform-class-properties",
     ],
     "env": {
-        "development": {
+        "development-hot": {
             "plugins": [
                 ["react-transform", {
                     "transforms": [{

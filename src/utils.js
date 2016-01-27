@@ -1,3 +1,4 @@
+
 const path = require('path');
 
 exports.fondationResolve = function fondationResolve() {
@@ -9,10 +10,7 @@ exports.appResolve = function appResolve() {
 };
 
 exports.concat = function concat(left, right) {
-    if (process.env.NODE_ENV === 'development') {
-        if (!Array.isArray(left) || !Array.isArray(right)) {
-            throw new TypeError('Both arguments must be arrays.');
-        }
+    if (Array.isArray(left) && Array.isArray(right)) {
+        return left.concat(right);
     }
-    return left.concat(right);
 };
