@@ -3,6 +3,8 @@
 
     "ecmaFeatures": {
         "generators": true,
+        "classes": true,
+        "experimentalObjectRestSpread": true,
     },
     "plugins": [
         "react"
@@ -11,12 +13,15 @@
         "indent": [2, 4],
         "func-names": 0,
         "no-use-before-define": [2, "nofunc"],
-
+        "no-param-reassign": 0,
+        "new-cap": 0,
+        "max-len": 0,
+        // "sort-imports": 1, -> when eslint2.0.0
         "react/forbid-prop-types": 1,
         "react/jsx-boolean-value": 1,
         "react/jsx-closing-bracket-location": 1,
         "react/jsx-curly-spacing": 1,
-        "react/jsx-handler-names": 1,
+        "react/jsx-handler-names": [ 1, {"eventHandlerPrefix": "on"}],
         "react/jsx-indent-props": 1,
         "react/jsx-indent": 1,
         "react/jsx-key": 1,
@@ -34,7 +39,7 @@
         "react/no-direct-mutation-state": 1,
         "react/no-is-mounted": 1,
         "react/no-multi-comp": 1,
-        "react/no-set-state": 1,
+        "react/no-set-state": 0,
         "react/no-string-refs": 1,
         "react/no-unknown-property": 1,
         "react/prop-types": 1,
