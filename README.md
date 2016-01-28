@@ -20,7 +20,7 @@ For now, while the package is still not released :
 ```shell
 $ git clone https://github.com/Evaneos/fondation
 ```
-Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package inside your node_modules directory (you may avec to sudo it)
+Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package inside your node_modules directory (you may need to run it with sudo)
 ```shell
 $ npm link <path/to/fondation/repo>
 ```
