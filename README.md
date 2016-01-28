@@ -1,5 +1,53 @@
 ## NOT PRODUCTION READY
 
+## Why ?
+Actual state of development for react apps leads to a tremendous amount of boilerplate code for initializing the tooling. Usually, we proceed by finding (or creating) a boilerplate project with approximatly the stack we need, fork it, and start working commiting on it.
+
+However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we tried to externalize all the toolchain and building config of a project in a npm package.
+
+## What are our opinions ?
+This toolchain is opinionated with the following libraries / tools:
+- [**React**](https://github.com/facebook/react) with server-side rendering
+- [**Redux**](https://github.com/rackt/redux) (with redux-thunk, and redux-simple-router)
+- [**CSS modules**](https://github.com/css-modules/css-modules) with server-side rendering
+- [**koa**](https://github.com/koajs/koa) for rendering & serving the app
+- **Babel** transpiling. Look at our babelrc presets ([browser](https://github.com/Evaneos/fondation/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/fondation/blob/master/.babelrc.node))
+- We provide an auth mecanism (more on that later)
+- Hot module reload everywhere it is possible in development.
+
+## How to get started ?
+For now, while the package is still not released :
+```shell
+$ git clone https://github.com/Evaneos/fondation
+```
+Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package inside your node_modules directory (you may avec to sudo it)
+```shell
+$ npm link <path/to/fondation/repo>
+```
+Then, alias the command
+```
+$ alias fondation=<path/to/fondation/repo>/bin
+```
+Finally
+```
+$ fondation init
+```
+
+## How to configure my project ?
+A redux project consists in
+- A reducer
+- A root container
+So that's the only things you need to supply. You can specify them in the `appDescriptor/app.js` file. By the way, all the API between fondation and your project is confined to the `appDescriptor` directory.
+
+You can of course customize a little bit more your application.
+####Redux
+- Middlewares, to customize your actions
+- State serializer for serializing the state between the front & the back
+####Server
+- Middlewares (`appDescriptor/server.js` )
+####Build
+- plugins for the build (see later)
+
 ## TODO
 * [ ] Support development env without HMR. We need to trigger react-transform-hmr only with dev server.
 * [ ] Prevent CSRF
@@ -24,11 +72,12 @@
 	have only one web server
 	1 - process server
 		utilise l'api node du webpack-dev-server et qui utilise app.callback de notre serveur koa. Configure le dev-server via la options.setup (callback)
-	2 - hot reload sur node
-		https://webpack.github.io/docs/hot-module-replacement.html
-		re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
-* [ ] configure prod env server
 
+* [x] 2 - hot reload sur node via eval
+* [ ] configure prod env server
+* [ ] 3 - Hot reload sur node via hmr api
+        https://webpack.github.io/docs/hot-module-replacement.html
+        re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
 ---
 
 Ask to @mdarse :

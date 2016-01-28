@@ -29,12 +29,12 @@ const nodeHotReload = (compiler) => {
         try {
             app = eval(appString).default.callback();
         } catch (e) {
-            console.log('Error while loading app');
-            throw e;
+            console.warn('Error while loading app');
+            console.error(e);
         }
     };
     compiler.plugin('done', handleNodeRecompile);
-    compiler.watch({}, () => console.log('Server app built. Server hot reload activated.'));
+    compiler.watch({}, () => null);
 };
 
 if (universalConf.HOT) {

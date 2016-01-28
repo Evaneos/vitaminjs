@@ -4,7 +4,7 @@ const defaults = {
 
 let config = {};
 try {
-    config = require('__app_descriptor__/server.js').default;
+    config = require('__app__/appDescriptor/server.js').default;
 } catch (e) {
     console.warn(`Cannot load server.js, resolve to default server config (${e.message})`);
 }

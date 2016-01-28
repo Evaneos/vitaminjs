@@ -6,7 +6,7 @@ import { match, RoutingContext } from 'react-router';
 import { authenticationSuccess } from '../login/actions';
 import appConfig from '../appDescriptor/app';
 import CSSProvider from'../components/CSSProvider';
-import storeCreator from '../storeCreator';
+import { create as createStore } from '../store';
 
 export default function renderer() {
     return function* rendererMiddleware() {
@@ -21,7 +21,7 @@ export default function renderer() {
             } else if (renderProps) {
                 this.status = 200;
                 const history = createMemoryHistory(url);
-                const store = storeCreator(history);
+                const store = createStore(history);
 
                 if (this.state.token) {
                     store.dispatch(authenticationSuccess());

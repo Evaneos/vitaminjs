@@ -2,8 +2,10 @@
 
 npm init
 mkdir -p src/components
+mkdir -p src/containers
 mkdir -p src/reducers
-cat > src/appDescriptor.js << EOF
+mkdir -p src/appDescriptor
+cat > src/appDescriptor/app.js << EOF
 import { Route } from 'react-router';
 export default {
     // Export here the main reducer of you app
@@ -12,7 +14,7 @@ export default {
     routes: <Route path="/" />,
 };
 EOF
-
+# Todo ask if export eslint
 cat >.eslintrc << EOF
 {
     "extends": "./node_modules/fondation/.eslintrc"
@@ -23,14 +25,17 @@ cat >.gitignore << EOF
 /node_modules/
 /public/bundle.js
 /public/bundle.js.map
+/build/
 EOF
 cat > src/client.js << EOF
 import { bootstrapClient } from 'fondation';
-import appDescriptor from './appDescriptor';
 
-bootstrapClient(appDescriptor);
+bootstrapClient();
 EOF
 
 npm install redux react react-router redux react-redux react-dom
 npm link fondation
+
+echo "### Fondation project successfully initialized, starting hot server ###"
+./node_modules/fondation/bin/fondation serve-hot
 

@@ -13,9 +13,9 @@ import appConfig from './appDescriptor/app';
 function createRootReducer(app) {
     return combineReducers({ app, auth, routing: routeReducer });
 }
-
+let store;
 // TODO take reducer directly from app descriptor
-export default function storeCreator(history, initialState) {
+export function create(history, initialState) {
     const router = syncHistory(history);
     const createStoreWithMiddleware = compose(
         applyMiddleware(thunk, router),
@@ -24,5 +24,11 @@ export default function storeCreator(history, initialState) {
 
     const rootReducer = createRootReducer(appConfig.reducer);
 
-    return createStoreWithMiddleware(rootReducer, initialState);
+    store = createStoreWithMiddleware(rootReducer, initialState);
+    // console.log('jjiojoijoi', store.getState());
+    return store;
+}
+
+export function replaceReducer(appReducer) {
+    store.replaceReducer(createRootReducer(appReducer));
 }

@@ -21,15 +21,15 @@ console.log('Development : ', DEV);
     we have access to dynamic require.
 
     But when it is parsed for generating the bundle for the client, from inside the node server,
-    we do not. However, we have access to __app_descriptor__ alias, which points to the
+    we do not. However, we have access to __app__/appDescriptor alias, which points to the
     correct path.
 
     So the solution for now is to fallback consequently depending on the availability of the
-    __app_descriptor__. But there is surely something more elegant.
+    __app__/appDescriptor. But there is surely something more elegant.
 */
 let buildConfig = {};
 try {
-    buildConfig = require('__app_descriptor__/buildConfig.js').default;
+    buildConfig = require('__app__/appDescriptor/buildConfig.js').default;
 } catch (e1) {
     try {
         const buildConfigPath = appResolve('src', 'appDescriptor', 'buildConfig.js');
@@ -111,7 +111,7 @@ module.exports.config = {
 
     resolve: {
         alias: {
-            __app_descriptor__: path.resolve(APP_SOURCE_DIR, 'appDescriptor'),
+            __app__: APP_SOURCE_DIR,
         },
         modulesDirectories: MODULES_DIRECTORIES,
         extensions: ['', '.js', '.jsx', '.json'],
