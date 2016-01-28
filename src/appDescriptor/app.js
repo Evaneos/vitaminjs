@@ -26,7 +26,7 @@ config = Object.assign({}, defaults, config);
 
 
 if (module.hot) {
-    module.hot.accept(['__app__/appDescriptor/app.js', '__app__/reducers/index.js'], () => {
+    module.hot.accept(['__app__/appDescriptor/app.js'], () => {
         replaceReducer(require('__app__/appDescriptor/app.js').default.reducer);
     });
 }

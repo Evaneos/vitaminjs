@@ -36,7 +36,6 @@ const nodeHotReload = (compiler) => {
     compiler.plugin('done', handleNodeRecompile);
     compiler.watch({}, () => null);
 };
-
 if (universalConf.HOT) {
     const appWrapper = function () { return app(...arguments); };
     browserConfig.entry.unshift('webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server');

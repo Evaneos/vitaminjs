@@ -5,7 +5,6 @@ import { Router } from 'react-router';
 import { createHistory } from 'history';
 import { create as createStore } from './store';
 import CSSProvider from './components/CSSProvider';
-import 'babel-polyfill';
 import appConfig from './appDescriptor/app';
 
 export function bootstrapClient() {

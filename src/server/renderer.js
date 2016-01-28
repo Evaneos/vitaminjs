@@ -5,7 +5,7 @@ import { match, RoutingContext } from 'react-router';
 
 import { authenticationSuccess } from '../login/actions';
 import appConfig from '../appDescriptor/app';
-import CSSProvider from'../components/CSSProvider';
+import CSSProvider from '../components/CSSProvider';
 import { create as createStore } from '../store';
 
 export default function renderer() {

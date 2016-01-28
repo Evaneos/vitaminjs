@@ -37,6 +37,7 @@
     "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.1",
     "mime-db": "^1.21.0",
+    "postcss-loader": "^0.8.0",
     "react-transform-hmr": "^1.0.1",
     "redux-devtools": "^3.0.1",
     "supertest": "^1.1.0",
@@ -60,7 +61,8 @@
     "redux": "^3.0.5",
     "redux-simple-router": "^2.0.2",
     "redux-thunk": "^1.0.3",
-    "superagent": "^1.7.0"
+    "superagent": "^1.7.0",
+    "isomorphic-style-loader": "0.0.7"
   },
   "dependencies": {
     "jsonwebtoken": "^5.5.4",

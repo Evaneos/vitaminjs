@@ -5,6 +5,8 @@ Actual state of development for react apps leads to a tremendous amount of boile
 
 However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we tried to externalize all the toolchain and building config of a project in a npm package.
 
+Inspiration : https://github.com/bdefore/universal-redux & https://github.com/kriasoft/react-starter-kit
+
 ## What are our opinions ?
 This toolchain is opinionated with the following libraries / tools:
 - [**React**](https://github.com/facebook/react) with server-side rendering
@@ -39,7 +41,6 @@ A redux project consists in
 - A root container
 So that's the only things you need to supply. You can specify them in the `appDescriptor/app.js` file. By the way, all the API between fondation and your project is confined to the `appDescriptor` directory.
 
-You can of course customize a little bit more your application.
 ####Redux
 - Middlewares, to customize your actions
 - State serializer for serializing the state between the front & the back
@@ -66,7 +67,7 @@ You can of course customize a little bit more your application.
 * [ ] body + head + root
 * [ ] doc
 * [ ] put hash in bundle filename
-* [ ] remove redux dev-tools https://github.com/gaearon/redux-devtools, configure hot reload
+* [x] remove redux dev-tools https://github.com/gaearon/redux-devtools, configure hot reload
 * [x] create a .fondationrc that contains build infos
 * [x]
 	have only one web server
@@ -78,6 +79,8 @@ You can of course customize a little bit more your application.
 * [ ] 3 - Hot reload sur node via hmr api
         https://webpack.github.io/docs/hot-module-replacement.html
         re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
+* [ ] Launch the server build & hot reload after the client (?)
+* [ ] fix hot reload for reducers (the appConfig is hotreloaded as well :( )
 ---
 
 Ask to @mdarse :

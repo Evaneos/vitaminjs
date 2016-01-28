@@ -75,6 +75,7 @@ module.exports.createBabelLoaderConfig = (babelConfig) => {
 module.exports.config = {
     devtool: 'source-map',
     noInfo: true,
+    debug: DEV,
     module: {
         // Disable handling of unknown requires
         unknownContextRegExp: /$^/,
@@ -89,9 +90,6 @@ module.exports.config = {
         wrappedContextCritical: true,
 
         loaders: [{
-            test: /\.json$/,
-            loader: 'json',
-        }, {
             test: /\.css$/,
             loaders: [
                 'isomorphic-style-loader',
@@ -100,6 +98,9 @@ module.exports.config = {
         }, {
             test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
             loader: 'url-loader?limit=10000',
+        }, {
+            test: /\.json$/,
+            loader: 'json',
         },
             ...externalPlugins,
         ],
@@ -114,7 +115,7 @@ module.exports.config = {
             __app__: APP_SOURCE_DIR,
         },
         modulesDirectories: MODULES_DIRECTORIES,
-        extensions: ['', '.js', '.jsx', '.json'],
+        extensions: ['', '.js', '.jsx', '.json', '.css'],
     },
 
 };
