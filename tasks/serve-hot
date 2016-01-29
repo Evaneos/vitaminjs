@@ -1,4 +1,4 @@
 #!/bin/bash
 
 backend_server=$RACKT_PATH/src/server/index.js
-NODE_ENV=development-hot;node $backend_server
+export NODE_ENV=development-hot;node $backend_server

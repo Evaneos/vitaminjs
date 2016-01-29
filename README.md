@@ -69,11 +69,8 @@ So that's the only things you need to supply. You can specify them in the `appDe
 * [ ] put hash in bundle filename
 * [x] remove redux dev-tools https://github.com/gaearon/redux-devtools, configure hot reload
 * [x] create a .fondationrc that contains build infos
-* [x]
-	have only one web server
-	1 - process server
+* [x] 1 - process server
 		utilise l'api node du webpack-dev-server et qui utilise app.callback de notre serveur koa. Configure le dev-server via la options.setup (callback)
-
 * [x] 2 - hot reload sur node via eval
 * [ ] configure prod env server
 * [ ] 3 - Hot reload sur node via hmr api
@@ -81,6 +78,8 @@ So that's the only things you need to supply. You can specify them in the `appDe
         re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
 * [ ] Launch the server build & hot reload after the client (?)
 * [ ] fix hot reload for reducers (the appConfig is hotreloaded as well :( )
+* [ ] do something for the withStyle import (decorator ? transform with babel ?)
+* [ ] better management of config, args, env, and options
 ---
 
 Ask to @mdarse :
