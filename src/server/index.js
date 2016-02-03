@@ -1,9 +1,9 @@
 'use strict';
+const fs = require('fs');
 const MemoryFileSystem = require('memory-fs');
 const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-
 const nodeConfig = require('../../webpack.config.node.js');
 const browserConfig = require('../../webpack.config.browser.js');
 const universalConf = require('../../webpack.config.universal.js');
@@ -11,8 +11,6 @@ const universalConf = require('../../webpack.config.universal.js');
 let app = () => null;
 let server;
 const nodeHotReload = (compiler) => {
-    const fs = new MemoryFileSystem();
-    compiler.outputFileSystem = fs;
 
     const handleNodeRecompile = (args) => {
         if (!args || !args.compilation) {
@@ -20,7 +18,6 @@ const nodeHotReload = (compiler) => {
         }
 
         const outputPath = args.compilation.compiler.outputPath + '/server.js';
-
         if (!fs.statSync(outputPath).isFile()) {
             console.log('Filenotfound');
             return;
