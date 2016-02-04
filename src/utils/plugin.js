@@ -1,4 +1,4 @@
-const concat = require('./utils').concat;
+const concat = require('./index').concat;
 
 exports.pluginLoaders = function pluginLoaders(plugins) {
     return plugins

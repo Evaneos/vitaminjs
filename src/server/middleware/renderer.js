@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 
 
-import appConfig from '../app_descriptor/app';
-import CSSProvider from '../shared/components/CSSProvider';
+import appConfig from '../../app_descriptor/app';
+import CSSProvider from '../../shared/components/CSSProvider';
 
 function renderFullPage(html, serializedState, css) {
     return `

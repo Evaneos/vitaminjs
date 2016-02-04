@@ -10,7 +10,8 @@ exports.appResolve = function appResolve() {
 };
 
 exports.concat = function concat(left, right) {
-    if (Array.isArray(left) && Array.isArray(right) && right !== left) {
-        return left.concat(right);
+    if (!Array.isArray(left) || !Array.isArray(right) || right === left) {
+        return undefined;
     }
+    return left.concat(right);
 };

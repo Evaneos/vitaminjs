@@ -39,27 +39,26 @@ $ fondation init
 A redux project consists in
 - A reducer
 - A root container
-So that's the only things you need to supply. You can specify them in the `appDescriptor/app.js` file. By the way, all the API between fondation and your project is confined to the `appDescriptor` directory.
+So that's the only things you need to supply. You can specify them in the `app_descriptor/app.js` file. By the way, all the API between fondation and your project is confined to the `app_descriptor` directory.
 
 ####Redux
 - Middlewares, to customize your actions
 - State serializer for serializing the state between the front & the back
 ####Server
-- Middlewares (`appDescriptor/server.js` )
+- Middlewares (`app_descriptor/server.js` )
 ####Build
 - plugins for the build (see later)
 
 ## TODO
-* [ ] Support development env without HMR. We need to trigger react-transform-hmr only with dev server.
+* [x] Support development env without HMR. We need to trigger react-transform-hmr only with dev server.
 * [ ] Prevent CSRF
 * [ ] Add templating engine with template imported from app_descriptor
 * [ ] Render full Html page with renderer from app_descriptor
-* [ ] Peer dependencies
 * [ ] Support global install & use local fondation binary when launched globally (like grunt-cli)
 * [ ] Split client/server/shared (clean fondation directory layout)
 * [ ] organize app descriptor like universal-redux
 * [x] plugin system
-* [ ] plugin fondation-less
+* [ ] plugin fondation-less ?
 * [ ] tests
 * [ ] i18n -> intl -> format.js + intl.js (plugin polyfill koa)
 * [x] use webpack for server side too
@@ -72,14 +71,25 @@ So that's the only things you need to supply. You can specify them in the `appDe
 * [x] 1 - process server
 		utilise l'api node du webpack-dev-server et qui utilise app.callback de notre serveur koa. Configure le dev-server via la options.setup (callback)
 * [x] 2 - hot reload sur node via eval
-* [ ] configure prod env server
-* [ ] 3 - Hot reload sur node via hmr api
+
+* [x] 3 - Hot reload sur node via hmr api
         https://webpack.github.io/docs/hot-module-replacement.html
         re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
-* [ ] Launch the server build & hot reload after the client (?)
+* [x] Launch the server build & hot reload after the client (?)
 * [ ] fix hot reload for reducers (the appConfig is hotreloaded as well :( )
 * [ ] do something for the withStyle import (decorator ? transform with babel ?)
 * [ ] better management of config, args, env, and options
+* [x] add flow transform
+* [ ] add eslint & flow static typecheck in webpack loaders (?)
+* [ ] replace console.log with something better
+* [ ] the state of the app is in the app object, althought it's not specifically written...
+## TODO for PRODUCTION :
+* [x] Peer dependencies and package dependancy cleaning
+* [ ] configure build for prod
+* [ ] add args to server exec (like host, port etc)
+* [ ] add logs handling
+* [ ] Set package.json node version to 5.1.0
+
 ---
 
 Ask to @mdarse :
