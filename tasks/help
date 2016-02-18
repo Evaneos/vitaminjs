@@ -8,7 +8,7 @@ echo "  build         Build the applications bundles, front & back inside the `/
 echo "  serve-hot     Start the server in dev mode with hot reload activated (front & back) at port 8080"
 echo "  serve-dev     Start the server in dev mode without hot reload at port 8080"
 echo "  init          Start a new fondation project"
-# echo "  test          Run the test suite. Use --single-run for single run."
+echo "  test          Run the test suite."
 # echo "  pages         Deploys the examples to gh-pages."
 echo ""
 echo "Options:"

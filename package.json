@@ -37,13 +37,14 @@
     "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.1",
     "mime-db": "^1.21.0",
+    "mocha": "^2.4.5",
     "postcss-loader": "^0.8.0",
     "react-transform-hmr": "^1.0.1",
     "redux-devtools": "^3.0.1",
     "supertest": "^1.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.0"
   },
   "peerDependencies": {
     "history": "^1.17",
@@ -72,6 +73,7 @@
     "koa-router": "^5.3.0",
     "koa-static": "^2.0.0",
     "koa-validate": "^0.2.11",
+    "react-pure-render": "^1.0.2",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",
     "redux-simple-router": "^2.0.2",
