@@ -1,4 +1,5 @@
 #!/bin/bash
-
-backend_server=$RACKT_PATH/src/server/index.js
-export NODE_ENV=development;$RACKT_PATH/tasks/build-dev && node $backend_server
+bin=$RACKT_PATH/node_modules/.bin
+build_config=$RACKT_PATH/src/build_config/webpack.config.es5.js
+$bin/webpack --config $build_config --progress --env.dev && \
+node ./build/server

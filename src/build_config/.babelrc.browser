@@ -1,10 +1,8 @@
 {
-    "presets": ["react", "es2015"],
+    "presets": ["es2015-webpack", "react", "stage-1"],
     "plugins": [
         // Make optional the explicit import of React in JSX files
         "react-require",
-        "transform-object-rest-spread",
-        "transform-class-properties",
     ],
     "env": {
         "development-hot": {
