@@ -4,19 +4,18 @@ import {
     combineReducers,
     applyMiddleware,
 } from 'redux';
-import { routeReducer, syncHistory } from 'react-router-redux';
+import { routerReducer, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import { storeEnhancers } from './devTools';
 import appConfig from '../app_descriptor/app';
 
 function createRootReducer(app) {
-    return combineReducers({ app, routing: routeReducer });
+    return combineReducers({ app, routing: routerReducer });
 }
 
 export function create(history, initialState) {
-    const router = syncHistory(history);
     const createStoreWithMiddleware = compose(
-        applyMiddleware(...appConfig.middlewares, thunk, router),
+        applyMiddleware(...appConfig.middlewares, thunk, routerMiddleware(history)),
         ...storeEnhancers
     )(createStore);
 

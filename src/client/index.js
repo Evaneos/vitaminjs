@@ -1,6 +1,7 @@
 import { render as reactRender } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import { createHistory } from 'history';
 import { create as createStore } from '../shared/store';
@@ -26,11 +27,13 @@ function render(history, store, routes, RootComponent, element) {
 export function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
-    const history = useRouterHistory(createHistory)({
+
+    let history = useRouterHistory(createHistory)({
         basename: appConfig.basename,
         queryKey: false
     });
     const store = createStore(history, initialState);
+    // history = syncHistoryWithStore(history, store);
 
     const element = document.getElementById(appConfig.containerDiv);
     render(history, store, appConfig.routes, appConfig.rootComponent, element);
