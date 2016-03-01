@@ -2,6 +2,7 @@
 
 const defaults = {
     middlewares: [],
+    renderFullPage: true,
 };
 
 let config = {};

@@ -8,16 +8,14 @@ import { create as createStore } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
 import appConfig from '../app_descriptor/app';
 
-function render(history, store, routes, RootComponent, element) {
+function render(history, store, routes, element) {
     const insertCss = styles => styles._insertCss();
     reactRender(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
-                <RootComponent>
-                    <Router history={history}>
-                        {routes}
-                    </Router>
-                </RootComponent>
+                <Router history={history}>
+                    {routes}
+                </Router>
             </CSSProvider>
         </Provider>,
         element
@@ -33,10 +31,10 @@ export function bootstrapClient() {
         queryKey: false
     });
     const store = createStore(history, initialState);
-    // history = syncHistoryWithStore(history, store);
 
-    const element = document.getElementById(appConfig.containerDiv);
-    render(history, store, appConfig.routes, appConfig.rootComponent, element);
+    // Todo replace by fondation-app-hash
+    const element = document.getElementById('fondation-app');
+    render(history, store, appConfig.routes, element);
 
     if (module.hot) {
         module.hot.accept('../app_descriptor/app.js', function () {

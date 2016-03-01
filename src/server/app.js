@@ -2,9 +2,9 @@ import koa from 'koa';
 import serve from 'koa-static';
 import { appResolve } from '../utils';
 import serverConfig from '../app_descriptor/server';
-import renderer from './renderer';
-import storeCreator from './store';
-import router from './router';
+import renderer from './middleware/renderer';
+import storeCreator from './middleware/store';
+import router from './middleware/router';
 
 
 const app = koa();

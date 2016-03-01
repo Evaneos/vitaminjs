@@ -30,7 +30,7 @@ module.exports = function (options) {
     return mergeWith({}, config(options), {
         entry: [
             ...(options.hot ? ['webpack/hot/poll.js?1000'] : []),
-            fondationResolve('src', 'server', 'index.js'),
+            fondationResolve('src', 'server', 'server.js'),
         ],
         output: {
             path: appResolve('build'),
