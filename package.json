@@ -34,6 +34,7 @@
     "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.4",
     "mocha": "^2.4.5",
+    "parallelshell": "^2.0.0",
     "url-loader": "^0.5.7",
     "webpack": "^2.0.7-beta",
     "webpack-dev-server": "^2.0.0-beta"
