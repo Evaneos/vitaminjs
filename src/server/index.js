@@ -23,7 +23,7 @@ if (module.hot) {
         },
         features: ['middleware', 'setup'],
     });
-    module.hot.accept('./app.js', function() {
+    module.hot.accept('./app.js', function () {
         currentApp = require('./app.js').default;
     });
 }

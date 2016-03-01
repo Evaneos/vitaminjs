@@ -16,7 +16,7 @@ function createRootReducer(app) {
 export function create(history, initialState) {
     const router = syncHistory(history);
     const createStoreWithMiddleware = compose(
-        applyMiddleware(thunk, router),
+        applyMiddleware(...appConfig.middlewares, thunk, router),
         ...storeEnhancers
     )(createStore);
 
@@ -24,11 +24,11 @@ export function create(history, initialState) {
     const rootReducer = createRootReducer(appConfig.reducer);
     const store = createStoreWithMiddleware(rootReducer, initialState);
     if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', function() {
+        module.hot.accept('../app_descriptor/app.js', function () {
             const app = require('../app_descriptor/app.js').default;
-            console.log(app, store)
+            console.log(app, store);
             store.replaceReducer(app.reducer);
-        })
+        });
     }
     return store;
 }

@@ -9,9 +9,9 @@ import router from './router';
 
 const app = koa();
 app.use(serve(appResolve('public')));
+(serverConfig.middlewares || []).forEach((m) => app.use(m));
 app.use(router);
 app.use(storeCreator);
-(serverConfig.middlewares || []).forEach((m) => app.use(m));
 app.use(renderer);
 
 export default app;

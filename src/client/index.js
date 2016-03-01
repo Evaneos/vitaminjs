@@ -36,7 +36,7 @@ export function bootstrapClient() {
     render(history, store, appConfig.routes, appConfig.rootComponent, element);
 
     if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', function() {
+        module.hot.accept('../app_descriptor/app.js', function () {
             let app = require('../app_descriptor/app.js').default;
             // render(history, store, app.routes);
             // Todo : handle the case when stateSerialize changes

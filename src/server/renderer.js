@@ -13,7 +13,7 @@ function renderFullPage(html, serializedState, css) {
             <style type="text/css">${css.join('')}</style>
         </head>
         <body>
-            <div id="react-app">${html}</div>
+            <div id="app">${html}</div>
             <script>
                 window.__INITIAL_STATE__ = ${JSON.stringify(serializedState)}
             </script>

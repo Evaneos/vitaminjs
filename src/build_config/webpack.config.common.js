@@ -12,7 +12,7 @@ const INCLUDES = [
 ];
 
 const EXCLUDES = [];
-export const createBabelLoaderConfig = (babelConfig) => {
+export const createBabelLoaderConfig = (babelConfig, hot) => {
     return {
         test: /\.js(x?)$/,
         loader: 'babel',
@@ -20,6 +20,8 @@ export const createBabelLoaderConfig = (babelConfig) => {
         exclude: EXCLUDES,
         query: {
             extends: fondationResolve('src', 'build_config', babelConfig),
+            filename: fondationResolve('node_modules'),
+            presets: hot ? ['react-hmre'] : [],
         },
     };
 };

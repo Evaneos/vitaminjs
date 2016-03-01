@@ -1,9 +1,9 @@
-import path from 'path'
-import { createBabelLoaderConfig, APP_SOURCE_DIR, config } from './webpack.config.common.js'
-import { appResolve, concat } from '../utils'
-import mergeWith from 'lodash.mergewith'
+import path from 'path';
+import { createBabelLoaderConfig, APP_SOURCE_DIR, config } from './webpack.config.common.js';
+import { appResolve, concat } from '../utils';
+import mergeWith from 'lodash.mergewith';
 
-module.exports = function(options) {
+module.exports = function (options) {
     return mergeWith({}, config(options), {
         entry: [path.join(APP_SOURCE_DIR, 'client.js')],
         output: {
@@ -14,7 +14,7 @@ module.exports = function(options) {
         },
         module: {
             loaders: [
-                createBabelLoaderConfig('.babelrc.browser'),
+                createBabelLoaderConfig('.babelrc.browser', options.hot),
             ],
         },
     }, concat);

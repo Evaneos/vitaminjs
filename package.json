@@ -34,8 +34,6 @@
     "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.4",
     "mocha": "^2.4.5",
-    "nodemon": "^1.8.1",
-    "parallelshell": "^2.0.0",
     "url-loader": "^0.5.7",
     "webpack": "^2.0.7-beta",
     "webpack-dev-server": "^2.0.0-beta"
@@ -50,7 +48,6 @@
   "dependencies": {
     "koa": "^1.1.2",
     "koa-static": "^2.0.0",
-    "react-pure-render": "^1.0.2",
     "redux-thunk": "^1.0.3"
   }
 }

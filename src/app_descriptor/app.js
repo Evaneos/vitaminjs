@@ -1,7 +1,6 @@
-import DefaultRootComponent from '../components/DefaultRootComponent';
+import DefaultRootComponent from '../shared/components/DefaultRootComponent';
 
 /* eslint no-console: 0 */
-
 const defaults = {
     rootComponent: DefaultRootComponent,
     reducer: (state) => state,
@@ -12,6 +11,7 @@ const defaults = {
         stringify: o => o,
         parse: s => s,
     },
+    middlewares: [],
 };
 
 let config = {};
@@ -23,4 +23,4 @@ try {
 }
 
 
-export default ({...defaults, ...config});
+export default ({ ...defaults, ...config });

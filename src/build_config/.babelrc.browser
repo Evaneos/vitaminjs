@@ -4,9 +4,4 @@
         // Make optional the explicit import of React in JSX files
         "react-require",
     ],
-    "env": {
-        "development-hot": {
-            "presets": ["react-hmre"]
-        }
-    }
 }

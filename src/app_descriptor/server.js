@@ -11,4 +11,4 @@ try {
     console.warn(`Cannot load server.js, resolve to default server config (${e.message})`);
 }
 
-export default {...defaults, ...config};
+export default { ...defaults, ...config };

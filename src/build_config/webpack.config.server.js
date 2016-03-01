@@ -8,13 +8,13 @@ import path from 'path';
 
 const externalModules = (modulesPath) => fs
     .readdirSync(modulesPath)
-    .filter(m => m !== '.bin')
+    .filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
 const fondationModules = externalModules(fondationResolve('node_modules'));
 const whiteList = ['webpack/hot/poll.js?1000'];
-const externals = function(context, request, callback) {
+const externals = function (context, request, callback) {
     var pathStart = request.split('/')[0];
-    if (whiteList.indexOf(request) !== -1 ) {
+    if (whiteList.indexOf(request) !== -1) {
         return callback();
     }
     if (appModules.indexOf(pathStart) !== -1) {
@@ -24,9 +24,9 @@ const externals = function(context, request, callback) {
         return callback(null, `commonjs2 fondation/node_modules/${request}`);
     }
     return callback();
-}
+};
 
-module.exports = function(options) {
+module.exports = function (options) {
     return mergeWith({}, config(options), {
         entry: [
             ...(options.hot ? ['webpack/hot/poll.js?1000'] : []),
@@ -39,7 +39,7 @@ module.exports = function(options) {
         },
 
         target: 'node',
-        externals: [ externals ],
+        externals: [externals],
         node: {
             console: false,
             global: false,
@@ -50,7 +50,7 @@ module.exports = function(options) {
         },
 
         module: {
-            loaders: [createBabelLoaderConfig('.babelrc.node')],
+            loaders: [createBabelLoaderConfig('.babelrc.node', false)],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({
@@ -59,4 +59,4 @@ module.exports = function(options) {
             })] : [])
         ],
     }, concat);
-}
+};
