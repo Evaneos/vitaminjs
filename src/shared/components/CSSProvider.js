@@ -4,7 +4,7 @@ export default class CSSProvider extends Component {
 
     static propTypes = {
         insertCss: PropTypes.func.isRequired,
-        children: PropTypes.element.isRequired
+        children: PropTypes.element.isRequired,
     };
 
     static childContextTypes = {
@@ -13,7 +13,7 @@ export default class CSSProvider extends Component {
 
     getChildContext() {
         return {
-            insertCss: this.props.insertCss
+            insertCss: this.props.insertCss,
         };
     }
 

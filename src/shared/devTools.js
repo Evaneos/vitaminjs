@@ -6,5 +6,3 @@ if (process.env.NODE_ENV !== 'production') {
         storeEnhancers.push(window.devToolsExtension());
     }
 }
-
-

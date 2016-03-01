@@ -1,12 +1,14 @@
+/* eslint no-console: 0 */
+
 const defaults = {
     middlewares: [],
 };
 
 let config = {};
 try {
-    config = require('__app__/appDescriptor/server.js').default;
+    config = require('__app__/app_descriptor/server.js').default;
 } catch (e) {
     console.warn(`Cannot load server.js, resolve to default server config (${e.message})`);
 }
 
-module.exports = Object.assign({}, defaults, config);
+export default { ...defaults, ...config };
