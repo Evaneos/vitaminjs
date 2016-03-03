@@ -29,14 +29,16 @@
     "css-loader": "^0.23.1",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",
+    "eslint-plugin-react": "^4.1.0",
     "file-loader": "^0.8.5",
     "isomorphic-style-loader": "0.0.10",
     "json-loader": "^0.5.4",
     "lodash.mergewith": "^4.0.4",
     "mocha": "^2.4.5",
     "parallelshell": "^2.0.0",
+    "source-map-support": "^0.4.0",
     "url-loader": "^0.5.7",
-    "webpack": "^2.0.7-beta",
+    "webpack": "^2.1.0-beta.4 || ^2.0.0",
     "webpack-dev-server": "^2.0.0-beta"
   },
   "peerDependencies": {
@@ -45,7 +47,7 @@
     "react-router-redux": "^4.0.0",
     "redux": "^3.2.1",
     "react-helmet": "^2.3.1",
-    "isomorphic-style-loader": "0.0.8"
+    "isomorphic-style-loader": "^0.0.10"
   },
   "dependencies": {
     "koa": "^1.1.2",
