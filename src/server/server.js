@@ -1,20 +1,20 @@
 /* eslint no-console: 0  */
 import app from './app.js';
+import serverConfig from '../app_descriptor/server';
 let server = app;
 
 if (module.hot) {
-    let webpack = require('webpack');
-    let clientBuildConfig = require('../build_config/webpack.config.client')({
-        hot : true,
+    const webpack = require('webpack');
+    const clientBuildConfig = require('../build_config/webpack.config.client')({
+        hot: true,
         dev: true,
     });
-    let WebpackDevServer = require('webpack-dev-server');
+    const WebpackDevServer = require('webpack-dev-server');
     let currentApp = app;
-    const appWrapper = function appWrapper() {
-        return currentApp.callback()(...arguments);
+    const appWrapper = function appWrapper(...args) {
+        return currentApp.callback()(...args);
     };
 
-    clientBuildConfig.entry.unshift('webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server');
     server = new WebpackDevServer(webpack(clientBuildConfig), {
         noInfo: true,
         hot: true,
@@ -23,9 +23,9 @@ if (module.hot) {
         },
         features: ['middleware', 'setup'],
     });
-    module.hot.accept('./app.js', function () {
+    module.hot.accept('./app.js', () => {
         currentApp = require('./app.js').default;
     });
 }
 
-server.listen(8080);
+server.listen(serverConfig.port);

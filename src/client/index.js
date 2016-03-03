@@ -1,7 +1,6 @@
 import { render as reactRender } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 
 import { createHistory } from 'history';
 import { create as createStore } from '../shared/store';
@@ -26,9 +25,9 @@ export function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
 
-    let history = useRouterHistory(createHistory)({
+    const history = useRouterHistory(createHistory)({
         basename: appConfig.basename,
-        queryKey: false
+        queryKey: false,
     });
     const store = createStore(history, initialState);
 
@@ -37,10 +36,9 @@ export function bootstrapClient() {
     render(history, store, appConfig.routes, element);
 
     if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', function () {
-            let app = require('../app_descriptor/app.js').default;
-            // render(history, store, app.routes);
-            // Todo : handle the case when stateSerialize changes
+        module.hot.accept('../app_descriptor/app.js', () => {
+            const app = require('../app_descriptor/app.js').default;
+            store.replaceReducer(app.reducer);
         });
     }
 }

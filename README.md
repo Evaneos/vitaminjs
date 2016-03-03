@@ -57,7 +57,8 @@ So that's the only things you need to supply. You can specify them in the `app_d
 * [x] Split client/server/shared (clean fondation directory layout)
 * [x] organize app descriptor like universal-redux
 * [x] plugin system
-* [ ] plugin fondation-less ?
+* [ ] plugin less (?)
+* [ ] plugin authentication (?)
 * [ ] tests
 * [ ] i18n -> intl -> format.js + intl.js (plugin polyfill koa)
 * [x] use webpack for server side too
@@ -75,7 +76,7 @@ So that's the only things you need to supply. You can specify them in the `app_d
 * [x] Launch the server build & hot reload after the client (?)
 * [ ] fix hot reload for reducers (the appConfig is hotreloaded as well :( )
 * [ ] do something for the withStyle import (decorator ? transform with babel ?)
-* [ ] better management of config, args, env, and options
+* [x] better management of config, args, env, and options
 * [x] add flow transform
 * [ ] add eslint & flow static typecheck in webpack loaders (?)
 * [ ] replace console.log with something better

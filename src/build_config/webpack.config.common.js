@@ -1,7 +1,6 @@
-import path from 'path';
 import { fondationResolve, appResolve } from '../utils';
 import { pluginLoaders } from '../utils/plugin';
-import buildConfig from '../app_descriptor/buildConfig';
+import buildConfig from '../app_descriptor/build';
 import { HotModuleReplacementPlugin } from 'webpack';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
@@ -12,19 +11,17 @@ const INCLUDES = [
 ];
 
 const EXCLUDES = [];
-export const createBabelLoaderConfig = (babelConfig, hot) => {
-    return {
-        test: /\.js(x?)$/,
-        loader: 'babel',
-        include: INCLUDES,
-        exclude: EXCLUDES,
-        query: {
-            extends: fondationResolve('src', 'build_config', babelConfig),
-            filename: fondationResolve('node_modules'),
-            presets: hot ? ['react-hmre'] : [],
-        },
-    };
-};
+export const createBabelLoaderConfig = (babelConfig, hot) => ({
+    test: /\.js(x?)$/,
+    loader: 'babel',
+    include: INCLUDES,
+    exclude: EXCLUDES,
+    query: {
+        extends: fondationResolve('src', 'build_config', babelConfig),
+        filename: fondationResolve('node_modules'),
+        presets: hot ? ['react-hmre'] : [],
+    },
+});
 
 const externalPlugins = pluginLoaders(buildConfig.plugins);
 
