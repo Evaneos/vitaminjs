@@ -1,9 +1,9 @@
-import { render as reactRender } from 'react-dom';
+import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
 
 import { createHistory } from 'history';
-import { create as createStore } from '../shared/store';
+import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
 import appConfig from '../app_descriptor/app';
 
@@ -21,6 +21,7 @@ function render(history, store, routes, element) {
     );
 }
 
+
 export function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
@@ -29,16 +30,23 @@ export function bootstrapClient() {
         basename: appConfig.basename,
         queryKey: false,
     });
-    const store = createStore(history, initialState);
+    const store = createStore(
+        history,
+        appConfig.reducer,
+        appConfig.middlewares,
+        initialState
+    );
 
     // Todo replace by fondation-app-hash
     const element = document.getElementById('fondation-app');
-    render(history, store, appConfig.routes, element);
 
     if (module.hot) {
         module.hot.accept('../app_descriptor/app.js', () => {
             const app = require('../app_descriptor/app.js').default;
-            store.replaceReducer(app.reducer);
+            store.replaceReducer(createRootReducer(app.reducer));
+            unmountComponentAtNode(element);
+            render(history, store, app.routes, element);
         });
     }
+    render(history, store, appConfig.routes, element);
 }

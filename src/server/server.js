@@ -1,5 +1,5 @@
 /* eslint no-console: 0  */
-import app from './app.js';
+import app from './app';
 import serverConfig from '../app_descriptor/server';
 let server = app;
 
@@ -23,8 +23,8 @@ if (module.hot) {
         },
         features: ['middleware', 'setup'],
     });
-    module.hot.accept('./app.js', () => {
-        currentApp = require('./app.js').default;
+    module.hot.accept(['./app'], () => {
+        currentApp = require('./app').default;
     });
 }
 

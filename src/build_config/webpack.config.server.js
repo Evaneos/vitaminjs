@@ -49,7 +49,7 @@ module.exports = function serverConfig(options) {
         },
 
         module: {
-            loaders: [createBabelLoaderConfig('.babelrc.node', false)],
+            loaders: [createBabelLoaderConfig(true, options.hot)],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({

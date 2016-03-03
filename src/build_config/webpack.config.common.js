@@ -11,15 +11,16 @@ const INCLUDES = [
 ];
 
 const EXCLUDES = [];
-export const createBabelLoaderConfig = (babelConfig, hot) => ({
+export const createBabelLoaderConfig = (server, hot) => ({
     test: /\.js(x?)$/,
     loader: 'babel',
     include: INCLUDES,
     exclude: EXCLUDES,
     query: {
-        extends: fondationResolve('src', 'build_config', babelConfig),
+        extends: fondationResolve('src', 'build_config',
+            `.babelrc.${server ? 'node' : 'browser'}`),
         filename: fondationResolve('node_modules'),
-        presets: hot ? ['react-hmre'] : [],
+        presets: hot && !server ? ['react-hmre'] : [],
     },
 });
 
@@ -29,6 +30,9 @@ export function config(options) {
     return {
         debug: options.dev,
         devtool: options.dev ? 'cheap-module-eval-source-map' : 'hidden-source-map',
+        output: {
+            pathinfo: options.dev,
+        },
         module: {
             // Disable handling of unknown requires
             unknownContextRegExp: /$^/,
