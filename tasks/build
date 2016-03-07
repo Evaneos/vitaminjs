@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
-webpack=$RACKT_PATH/node_modules/.bin/webpack
-eval "$webpack --config $RACKT_PATH/webpack.config.js"
+webpack=$FONDATION_PATH/node_modules/.bin/webpack
+eval "$webpack --config $FONDATION_PATH/webpack.config.js"

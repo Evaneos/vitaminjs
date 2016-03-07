@@ -1,5 +1,5 @@
 #!/bin/bash -e
 
-mocha="$RACKT_PATH/node_modules/.bin/mocha"
-babel_hook="$RACKT_PATH/src/test/babel-hook"
+mocha="$FONDATION_PATH/node_modules/.bin/mocha"
+babel_hook="$FONDATION_PATH/src/test/babel-hook"
 eval "$mocha" --require "$babel_hook" --check-leaks --bail "$@"

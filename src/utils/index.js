@@ -1,17 +1,17 @@
 
 const path = require('path');
 
-exports.fondationResolve = function fondationResolve() {
-    return path.resolve(process.env.RACKT_PATH, ...arguments);
-};
+export function fondationResolve(...args) {
+    return path.resolve(process.env.FONDATION_PATH, ...args);
+}
 
-exports.appResolve = function appResolve() {
-    return path.resolve(process.cwd(), ...arguments);
-};
+export function appResolve(...args) {
+    return path.resolve(process.cwd(), ...args);
+}
 
-exports.concat = function concat(left, right) {
+export function concat(left, right) {
     if (!Array.isArray(left) || !Array.isArray(right) || right === left) {
         return undefined;
     }
     return left.concat(right);
-};
+}

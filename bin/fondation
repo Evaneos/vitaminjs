@@ -35,7 +35,7 @@ if [ ! -f $TASK_PATH ]; then
 fi
 
 # set ENV vars
-export RACKT_PATH=$SCRIPT_PATH/../
+export FONDATION_PATH=$SCRIPT_PATH/../
 export APP_PATH="`pwd`";
 
 # DO IT!

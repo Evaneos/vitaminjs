@@ -1,6 +1,6 @@
 #!/bin/bash
-bin=$RACKT_PATH/node_modules/.bin
-build_config=$RACKT_PATH/src/build_config/webpack.config.server.es5.js
+bin=$FONDATION_PATH/node_modules/.bin
+build_config=$FONDATION_PATH/src/build_config/webpack.config.server.es5.js
 
 $bin/webpack --progress --env.dev --env.hot --config $build_config && \
 

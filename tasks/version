@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo $(node -p "require('$RACKT_PATH/package').version")
+echo $(node -p "require('$FONDATION_PATH/package').version")
