@@ -9,14 +9,14 @@ const defaults = {
     },
     middlewares: [],
     basename: '', // TODO Make sure empty string is a good default
-    rootElementId: 'fondation-app', // TODO remove from fondation ?
+    rootElementId: 'fondation-app',
 };
 
 let config = {};
 try {
-    config = require('__app__/app_descriptor/app.js').default;
+    config = require('__app__/app_descriptor/shared.js').default;
 } catch (e) {
-    console.error('Error while loading app.js, aborting');
+    console.error('Error while loading shared.js, aborting');
     throw e;
 }
 

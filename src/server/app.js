@@ -8,7 +8,7 @@ import router from './middleware/router';
 
 
 const app = koa();
-app.use(serve(appResolve('public')));
+app.use(serve(appResolve(serverConfig.staticPath)));
 (serverConfig.middlewares || []).forEach((m) => app.use(m));
 app.use(router);
 app.use(storeCreator);

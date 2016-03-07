@@ -2,6 +2,7 @@ import { config, createBabelLoaderConfig } from './webpack.config.common';
 import { fondationResolve, appResolve, concat } from '../utils/index';
 import { BannerPlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
+import buildConfig from '../app_descriptor/build';
 import fs from 'fs';
 
 const externalModules = (modulesPath) => fs
@@ -32,8 +33,8 @@ module.exports = function serverConfig(options) {
             fondationResolve('src', 'server', 'server.js'),
         ],
         output: {
-            path: appResolve('build'),
-            filename: 'server.js',
+            path: appResolve(buildConfig.server.path),
+            filename: buildConfig.server.filename,
             libraryTarget: 'commonjs2',
         },
 

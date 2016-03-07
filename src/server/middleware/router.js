@@ -1,5 +1,5 @@
 import { match } from 'react-router';
-import appConfig from '../../app_descriptor/app';
+import appConfig from '../../app_descriptor/shared';
 
 export default function* routerMiddleware(next) {
     const url = this.req.url;

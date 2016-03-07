@@ -4,7 +4,7 @@ import buildConfig from '../app_descriptor/build';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
-export const APP_SOURCE_DIR = appResolve('src');
+const APP_SOURCE_DIR = appResolve('src');
 const INCLUDES = [
     APP_SOURCE_DIR,
     fondationResolve('src'),

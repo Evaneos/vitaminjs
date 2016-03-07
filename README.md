@@ -39,7 +39,7 @@ $ fondation init
 A redux project consists in
 - A reducer
 - A root container
-So that's the only things you need to supply. You can specify them in the `app_descriptor/app.js` file. By the way, all the API between fondation and your project is confined to the `app_descriptor` directory.
+So that's the only things you need to supply. You can specify them in the `app_descriptor/shared.js` file. By the way, all the API between fondation and your project is confined to the `app_descriptor` directory.
 
 ####Redux
 - Middlewares, to customize your actions

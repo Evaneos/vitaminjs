@@ -7,7 +7,7 @@ mkdir -p src/reducers
 touch src/reducers/index.js
 mkdir -p src/actions
 mkdir -p src/app_descriptor
-cat > src/app_descriptor/app.js << EOF
+cat > src/app_descriptor/shared.js << EOF
 import { Route } from 'react-router';
 export default {
     // Export here the main reducer of you app

@@ -5,7 +5,8 @@ import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
-import appConfig from '../app_descriptor/app';
+import appConfig from '../app_descriptor/shared';
+import clientConfig from '../app_descriptor/client';
 
 function render(history, store, routes, element) {
     const insertCss = styles => styles._insertCss();
@@ -22,7 +23,7 @@ function render(history, store, routes, element) {
 }
 
 
-export function bootstrapClient() {
+function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
 
@@ -41,8 +42,8 @@ export function bootstrapClient() {
     let appElement = document.getElementById(appConfig.rootElementId);
 
     if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', () => {
-            const app = require('../app_descriptor/app.js').default;
+        module.hot.accept('../app_descriptor/shared.js', () => {
+            const app = require('../app_descriptor/shared.js').default;
             store.replaceReducer(createRootReducer(app.reducer));
             unmountComponentAtNode(appElement);
             appElement = document.getElementById(appConfig.rootElementId);
@@ -52,3 +53,6 @@ export function bootstrapClient() {
 
     render(history, store, appConfig.routes, appElement);
 }
+
+clientConfig.init();
+bootstrapClient();

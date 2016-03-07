@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
 
-import appConfig from '../../app_descriptor/app';
+import appConfig from '../../app_descriptor/shared';
 import serverConfig from '../../app_descriptor/server';
 import CSSProvider from '../../shared/components/CSSProvider';
 
