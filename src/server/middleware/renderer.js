@@ -4,6 +4,7 @@ import { RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
 
 import appConfig from '../../app_descriptor/shared';
+import buildConfig from '../../app_descriptor/build';
 import serverConfig from '../../app_descriptor/server';
 import CSSProvider from '../../shared/components/CSSProvider';
 
@@ -30,7 +31,7 @@ const renderAppContainer = (html, initialState, script) => `
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
         ${script.toString()}
-        <script async src="/bundle.js"></script>
+        <script async src="${appConfig.basename}/${buildConfig.client.filename}"></script>
     </div>
 `;
 

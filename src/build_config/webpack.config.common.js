@@ -9,7 +9,6 @@ const INCLUDES = [
     APP_SOURCE_DIR,
     fondationResolve('src'),
 ];
-
 const EXCLUDES = [];
 export const createBabelLoaderConfig = (server, hot) => ({
     test: /\.js(x?)$/,

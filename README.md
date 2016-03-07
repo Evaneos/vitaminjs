@@ -52,12 +52,14 @@ So that's the only things you need to supply. You can specify them in the `app_d
 ## TODO
 * [x] Support development env without HMR. We need to trigger react-transform-hmr only with dev server.
 * [ ] Prevent CSRF
+* [ ] add webpack-hot-middleware instead of webpack-dev-server
+* [ ] remove HMRE
 * [ ] How to handle partial rendering vs the complete page ?
 * [ ] Support global install & use local fondation binary when launched globally (like grunt-cli)
 * [x] Split client/server/shared (clean fondation directory layout)
 * [x] organize app descriptor like universal-redux
 * [x] plugin system
-* [ ] plugin less (?)
+* [ ] add srcPath param in build config
 * [ ] plugin authentication (?)
 * [ ] tests
 * [ ] i18n -> intl -> format.js + intl.js (plugin polyfill koa)

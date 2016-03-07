@@ -19,7 +19,7 @@ module.exports = function clientConfig(options) {
         entry: [
             fondationResolve('src', 'index.js'),
             ...(options.hot ? [
-                `webpack-dev-server/client?${serverConfig.host}:${serverConfig.port}/${
+                `webpack-dev-server/client?${serverConfig.host}:${serverConfig.port}${
                     appConfig.basename}`,
                 'webpack/hot/dev-server',
             ] : []),
@@ -28,7 +28,7 @@ module.exports = function clientConfig(options) {
             path: appResolve(buildConfig.client.path),
             // TODO : put hash in name
             filename: buildConfig.client.filename,
-            publicPath: `/${appConfig.basename}`,
+            publicPath: `${appConfig.basename}`,
         },
         module: {
             loaders: [

@@ -1,4 +1,6 @@
 /* eslint no-console: 0 */
+import mergeWith from 'lodash.mergewith';
+import concat from '../utils';
 
 const defaults = {
     plugins: [],
@@ -19,4 +21,4 @@ try {
     console.warn(`Resolve to default build config (${e.message})`);
 }
 
-export default { ...defaults, ...config };
+export default mergeWith(defaults, config, concat);
