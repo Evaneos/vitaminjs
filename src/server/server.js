@@ -4,6 +4,7 @@ import serverConfig from '../app_descriptor/server';
 let server = app;
 
 if (module.hot) {
+    // Launch webpack-dev-server
     const webpack = require('webpack');
     const clientBuildConfig = require('../build_config/webpack.config.client')({
         hot: true,
@@ -14,7 +15,6 @@ if (module.hot) {
     const appWrapper = function appWrapper(...args) {
         return currentApp.callback()(...args);
     };
-
     server = new WebpackDevServer(webpack(clientBuildConfig), {
         noInfo: true,
         hot: true,

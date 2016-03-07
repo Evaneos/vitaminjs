@@ -1,7 +1,7 @@
 import { fondationResolve, appResolve } from '../utils';
 import { pluginLoaders } from '../utils/plugin';
 import buildConfig from '../app_descriptor/build';
-import { HotModuleReplacementPlugin } from 'webpack';
+import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
 export const APP_SOURCE_DIR = appResolve('src');
@@ -28,7 +28,6 @@ const externalPlugins = pluginLoaders(buildConfig.plugins);
 
 export function config(options) {
     return {
-        debug: options.dev,
         devtool: options.dev ? 'cheap-module-eval-source-map' : 'hidden-source-map',
         output: {
             pathinfo: options.dev,
@@ -75,7 +74,13 @@ export function config(options) {
             extensions: ['.js', '.jsx', '.json', '.css'],
         },
         plugins: [
-            ...(options.hot ? [new HotModuleReplacementPlugin()] : []),
+            ...(options.hot ? [
+                new HotModuleReplacementPlugin(),
+                new LoaderOptionsPlugin({
+                    test: /\.css$/,
+                    debug: true,
+                }),
+            ] : []),
         ],
     };
 }

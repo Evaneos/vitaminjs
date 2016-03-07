@@ -25,7 +25,7 @@ const renderFullPage = (html, css, head) => `
 
 const renderAppContainer = (html, initialState, script) => `
     <div id="fondation-app">${html}</div>
-    <div id="fondation-script">
+    <div id="fondation-assets">
         <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
@@ -52,7 +52,7 @@ function render(store, renderProps) {
     );
     return serverConfig.renderFullPage ?
         renderFullPage(html, css, head) :
-        html;
+        `<style type="text/css">${css.join('')}</style>${html}`;
 }
 
 
