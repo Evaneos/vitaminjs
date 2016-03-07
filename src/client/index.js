@@ -37,16 +37,18 @@ export function bootstrapClient() {
         initialState
     );
 
-    // Todo replace by fondation-app-hash
-    const element = document.getElementById('fondation-app');
+    // Todo replace by fondation-app-[hash] ?
+    let appElement = document.getElementById(appConfig.rootElementId);
 
     if (module.hot) {
         module.hot.accept('../app_descriptor/app.js', () => {
             const app = require('../app_descriptor/app.js').default;
             store.replaceReducer(createRootReducer(app.reducer));
-            unmountComponentAtNode(element);
-            render(history, store, app.routes, element);
+            unmountComponentAtNode(appElement);
+            appElement = document.getElementById(appConfig.rootElementId);
+            render(history, store, app.routes, appElement);
         });
     }
-    render(history, store, appConfig.routes, element);
+
+    render(history, store, appConfig.routes, appElement);
 }

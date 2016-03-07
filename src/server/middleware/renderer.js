@@ -24,7 +24,7 @@ const renderFullPage = (html, css, head) => `
 `;
 
 const renderAppContainer = (html, initialState, script) => `
-    <div id="fondation-app">${html}</div>
+    <div id="${appConfig.rootElementId}">${html}</div>
     <div id="fondation-assets">
         <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}

@@ -2,13 +2,14 @@
 /* eslint no-console: 0 */
 const defaults = {
     reducer: (state) => state,
-    basename: '', // TODO Make sure empty string is a good default
     routes: [],
     stateSerializer: {
         stringify: o => o,
         parse: s => s,
     },
     middlewares: [],
+    basename: '', // TODO Make sure empty string is a good default
+    rootElementId: 'fondation-app', // TODO remove from fondation ?
 };
 
 let config = {};
