@@ -18,7 +18,7 @@ module.exports = function clientConfig(options) {
         },
         module: {
             loaders: [
-                createBabelLoaderConfig(false, options.hot),
+                createBabelLoaderConfig(false),
             ],
         },
         plugins: [

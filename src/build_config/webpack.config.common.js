@@ -10,7 +10,7 @@ const INCLUDES = [
     fondationResolve('src'),
 ];
 const EXCLUDES = [];
-export const createBabelLoaderConfig = (server, hot) => ({
+export const createBabelLoaderConfig = (server) => ({
     test: /\.js(x?)$/,
     loader: 'babel',
     include: INCLUDES,
@@ -19,7 +19,6 @@ export const createBabelLoaderConfig = (server, hot) => ({
         extends: fondationResolve('src', 'build_config',
             `.babelrc.${server ? 'node' : 'browser'}`),
         filename: fondationResolve('node_modules'),
-        presets: hot && !server ? ['react-hmre'] : [],
     },
 });
 

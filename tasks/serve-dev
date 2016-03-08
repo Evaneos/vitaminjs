@@ -1,5 +1,0 @@
-#!/bin/bash
-bin=$FONDATION_PATH/node_modules/.bin
-build_config=$FONDATION_PATH/src/build_config/webpack.config.es5.js
-$bin/webpack --config $build_config --progress --env.dev && \
-node ./build/server

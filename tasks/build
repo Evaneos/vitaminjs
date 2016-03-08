@@ -1,4 +1,17 @@
-#!/bin/bash -e
-
-webpack=$FONDATION_PATH/node_modules/.bin/webpack
-eval "$webpack --config $FONDATION_PATH/webpack.config.js"
+#!/bin/bash
+bin=$FONDATION_PATH/node_modules/.bin
+build_config=$FONDATION_PATH/src/build_config/webpack.config.es5.js
+dev=true; if [ "$NODE_ENV" == "production" ]; then dev=false; fi
+# Get the first argument
+ARG=$1
+shift
+hot=false
+if [ "$TASK" == "--hot" ] || [ "$TASK" == "-h" ]; then
+    echo 'oijioj'
+    if [ ! $dev ]; then
+        echo 'Hot reload option ignored in production environment'
+    else
+        hot=true
+    fi
+fi
+eval "$bin/webpack --env.dev $dev --env.hot $hot --config $build_config --progress"

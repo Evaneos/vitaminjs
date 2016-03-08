@@ -1,6 +1,6 @@
 import clientConfig from './webpack.config.client';
 import serverConfig from './webpack.config.server';
-export default (options) => [
+module.exports = (options) => [
     clientConfig(options),
     serverConfig(options),
 ];

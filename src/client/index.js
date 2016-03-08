@@ -13,14 +13,14 @@ function render(history, store, routes, element) {
     const insertCss = styles => styles._insertCss();
     reactRender(
         <Provider store={store}>
-            <CSSProvider insertCss={insertCss}>
-                <Router history={history}>
-                    {routes}
-                </Router>
-            </CSSProvider>
+        <CSSProvider insertCss={insertCss}>
+        <Router history={history}>
+        {routes}
+        </Router>
+        </CSSProvider>
         </Provider>,
         element
-    );
+        );
 }
 
 
@@ -37,18 +37,29 @@ function bootstrapClient() {
         appConfig.reducer,
         appConfig.middlewares,
         initialState
-    );
+        );
 
     // Todo replace by fondation-app-[hash] ?
     let appElement = document.getElementById(appConfig.rootElementId);
 
     if (module.hot) {
+        const renderError = (error, rootEl) => {
+            const RedBox = require('redbox-react');
+            reactRender(
+                <RedBox error={error} />,
+                rootEl
+            );
+        };
         module.hot.accept('../app_descriptor/shared.js', () => {
             const app = require('../app_descriptor/shared.js').default;
             store.replaceReducer(createRootReducer(app.reducer));
             unmountComponentAtNode(appElement);
             appElement = document.getElementById(appConfig.rootElementId);
-            render(history, store, app.routes, appElement);
+            try {
+                render(history, store, app.routes, appElement);
+            } catch (e) {
+                renderError(e, appElement);
+            }
         });
     }
 

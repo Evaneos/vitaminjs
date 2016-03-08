@@ -50,7 +50,7 @@ module.exports = function serverConfig(options) {
         },
 
         module: {
-            loaders: [createBabelLoaderConfig(true, options.hot)],
+            loaders: [createBabelLoaderConfig(true)],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({

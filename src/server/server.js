@@ -22,6 +22,8 @@ function hotReloadServer() {
     server.use(require('webpack-hot-middleware')(compiler, {
         path: hmrPath,
         quiet: true,
+        noInfo: true,
+        reload: true,
     }));
     return server;
 }
@@ -44,4 +46,6 @@ if (module.hot) {
     });
 }
 mountedServer.use(buildConfig.basename, appServer());
-mountedServer.listen(serverConfig.port);
+mountedServer.listen(serverConfig.port, () => {
+    console.log(`Server listening on port ${serverConfig.port}`);
+});
