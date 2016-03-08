@@ -12,6 +12,7 @@ const defaults = {
         path: 'static',
         filename: 'bundle.js',
     },
+    basename: '',
 };
 
 let config = {};
@@ -20,5 +21,4 @@ try {
 } catch (e) {
     console.warn(`Resolve to default build config (${e.message})`);
 }
-
 export default mergeWith(defaults, config, concat);

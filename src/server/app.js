@@ -1,5 +1,6 @@
-import koa from 'koa';
+import compose from 'koa-compose';
 import serve from 'koa-static';
+import mount from 'koa-mount';
 import { appResolve } from '../utils';
 import serverConfig from '../app_descriptor/server';
 import renderer from './middleware/renderer';
@@ -7,11 +8,11 @@ import storeCreator from './middleware/store';
 import router from './middleware/router';
 
 
-const app = koa();
-app.use(serve(appResolve(serverConfig.staticPath)));
-(serverConfig.middlewares || []).forEach((m) => app.use(m));
-app.use(router);
-app.use(storeCreator);
-app.use(renderer);
+export default compose([
+    mount(serverConfig.publicUrl, serve(appResolve(serverConfig.publicPath))),
+    ...(serverConfig.middlewares || []),
+    router(),
+    storeCreator(),
+    renderer(),
+]);
 
-export default app;

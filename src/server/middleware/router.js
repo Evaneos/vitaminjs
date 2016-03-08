@@ -1,7 +1,7 @@
 import { match } from 'react-router';
 import appConfig from '../../app_descriptor/shared';
 
-export default function* routerMiddleware(next) {
+export default () => function* routerMiddleware(next) {
     const url = this.req.url;
     match({ routes: appConfig.routes, location: url },
         (error, redirectLocation, renderProps) => {
@@ -23,4 +23,4 @@ export default function* routerMiddleware(next) {
     if (this.status === 200) {
         yield next;
     }
-}
+};

@@ -2,6 +2,7 @@
 
 /* eslint strict: 0 */ 'use strict';
 const path = require('path');
+require.extensions['.css'] = function none() {};
 require('babel-register')({
     extends: path.join(process.env.FONDATION_PATH, 'src', 'build_config', '.babelrc.node'),
     plugins: [

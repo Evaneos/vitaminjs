@@ -6,6 +6,7 @@ import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
 import appConfig from '../app_descriptor/shared';
+import buildConfig from '../app_descriptor/build';
 import clientConfig from '../app_descriptor/client';
 
 function render(history, store, routes, element) {
@@ -28,7 +29,7 @@ function bootstrapClient() {
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
 
     const history = useRouterHistory(createHistory)({
-        basename: appConfig.basename,
+        basename: buildConfig.basename,
         queryKey: false,
     });
     const store = createStore(

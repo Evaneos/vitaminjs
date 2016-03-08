@@ -2,9 +2,9 @@
 
 const defaults = {
     middlewares: [],
-    staticPath: 'public',
+    publicPath: 'static',
+    publicUrl: '/assets',
     renderFullPage: true,
-    host: 'http://localhost',
     port: 8080,
 };
 

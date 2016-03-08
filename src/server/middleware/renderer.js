@@ -31,7 +31,8 @@ const renderAppContainer = (html, initialState, script) => `
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
         ${script.toString()}
-        <script async src="${appConfig.basename}/${buildConfig.client.filename}"></script>
+        <script async src="${buildConfig.basename}${serverConfig.publicUrl
+            }/${buildConfig.client.filename}"></script>
     </div>
 `;
 
@@ -57,6 +58,6 @@ function render(store, renderProps) {
 }
 
 
-export default function* rendererMiddleware() {
+export default () => function* rendererMiddleware() {
     this.body = render(this.state.store, this.state.renderProps);
-}
+};

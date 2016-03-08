@@ -8,7 +8,6 @@ const defaults = {
         parse: s => s,
     },
     middlewares: [],
-    basename: '', // TODO Make sure empty string is a good default
     rootElementId: 'fondation-app',
 };
 
