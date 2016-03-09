@@ -42,9 +42,14 @@ const mountedServer = express();
 if (module.hot) {
     mountedServer.use(hotReloadServer());
     module.hot.accept(['./app'], () => {
-        currentApp = require('./app').default;
+        try {
+            currentApp = require('./app').default;
+        } catch (e) {
+            console.error(e);
+        }
     });
 }
+
 mountedServer.use(buildConfig.basename, appServer());
 mountedServer.listen(serverConfig.port, () => {
     console.log(`Server listening on port ${serverConfig.port}`);

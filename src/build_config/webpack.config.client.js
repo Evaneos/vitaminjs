@@ -23,8 +23,8 @@ module.exports = function clientConfig(options) {
         },
         plugins: [
             ...(options.hot ? [
-                new webpack.optimize.OccurrenceOrderPlugin(),
                 new webpack.NoErrorsPlugin(),
+                new webpack.optimize.OccurrenceOrderPlugin(),
             ] : []),
         ],
     }, concat);

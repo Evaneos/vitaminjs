@@ -1,7 +1,7 @@
 import { fondationResolve, appResolve } from '../utils';
 import { pluginLoaders } from '../utils/plugin';
 import buildConfig from '../app_descriptor/build';
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
+import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NoErrorsPlugin } from 'webpack';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
 const APP_SOURCE_DIR = appResolve('src');
