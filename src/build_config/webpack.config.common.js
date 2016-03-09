@@ -2,6 +2,7 @@ import { fondationResolve, appResolve } from '../utils';
 import { pluginLoaders } from '../utils/plugin';
 import buildConfig from '../app_descriptor/build';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
+import autoprefixer from 'autoprefixer';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
 const APP_SOURCE_DIR = appResolve('src');
@@ -44,7 +45,7 @@ export function config(options) {
                 test: /\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]',
+                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]&importLoaders=1!postcss-loader',
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
@@ -67,6 +68,9 @@ export function config(options) {
             },
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
+        },
+        postcss() {
+            return [autoprefixer];
         },
         plugins: [
             ...(options.hot ? [
