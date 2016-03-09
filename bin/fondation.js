@@ -12,6 +12,9 @@ import buildConfig from '../src/app_descriptor/build';
 import { version } from '../package.json';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
+
+const dev = process.env.NODE_ENV !== 'production';
+
 const clean = () => {
     // TODO : be more smart ? and use promise
     const noop = () => null;
@@ -20,13 +23,17 @@ const clean = () => {
     rimraf(path.join(process.cwd(), buildConfig.client.path, buildConfig.client.filename + '*'), noop);
 };
 
-const build = ({ hot, watch }, config) => new Promise((resolve, reject) => {
-    const dev = process.env.NODE_ENV !== 'production';
+const checkHot = (hot) => {
     if (hot && !dev) {
-        console.warn('Warning: Hot module reload option ignored in production environment. \n(based on your NODE_ENV variable)');
+        console.warn(`Warning: Hot module reload option ignored in production environment.
+(based on your NODE_ENV variable)`);
         /* eslint no-param-reassign: 0 */
-        hot = false;
+        return false;
     }
+    return true;
+};
+
+const build = ({ hot, watch }, config) => new Promise((resolve, reject) => {
     const compiler = webpack(config({ hot, dev }));
     const bar = new ProgressBar(
         'Building app... :percent [:bar]',
@@ -96,7 +103,9 @@ program
     .alias('b')
     .description('Build server and client bundles')
     .option('-h, --hot', 'Activate hot module reload')
-    .action(({ hot }) => {
+    .action(options => {
+        const hot = checkHot(options.hot);
+
         build({ hot }, webpackConfig);
     });
 
@@ -113,16 +122,16 @@ program
     .alias('s')
     .description('Build and start application server')
     .option('-h, --hot', 'Activate hot reload')
-    .action(({ hot }) => (hot ?
-        build({ hot }, webpackConfigServer) :
-        build({ hot }, webpackConfig)
-    ).then(() => {
-        if (hot) {
-            build({ hot, watch: true }, webpackConfigServer);
-        }
-        serve();
-    }));
-
+    .action(options => {
+        const hot = checkHot(options.hot);
+        return build({ hot }, hot ? webpackConfigServer : webpackConfig)
+            .then(() => {
+                if (hot) {
+                    build({ hot, watch: true }, webpackConfigServer);
+                }
+                serve();
+            });
+    });
 
 program
     .command('serve')
