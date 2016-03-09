@@ -1,7 +1,7 @@
 import { fondationResolve, appResolve } from '../utils';
 import { pluginLoaders } from '../utils/plugin';
 import buildConfig from '../app_descriptor/build';
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NoErrorsPlugin } from 'webpack';
+import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
 const APP_SOURCE_DIR = appResolve('src');
@@ -9,16 +9,13 @@ const INCLUDES = [
     APP_SOURCE_DIR,
     fondationResolve('src'),
 ];
-const EXCLUDES = [];
 export const createBabelLoaderConfig = (server) => ({
     test: /\.js(x?)$/,
     loader: 'babel',
     include: INCLUDES,
-    exclude: EXCLUDES,
     query: {
         extends: fondationResolve('src', 'build_config',
             `.babelrc.${server ? 'node' : 'browser'}`),
-        filename: fondationResolve('node_modules'),
     },
 });
 
@@ -26,7 +23,7 @@ const externalPlugins = pluginLoaders(buildConfig.plugins);
 
 export function config(options) {
     return {
-        devtool: options.dev ? 'cheap-module-eval-source-map' : 'hidden-source-map',
+        devtool: options.dev ? 'source-map' : null,
         output: {
             pathinfo: options.dev,
         },
