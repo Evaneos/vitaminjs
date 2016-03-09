@@ -26,6 +26,9 @@ module.exports = function clientConfig(options) {
                 new webpack.NoErrorsPlugin(),
                 new webpack.optimize.OccurrenceOrderPlugin(),
             ] : []),
+            ...(!options.dev ? [
+                new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+            ] : []),
         ],
     }, concat);
 };
