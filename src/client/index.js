@@ -1,7 +1,7 @@
 import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
-
+import AsyncProps from 'async-props';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
@@ -11,16 +11,21 @@ import clientConfig from '../app_descriptor/client';
 
 function render(history, store, routes, element) {
     const insertCss = styles => styles._insertCss();
+
+    function routerRender(props) {
+        return <AsyncProps {...props} params={{ ...props.params, store }}/>
+    }
+
     reactRender(
         <Provider store={store}>
-        <CSSProvider insertCss={insertCss}>
-        <Router history={history}>
-        {routes}
-        </Router>
-        </CSSProvider>
+            <CSSProvider insertCss={insertCss}>
+                <Router render={routerRender} history={history}>
+                    {routes}
+                </Router>
+            </CSSProvider>
         </Provider>,
         element
-        );
+    );
 }
 
 

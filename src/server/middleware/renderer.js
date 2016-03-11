@@ -2,6 +2,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
+import AsyncProps, { loadPropsOnServer } from 'async-props'
 
 import appConfig from '../../app_descriptor/shared';
 import buildConfig from '../../app_descriptor/build';
@@ -42,7 +43,7 @@ function render(store, renderProps) {
     const app = renderToString(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
-                <RouterContext {...renderProps} />
+                <AsyncProps {...renderProps} />
             </CSSProvider>
         </Provider>
     );
@@ -59,5 +60,27 @@ function render(store, renderProps) {
 
 
 export default () => function* rendererMiddleware() {
-    this.body = render(this.state.store, this.state.renderProps);
+    const renderProps = this.state.renderProps;
+    const store = this.state.store;
+    const renderPropsWithStore = {
+        ...renderProps,
+        params: {
+            ...renderProps.params,
+            store
+        }
+    };
+
+    // Wrap async logic into a thenable to keep holding response until data is loaded, or not.
+    yield new Promise((resolve, reject) => {
+        loadPropsOnServer(renderPropsWithStore, (error, asyncProps, scriptTag) => {
+            if (error) {
+                this.status = 500;
+                this.body = error.message;
+                reject(error); // ?
+                return;
+            }
+            this.body = render(store, renderPropsWithStore, asyncProps);
+            resolve();
+        });
+    });
 };
