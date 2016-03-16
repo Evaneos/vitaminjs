@@ -41,7 +41,7 @@ function appServer() {
 const mountedServer = express();
 if (module.hot) {
     mountedServer.use(hotReloadServer());
-    module.hot.accept(['./app'], () => {
+    module.hot.accept(['./app', '../app_descriptor/server'], () => {
         try {
             currentApp = require('./app').default;
         } catch (e) {

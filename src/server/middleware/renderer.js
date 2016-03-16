@@ -1,8 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
-import AsyncProps, { loadPropsOnServer } from 'async-props'
+import AsyncProps, { loadPropsOnServer } from 'async-props';
 
 import appConfig from '../../app_descriptor/shared';
 import buildConfig from '../../app_descriptor/build';
@@ -37,13 +36,13 @@ const renderAppContainer = (html, initialState, script) => `
     </div>
 `;
 
-function render(store, renderProps) {
+function render(store, renderProps, asyncProps) {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
     const app = renderToString(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
-                <AsyncProps {...renderProps} />
+                <AsyncProps {...renderProps} {...asyncProps} />
             </CSSProvider>
         </Provider>
     );
@@ -62,25 +61,22 @@ function render(store, renderProps) {
 export default () => function* rendererMiddleware() {
     const renderProps = this.state.renderProps;
     const store = this.state.store;
-    const renderPropsWithStore = {
-        ...renderProps,
-        params: {
-            ...renderProps.params,
-            store
-        }
-    };
 
     // Wrap async logic into a thenable to keep holding response until data is loaded, or not.
     yield new Promise((resolve, reject) => {
-        loadPropsOnServer(renderPropsWithStore, (error, asyncProps, scriptTag) => {
-            if (error) {
-                this.status = 500;
-                this.body = error.message;
-                reject(error); // ?
-                return;
+        loadPropsOnServer(
+            renderProps,
+            { dispatch: store.dispatch },
+            (error, asyncProps) => {
+                if (error) {
+                    this.status = 500;
+                    this.body = error.message;
+                    reject(error); // ?
+                    return;
+                }
+                this.body = render(store, renderProps, asyncProps);
+                resolve();
             }
-            this.body = render(store, renderPropsWithStore, asyncProps);
-            resolve();
-        });
+        );
     });
 };

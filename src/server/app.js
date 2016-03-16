@@ -15,7 +15,7 @@ export default compose([
     etag(),
     mount(serverConfig.publicUrl, serve(appResolve(serverConfig.publicPath))),
     ...(serverConfig.middlewares || []),
-    router(),
     storeCreator(),
+    router(),
     renderer(),
 ]);

@@ -3,7 +3,8 @@ import appConfig from '../../app_descriptor/shared';
 
 export default () => function* routerMiddleware(next) {
     const url = this.req.url;
-    match({ routes: appConfig.routes, location: url },
+    const history = this.state.history;
+    match({ routes: appConfig.routes, location: url, history },
         (error, redirectLocation, renderProps) => {
             if (error) {
                 this.status = 500;

@@ -1,7 +1,7 @@
 
 /* eslint no-console: 0 */
 const defaults = {
-    reducer: (state) => state,
+    reducer: (state = null) => state,
     routes: [],
     stateSerializer: {
         stringify: o => o,
