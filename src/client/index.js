@@ -4,9 +4,12 @@ import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
-import appConfig from '../app_descriptor/shared';
-import buildConfig from '../app_descriptor/build';
-import clientConfig from '../app_descriptor/client';
+import config from '../config';
+import init from '__app_modules__init__';
+import routes from '__app_modules__routes__';
+import reducer from '__app_modules__redux_reducer__';
+import middlewares from '__app_modules__redux_middlewares__';
+import { parse as stateParser } from '__app_modules__redux_state_serializer__';
 
 function render(history, store, routes, element) {
     const insertCss = styles => styles._insertCss();
@@ -26,21 +29,21 @@ function render(history, store, routes, element) {
 
 function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
+    const initialState = stateParser(window.__INITIAL_STATE__);
 
     const history = useRouterHistory(createHistory)({
-        basename: buildConfig.basename,
+        basename: config.server.basePath,
         queryKey: false,
     });
     const store = createStore(
         history,
-        appConfig.reducer,
-        appConfig.middlewares,
+        reducer,
+        middlewares,
         initialState
         );
 
     // Todo replace by fondation-app-[hash] ?
-    let appElement = document.getElementById(appConfig.rootElementId);
+    const appElement = document.getElementById(config.rootElementId);
 
     if (module.hot) {
         const renderError = (error, rootEl) => {
@@ -50,21 +53,23 @@ function bootstrapClient() {
                 rootEl
             );
         };
-        module.hot.accept('../app_descriptor/shared.js', () => {
-            const app = require('../app_descriptor/shared.js').default;
-            store.replaceReducer(createRootReducer(app.reducer));
+        module.hot.accept('__app_modules__redux_reducer__', () => {
+            const newReducer = require('__app_modules__redux_reducer__').default;
+            store.replaceReducer(createRootReducer(newReducer));
+        });
+        module.hot.accept('__app_modules__routes__', () => {
+            const newRoutes = require('__app_modules__routes__').default;
             unmountComponentAtNode(appElement);
-            appElement = document.getElementById(appConfig.rootElementId);
             try {
-                render(history, store, app.routes, appElement);
+                render(history, store, newRoutes, appElement);
             } catch (e) {
                 renderError(e, appElement);
             }
         });
     }
 
-    render(history, store, appConfig.routes, appElement);
+    render(history, store, routes, appElement);
 }
 
-clientConfig.init();
+init();
 bootstrapClient();

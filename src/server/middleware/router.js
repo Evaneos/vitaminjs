@@ -1,10 +1,10 @@
 import { match } from 'react-router';
-import appConfig from '../../app_descriptor/shared';
+import routes from '__app_modules__routes__';
 
 export default () => function* routerMiddleware(next) {
     const url = this.req.url;
     const history = this.state.history;
-    match({ routes: appConfig.routes, location: url, history },
+    match({ routes, location: url, history },
         (error, redirectLocation, renderProps) => {
             if (error) {
                 this.status = 500;

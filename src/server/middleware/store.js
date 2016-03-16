@@ -1,14 +1,15 @@
 import { create as createStore } from '../../shared/store';
 import { createMemoryHistory, useBasename } from 'history';
-import appConfig from '../../app_descriptor/shared';
-import buildConfig from '../../app_descriptor/build';
+import config from '../../config';
+import reducer from '__app_modules__redux_reducer__';
+import middlewares from '__app_modules__redux_middlewares__';
 
 export default () => function* storeMiddleware(next) {
     const history = useBasename(createMemoryHistory)({
-        basename: buildConfig.basename,
+        basename: config.server.basePath,
         entries: [this.req.url],
     });
     this.state.history = history;
-    this.state.store = createStore(history, appConfig.reducer, appConfig.middlewares);
+    this.state.store = createStore(history, reducer, middlewares);
     yield next;
 };

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo $(node -p "require('$FONDATION_PATH/package').version")

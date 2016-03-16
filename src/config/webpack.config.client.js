@@ -1,25 +1,24 @@
 import { createBabelLoaderConfig, config } from './webpack.config.common.js';
-import { appResolve, concat, fondationResolve } from '../utils';
-import buildConfig from '../app_descriptor/build';
-import serverConfig from '../app_descriptor/server';
+import { concat, fondationResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
-
+import appConfig from './index';
 module.exports = function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             fondationResolve('src', 'index.js'),
         ],
         output: {
-            path: appResolve(buildConfig.client.path),
             // TODO : put hash in name
-            filename: buildConfig.client.filename,
-            publicPath: `${buildConfig.basename}${serverConfig.publicUrl}/`,
+            filename: appConfig.build.client.filename,
         },
         module: {
             loaders: [
                 createBabelLoaderConfig(false),
-            ],
+                {
+                    test: fondationResolve('src/config/index.js'),
+                    loader: fondationResolve('src/config/requireLoader'),
+                }],
         },
         plugins: [
             ...(options.hot ? [

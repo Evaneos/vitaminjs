@@ -1,6 +1,5 @@
 import { fondationResolve, appResolve } from '../utils';
-import { pluginLoaders } from '../utils/plugin';
-import buildConfig from '../app_descriptor/build';
+import appConfig, { moduleMap } from './index';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
 
@@ -15,18 +14,17 @@ export const createBabelLoaderConfig = (server) => ({
     loader: 'babel',
     include: INCLUDES,
     query: {
-        extends: fondationResolve('src', 'build_config',
+        extends: fondationResolve('src', 'config',
             `.babelrc.${server ? 'node' : 'browser'}`),
     },
 });
-
-const externalPlugins = pluginLoaders(buildConfig.plugins);
-
 export function config(options) {
     return {
         devtool: options.dev ? 'source-map' : null,
         output: {
             pathinfo: options.dev,
+            publicPath: appConfig.server.basePath + appConfig.build.client.publicPath,
+            path: appConfig.build.path,
         },
         module: {
             // Disable handling of unknown requires
@@ -49,23 +47,19 @@ export function config(options) {
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-                loader: 'url-loader?limit=10000',
+                loader: 'url-loader?limit=10000&name=files/[hash].[ext]',
             }, {
                 test: /\.json$/,
                 loader: 'json',
-            },
-                ...externalPlugins,
-            ],
+            }],
         },
 
         resolveLoader: {
             modules: MODULES_DIRECTORIES,
         },
-
+        cache: options.hot,
         resolve: {
-            alias: {
-                __app__: APP_SOURCE_DIR,
-            },
+            alias: moduleMap,
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
         },

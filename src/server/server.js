@@ -1,22 +1,23 @@
 /* eslint no-console: 0  */
 import koa from 'koa';
 import express from 'express';
-import serverConfig from '../app_descriptor/server';
-import buildConfig from '../app_descriptor/build';
+import config from '../config';
 import app from './app';
+require('pretty-error').start();
+
 
 function hotReloadServer() {
     const server = express();
     const webpack = require('webpack');
-    const clientBuildConfig = require('../build_config/webpack.config.client')({
+    const clientBuildConfig = require('../config/webpack.config.client')({
         hot: true,
         dev: true,
     });
-    const hmrPath = `${buildConfig.basename}/__webpack_hmr`;
+    const hmrPath = `${clientBuildConfig.output.publicPath}__webpack_hmr`;
     clientBuildConfig.entry.unshift(`webpack-hot-middleware/client?path=${hmrPath}`);
     const compiler = webpack(clientBuildConfig);
     server.use(require('webpack-dev-middleware')(compiler, {
-        quiet: true,
+        noInfo: true,
         publicPath: clientBuildConfig.output.publicPath,
     }));
     server.use(require('webpack-hot-middleware')(compiler, {
@@ -41,7 +42,7 @@ function appServer() {
 const mountedServer = express();
 if (module.hot) {
     mountedServer.use(hotReloadServer());
-    module.hot.accept(['./app', '../app_descriptor/server'], () => {
+    module.hot.accept('./app', () => {
         try {
             currentApp = require('./app').default;
         } catch (e) {
@@ -50,7 +51,8 @@ if (module.hot) {
     });
 }
 
-mountedServer.use(buildConfig.basename, appServer());
-mountedServer.listen(serverConfig.port, () => {
-    console.log(`Server listening on port ${serverConfig.port}`);
+const { basePath, port, host } = config.server;
+mountedServer.use(basePath, appServer());
+mountedServer.listen(port, host, () => {
+    console.log(`Server listening on ${host}:${port}`);
 });

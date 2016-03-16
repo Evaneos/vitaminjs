@@ -2,10 +2,9 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import AsyncProps, { loadPropsOnServer } from 'async-props';
-
-import appConfig from '../../app_descriptor/shared';
-import buildConfig from '../../app_descriptor/build';
-import serverConfig from '../../app_descriptor/server';
+import config from '../../config';
+import { stringify as stateStringifier } from '__app_modules__redux_state_serializer__';
+import jsStringEscape from 'js-string-escape';
 import CSSProvider from '../../shared/components/CSSProvider';
 
 const renderFullPage = (html, css, head) => `
@@ -25,14 +24,13 @@ const renderFullPage = (html, css, head) => `
 `;
 
 const renderAppContainer = (html, initialState, script) => `
-    <div id="${appConfig.rootElementId}">${html}</div>
+    <div id="${config.rootElementId}">${html}</div>
     <div id="fondation-assets">
         <script>
-            window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+            window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"
         </script>
         ${script.toString()}
-        <script async src="${buildConfig.basename}${serverConfig.publicUrl
-            }/${buildConfig.client.filename}"></script>
+        <script async src="${config.server.basePath + config.build.client.publicPath + config.build.client.filename}"></script>
     </div>
 `;
 
@@ -49,10 +47,10 @@ function render(store, renderProps, asyncProps) {
     const head = Helmet.rewind();
     const html = renderAppContainer(
         app,
-        appConfig.stateSerializer.stringify(store.getState()),
+        store.getState(),
         head.script,
     );
-    return serverConfig.renderFullPage ?
+    return config.renderFullPage ?
         renderFullPage(html, css, head) :
         `<style type="text/css">${css.join('')}</style>${html}`;
 }

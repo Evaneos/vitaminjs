@@ -1,4 +1,0 @@
-#!/bin/bash
-rm -rf ./build/*
-rm -rf ./public/bundle.js
-rm -rf ./public/bundle.js.map

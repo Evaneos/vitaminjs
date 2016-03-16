@@ -6,9 +6,9 @@ import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 
-import webpackConfig from '../src/build_config/webpack.config';
-import webpackConfigServer from '../src/build_config/webpack.config.server';
-import buildConfig from '../src/app_descriptor/build';
+import webpackConfig from '../src/config/webpack.config';
+import webpackConfigServer from '../src/config/webpack.config.server';
+import config from '../src/config';
 import { version } from '../package.json';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
@@ -18,9 +18,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const clean = () => {
     // TODO : be more smart ? and use promise
     const noop = () => null;
-    rimraf(path.join(process.cwd(), buildConfig.server.path, buildConfig.server.filename + '*'), noop);
-    rimraf(path.join(process.cwd(), buildConfig.server.path, '*.hot-update.*'), noop);
-    rimraf(path.join(process.cwd(), buildConfig.client.path, buildConfig.client.filename + '*'), noop);
+    rimraf(path.join(config.build.path, '*'), noop);
 };
 
 const checkHot = (hot) => {
@@ -30,7 +28,7 @@ const checkHot = (hot) => {
         /* eslint no-param-reassign: 0 */
         return false;
     }
-    return true;
+    return hot;
 };
 
 const build = ({ hot, watch }, config) => new Promise((resolve, reject) => {
@@ -78,9 +76,8 @@ const build = ({ hot, watch }, config) => new Promise((resolve, reject) => {
 const serve = () => {
     console.log('Launching server...');
     const serverFile = path.join(
-        process.cwd(),
-        buildConfig.server.path,
-        buildConfig.server.filename
+        config.build.path,
+        config.build.server.filename
     );
     const serverProcess = spawn('node', [serverFile]);
     process.on('SIGINT', () => {
