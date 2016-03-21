@@ -20,5 +20,6 @@ export function create(history, reducer, middlewares, initialState) {
 
     const rootReducer = createRootReducer(reducer);
     const store = createStoreWithMiddleware(rootReducer, initialState);
+
     return store;
 }
