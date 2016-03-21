@@ -82,7 +82,7 @@ So that's the only things you need to supply. You can specify them in the `app_d
 * [x] add flow transform
 * [ ] add eslint & flow static typecheck in webpack loaders (?)
 * [ ] replace console.log with something better
-* [ ] the state of the app is in the app object, althought it's not specifically written...
+* [x] the state of the app is in the app object, althought it's not specifically written...
 ## TODO for PRODUCTION :
 * [x] Peer dependencies and package dependancy cleaning
 * [ ] configure build for prod

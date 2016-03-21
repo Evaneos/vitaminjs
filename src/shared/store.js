@@ -10,7 +10,7 @@ import { storeEnhancers } from './devTools';
 import appConfig from '../app_descriptor/app';
 
 function createRootReducer(app) {
-    return combineReducers({ app, routing: routerReducer });
+    return combineReducers({ ...app, routing: routerReducer });
 }
 
 export function create(history, initialState) {

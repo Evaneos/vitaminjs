@@ -28,9 +28,9 @@ export function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
     const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
 
-    let history = useRouterHistory(createHistory)({
+    const history = useRouterHistory(createHistory)({
         basename: appConfig.basename,
-        queryKey: false
+        queryKey: false,
     });
     const store = createStore(history, initialState);
     // history = syncHistoryWithStore(history, store);
