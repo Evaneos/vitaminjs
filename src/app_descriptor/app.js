@@ -3,7 +3,7 @@ import DefaultRootComponent from '../shared/components/DefaultRootComponent';
 /* eslint no-console: 0 */
 const defaults = {
     rootComponent: DefaultRootComponent,
-    reducer: (state) => state,
+    reducers: {},
     containerDiv: 'app', // TODO Find better name
     basename: '', // TODO Make sure empty string is a good default
     routes: [],
