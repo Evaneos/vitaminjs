@@ -1,10 +1,19 @@
 {
-  "name": "Fondation counter demo",
+  "name": "fondation-counter-example",
   "version": "1.0.0",
-  "description": "",
+  "description": "Fondation counter example",
+  "scripts": {
+    "start": "fondation start --hot"
+  },
   "author": "Johan Girod <johan@evaneos.com>",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evaneos/fondation.git"
+  },
+  "license": "MIT",
   "dependencies": {
+    "async-props": "^0.3.2",
+    "fondation": "^1.0.0-beta1",
     "isomorphic-style-loader": "0.0.12",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",

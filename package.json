@@ -10,6 +10,10 @@
   "bin": {
     "fondation": "./bin/fondation.es5.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evaneos/fondation.git"
+  },
   "keywords": [
     "toolchain",
     "build",

@@ -17,7 +17,7 @@ What's included in the menu
 - [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
 - [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
-- **Hot Module Reload Everywhere**. On server. On reducers. On react app (but not on [react component](https://github.com/reactjs/redux/pull/1455))
+- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No need to do a `Ctrl+R` ever again. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
 - **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
 - **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/fondation/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/fondation/blob/master/.babelrc.node))
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured

@@ -4,7 +4,7 @@ import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
-const APP_SOURCE_DIR = appResolve('src');
+const APP_SOURCE_DIR = appResolve();
 const INCLUDES = [
     APP_SOURCE_DIR,
     fondationResolve('src'),
