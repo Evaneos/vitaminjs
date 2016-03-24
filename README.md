@@ -1,6 +1,6 @@
 <big><h1 align="center">Fondation</h1></big>
 <p><big>
-Build toolchain as a dependancy for react/redux application, with a strong emphasis put on DX (Developer eXperience)
+ Build toolchain as a dependancy for react/redux application, with a strong emphasis put on DX (Developer eXperience)
 </big></p>
 
 ## Why ?

@@ -1,7 +1,7 @@
 {
   "name": "fondation",
-  "version": "1.0.0",
-  "description": "Mutualized toolchain & foundation for react application",
+  "version": "1.0.0-beta1",
+  "description": "Build toolchain as a dependancy for react/redux application",
   "main": "./bin/fondation.es5.js",
   "scripts": {
     "test": "npm run lint",
@@ -12,11 +12,15 @@
   },
   "keywords": [
     "toolchain",
+    "build",
+    "server-side rendering",
+    "hot module reload",
+    "webpack",
     "react",
     "redux"
   ],
   "author": "Johan Girod <johan@evaneos.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^6.3.3",
     "babel-core": "^6.4.5",
