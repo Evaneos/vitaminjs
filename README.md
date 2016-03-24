@@ -1,21 +1,26 @@
-## NOT PRODUCTION READY
+<big><h1 align="center">Fondation</h1></big>
+<p><big>
+Build toolchain as a dependancy for react/redux application, with a strong emphasis put on DX (Developer eXperience)
+</big></p>
 
 ## Why ?
-Actual state of development for react apps leads to a tremendous amount of boilerplate code for initializing the tooling. Usually, we proceed by finding (or creating) a boilerplate project with approximatly the stack we need, fork it, and start working commiting on it.
+Actual state of development for react apps leads to a tremendous amount of boilerplate code for initializing the tooling. Usually, we proceed by finding (or creating) a boilerplate project with approximatly the stack we need, fork it, and start working on it.
 
-However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we tried to externalize all the toolchain and building config of a project in a npm package.
+However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we choose to externalize all the toolchain and building config of a project as an npm dependancy.
+
 
 Inspiration : https://github.com/bdefore/universal-redux & https://github.com/kriasoft/react-starter-kit
 
-## What are our opinions ?
-This toolchain is opinionated with the following libraries / tools:
-- [**React**](https://github.com/facebook/react) with server-side rendering
-- [**Redux**](https://github.com/rackt/redux) (with redux-thunk, and redux-simple-router)
-- [**CSS modules**](https://github.com/css-modules/css-modules) with server-side rendering
-- [**koa**](https://github.com/koajs/koa) for rendering & serving the app
-- **Babel** transpiling. Look at our babelrc presets ([browser](https://github.com/Evaneos/fondation/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/fondation/blob/master/.babelrc.node))
-- We provide an auth mecanism (more on that later)
-- Hot module reload everywhere it is possible in development.
+## Behind the hood
+What's included in the menu
+- [**React**](https://github.com/facebook/react). What else ?
+- [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
+- [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
+- **Server Side Rendering**. SEO and mobile friendly, zero config needed.
+- **Hot Module Reload Everywhere**. On server. On reducers. On react app (but not on [react component](https://github.com/reactjs/redux/pull/1455))
+- **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
+- **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/fondation/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/fondation/blob/master/.babelrc.node))
+- [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
 
 ## How to get started ?
 For now, while the package is still not released :
@@ -26,72 +31,41 @@ Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package ins
 ```shell
 $ npm link <path/to/fondation/repo>
 ```
-Then, alias the command
+You can then install the peerDependancies
 ```
-$ alias fondation=<path/to/fondation/repo>/bin
+$ npm i -S async-props react react-router react-router-redux redux react-helmet isomorphic-style-loader
 ```
-Finally
+One last thing, create the `.fondationrc` file at the root of your project.
+Then
 ```
-$ fondation init
+$ ./node_modules/bin/fondation start --hot
 ```
+## `.fondationrc`
+All the configuration of your app is reduced to a single JSON file (with comments supported)
+### routes
+A path to the module containing the root [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react application. This is basically all you need to provide to have your app working, if you are not using redux.
+### redux
+All the configuration specific to redux
+#### redux.reducers
+The path to the module that exports an **object** of you app reducers.
 
-## How to configure my project ?
-A redux project consists in
-- A reducer
-- A root container
-So that's the only things you need to supply. You can specify them in the `app_descriptor/shared.js` file. By the way, all the API between fondation and your project is confined to the `app_descriptor` directory.
-
-####Redux
-- Middlewares, to customize your actions
-- State serializer for serializing the state between the front & the back
-####Server
-- Middlewares (`app_descriptor/server.js` )
-####Build
-- plugins for the build (see later)
+Fondation will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
+#### redux.middlewares
+A path to a module that exports an array of redux middlewares.
 
 ## TODO
-* [x] Support development env without HMR. We need to trigger react-transform-hmr only with dev server.
 * [ ] Prevent CSRF
 * [ ] add webpack-hot-middleware instead of webpack-dev-server
-* [ ] remove HMRE
 * [ ] How to handle partial rendering vs the complete page ?
 * [ ] Support global install & use local fondation binary when launched globally (like grunt-cli)
-* [x] Split client/server/shared (clean fondation directory layout)
-* [x] organize app descriptor like universal-redux
-* [x] plugin system
-* [ ] add srcPath param in build config
 * [ ] plugin authentication (?)
+* [ ] Add a HtmlRootComponent
+* [ ] Add a Error 500 component
+* [ ] Add a Error 404 component
+* [ ] Add default app explaning how to get started
 * [ ] tests
-* [ ] i18n -> intl -> format.js + intl.js (plugin polyfill koa)
-* [x] use webpack for server side too
-* [x] CSS Modules with SSR (need webpack server side)
-* [ ] doc
-* [ ] put hash in bundle filename
-* [x] remove redux dev-tools https://github.com/gaearon/redux-devtools, configure hot reload
-* [x] create a .fondationrc that contains build infos
-* [x] 1 - process server
-		utilise l'api node du webpack-dev-server et qui utilise app.callback de notre serveur koa. Configure le dev-server via la options.setup (callback)
-* [x] 2 - hot reload sur node via eval
-* [x] 3 - Hot reload sur node via hmr api
-        https://webpack.github.io/docs/hot-module-replacement.html
-        re-crée le app-callback et le remplace dans le dev-server via un wrapper (cf react-starter-kit/tools/start.js)
-* [x] Launch the server build & hot reload after the client (?)
-* [ ] fix hot reload for reducers (the appConfig is hotreloaded as well :( )
-* [ ] do something for the withStyle import (decorator ? transform with babel ?)
-* [x] better management of config, args, env, and options
-* [x] add flow transform
+* [ ] Add more doc
 * [ ] add eslint & flow static typecheck in webpack loaders (?)
-* [ ] replace console.log with something better
-* [x] the state of the app is in the app object, althought it's not specifically written...
 ## TODO for PRODUCTION :
-* [x] Peer dependencies and package dependancy cleaning
-* [ ] configure build for prod
-* [ ] add args to server exec (like host, port etc)
 * [ ] add logs handling
 * [ ] Set package.json node version to 5.1.0
-
----
-
-Ask to @mdarse :
-- What about fondation node-modules ?
-
