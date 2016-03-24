@@ -17,26 +17,21 @@ What's included in the menu
 - [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
 - [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
-- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No need to do a `Ctrl+R` ever again. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
+- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No more `Ctrl+R`. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
 - **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
 - **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/vitamin/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/vitamin/blob/master/.babelrc.node))
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
 
 ## How to get started ?
-For now, while the package is still not released :
-```shell
-$ git clone https://github.com/Evaneos/vitamin
+First, install the peer dependancies
+```bash
+npm i -S async-props react react-router react-router-redux redux react-helmet isomorphic-style-loader
 ```
-Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package inside your node_modules directory (you may need to run it with sudo)
-```shell
-$ npm link <path/to/vitamin/repo>
+```bash
+npm i -S vitaminjs
 ```
-You can then install the peerDependancies
-```
-$ npm i -S async-props react react-router react-router-redux redux react-helmet isomorphic-style-loader
-```
-One last thing, create the `.vitaminrc` file at the root of your project.
-Then
+Create the `.vitaminrc` file at the root of your project (see below). Finally:
+
 ```
 $ ./node_modules/bin/vitamin start --hot
 ```
