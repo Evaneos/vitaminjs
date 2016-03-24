@@ -3,7 +3,6 @@ import koa from 'koa';
 import express from 'express';
 import config from '../config';
 import app from './app';
-require('pretty-error').start();
 
 
 function hotReloadServer() {
