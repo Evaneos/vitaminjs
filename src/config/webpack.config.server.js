@@ -2,6 +2,7 @@ import { config, createBabelLoaderConfig } from './webpack.config.common';
 import { fondationResolve, appResolve, concat } from '../utils/index';
 import { BannerPlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
+import appConfig from './index';
 import fs from 'fs';
 
 const externalModules = (modulesPath) => fs
@@ -32,8 +33,7 @@ module.exports = function serverConfig(options) {
             fondationResolve('src', 'server', 'server.js'),
         ],
         output: {
-            path: appResolve('build'),
-            filename: 'server.js',
+            filename: appConfig.build.server.filename,
             libraryTarget: 'commonjs2',
         },
 
@@ -49,7 +49,7 @@ module.exports = function serverConfig(options) {
         },
 
         module: {
-            loaders: [createBabelLoaderConfig('.babelrc.node', false)],
+            loaders: [createBabelLoaderConfig(true)],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({

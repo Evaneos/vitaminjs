@@ -1,17 +1,19 @@
-import koa from 'koa';
-import serve from 'koa-static';
-import { appResolve } from '../utils';
-import serverConfig from '../app_descriptor/server';
-import renderer from './renderer';
-import storeCreator from './store';
-import router from './router';
+import compose from 'koa-compose';
+import etag from 'koa-etag';
+import conditional from 'koa-conditional-get';
 
+import renderer from './middleware/renderer';
+import storeCreator from './middleware/store';
+import router from './middleware/router';
+import staticAssetsServer from './middleware/staticAssetsServer';
+import appMiddlewares from '__app_modules__server_middlewares__';
 
-const app = koa();
-app.use(serve(appResolve('public')));
-(serverConfig.middlewares || []).forEach((m) => app.use(m));
-app.use(router);
-app.use(storeCreator);
-app.use(renderer);
-
-export default app;
+export default compose([
+    conditional(),
+    etag(),
+    ...appMiddlewares,
+    staticAssetsServer(),
+    storeCreator(),
+    router(),
+    renderer(),
+]);

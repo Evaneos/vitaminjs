@@ -1,9 +1,10 @@
 import { match } from 'react-router';
-import appConfig from '../../app_descriptor/app';
+import routes from '__app_modules__routes__';
 
-export default function* routerMiddleware(next) {
+export default () => function* routerMiddleware(next) {
     const url = this.req.url;
-    match({ routes: appConfig.routes, location: url },
+    const history = this.state.history;
+    match({ routes, location: url, history },
         (error, redirectLocation, renderProps) => {
             if (error) {
                 this.status = 500;
@@ -23,4 +24,4 @@ export default function* routerMiddleware(next) {
     if (this.status === 200) {
         yield next;
     }
-}
+};

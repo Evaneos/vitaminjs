@@ -1,48 +1,75 @@
-import { render as reactRender } from 'react-dom';
+import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-
 import { createHistory } from 'history';
-import { create as createStore } from '../shared/store';
+import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
-import appConfig from '../app_descriptor/app';
+import config from '../config';
+import init from '__app_modules__init__';
+import routes from '__app_modules__routes__';
+import reducers from '__app_modules__redux_reducers__';
+import middlewares from '__app_modules__redux_middlewares__';
+import { parse as stateParser } from '__app_modules__redux_state_serializer__';
 
-function render(history, store, routes, RootComponent, element) {
+function render(history, store, rootRoute, element) {
     const insertCss = styles => styles._insertCss();
+
     reactRender(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
-                <RootComponent>
-                    <Router history={history}>
-                        {routes}
-                    </Router>
-                </RootComponent>
+                <Router history={history}>
+                    {rootRoute}
+                </Router>
             </CSSProvider>
         </Provider>,
         element
     );
 }
 
-export function bootstrapClient() {
+
+function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = appConfig.stateSerializer.parse(window.__INITIAL_STATE__);
+    const initialState = stateParser(window.__INITIAL_STATE__);
 
     const history = useRouterHistory(createHistory)({
-        basename: appConfig.basename,
+        basename: config.server.basePath,
         queryKey: false,
     });
-    const store = createStore(history, initialState);
-    // history = syncHistoryWithStore(history, store);
+    const store = createStore(
+        history,
+        reducers,
+        middlewares,
+        initialState
+        );
 
-    const element = document.getElementById(appConfig.containerDiv);
-    render(history, store, appConfig.routes, appConfig.rootComponent, element);
+    // Todo replace by fondation-app-[hash] ?
+    const appElement = document.getElementById(config.rootElementId);
 
     if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', function () {
-            let app = require('../app_descriptor/app.js').default;
-            // render(history, store, app.routes);
-            // Todo : handle the case when stateSerialize changes
+        const renderError = (error, rootEl) => {
+            const RedBox = require('redbox-react');
+            reactRender(
+                <RedBox error={error} />,
+                rootEl
+            );
+        };
+        module.hot.accept('__app_modules__redux_reducers__', () => {
+            const newReducer = require('__app_modules__redux_reducers__').default;
+            store.replaceReducer(createRootReducer(newReducer));
+        });
+        module.hot.accept('__app_modules__routes__', () => {
+            const newRoutes = require('__app_modules__routes__').default;
+            unmountComponentAtNode(appElement);
+            try {
+                render(history, store, newRoutes, appElement);
+            } catch (e) {
+                renderError(e, appElement);
+            }
         });
     }
+
+    render(history, store, routes, appElement);
 }
+
+init();
+bootstrapClient();

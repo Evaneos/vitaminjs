@@ -1,8 +1,0 @@
-#!/bin/bash
-bin=$RACKT_PATH/node_modules/.bin
-build_config=$RACKT_PATH/src/build_config/webpack.config.server.es5.js
-
-$bin/webpack -d --progress --env.dev --env.hot --config $build_config && \
-
-$bin/parallelshell "node ./build/server.js" \
-"$bin/webpack -d --env.dev --env.hot --watch --config $build_config"

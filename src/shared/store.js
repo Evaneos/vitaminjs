@@ -7,26 +7,19 @@ import {
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import { storeEnhancers } from './devTools';
-import appConfig from '../app_descriptor/app';
 
-function createRootReducer(app) {
-    return combineReducers({ ...app, routing: routerReducer });
+export function createRootReducer(reducers) {
+    return combineReducers({ ...reducers, routing: routerReducer });
 }
 
-export function create(history, initialState) {
+export function create(history, reducers, middlewares, initialState) {
     const createStoreWithMiddleware = compose(
-        applyMiddleware(...appConfig.middlewares, thunk, routerMiddleware(history)),
+        applyMiddleware(...middlewares, thunk, routerMiddleware(history)),
         ...storeEnhancers
     )(createStore);
 
-
-    const rootReducer = createRootReducer(appConfig.reducers);
+    const rootReducer = createRootReducer(reducers);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    if (module.hot) {
-        module.hot.accept('../app_descriptor/app.js', function () {
-            const app = require('../app_descriptor/app.js').default;
-            store.replaceReducer(app.reducers);
-        });
-    }
+
     return store;
 }

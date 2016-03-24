@@ -13,9 +13,8 @@
     "rules": {
         // We use 4 space indent at Evaneos
         "indent": [2, 4],
+        "no-nested-ternary": 0,
         "react/jsx-indent-props": [2, 4],
-        // Exception for Immutable js type
-        "new-cap": [2, { "capIsNewExceptions": ["Record", "Map", "List", "Set", "OrderedSet", "OrderedMap"] }],
         // We use the react-require loader which require automatically React when using jsx
         "react/react-in-jsx-scope": 0,
     }

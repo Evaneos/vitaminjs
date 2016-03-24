@@ -1,44 +1,81 @@
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { RouterContext } from 'react-router';
-
-
-import appConfig from '../../app_descriptor/app';
+import Helmet from 'react-helmet';
+import AsyncProps, { loadPropsOnServer } from 'async-props';
+import config from '../../config';
+import { stringify as stateStringifier } from '__app_modules__redux_state_serializer__';
+import jsStringEscape from 'js-string-escape';
 import CSSProvider from '../../shared/components/CSSProvider';
 
-function renderFullPage(html, serializedState, css) {
-    return `
+const renderFullPage = (html, css, head) => `
     <!doctype html>
     <html>
         <head>
-            <title>Redux Universal Example</title>
+            ${head.title.toString()}
+            ${head.meta.toString()}
+            ${head.link.toString()}
+            ${head.base.toString()}
             <style type="text/css">${css.join('')}</style>
         </head>
         <body>
-            <div id="app">${html}</div>
-            <script>
-                window.__INITIAL_STATE__ = ${JSON.stringify(serializedState)}
-            </script>
-            <script src="/bundle.js"></script>
-            </body>
+            ${html}
+        </body>
     </html>
-    `;
-}
+`;
 
-function renderBody(store, renderProps, stateSerializer) {
+const renderAppContainer = (html, initialState, script) => `
+    <div id="${config.rootElementId}">${html}</div>
+    <div id="fondation-assets">
+        <script>
+            window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"
+        </script>
+        ${script.toString()}
+        <script async src="${config.server.basePath + config.build.client.publicPath +
+            config.build.client.filename}"></script>
+    </div>
+`;
+
+function render(store, renderProps, asyncProps) {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
-    const html = renderToString(
+    const app = renderToString(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
-                <RouterContext {...renderProps} />
+                <AsyncProps {...renderProps} {...asyncProps} />
             </CSSProvider>
         </Provider>
     );
-    return renderFullPage(html, stateSerializer.stringify(store.getState()), css);
+    const head = Helmet.rewind();
+    const html = renderAppContainer(
+        app,
+        store.getState(),
+        head.script,
+    );
+    return config.renderFullPage ?
+        renderFullPage(html, css, head) :
+        `<style type="text/css">${css.join('')}</style>${html}`;
 }
 
 
-export default function* rendererMiddleware() {
-    this.body = renderBody(this.state.store, this.state.renderProps, appConfig.stateSerializer);
-}
+export default () => function* rendererMiddleware() {
+    const renderProps = this.state.renderProps;
+    const store = this.state.store;
+
+    // Wrap async logic into a thenable to keep holding response until data is loaded, or not.
+    yield new Promise((resolve, reject) => {
+        loadPropsOnServer(
+            renderProps,
+            { dispatch: store.dispatch },
+            (error, asyncProps) => {
+                if (error) {
+                    this.status = 500;
+                    this.body = error.message;
+                    reject(error); // ?
+                    return;
+                }
+                this.body = render(store, renderProps, asyncProps);
+                resolve();
+            }
+        );
+    });
+};
