@@ -13,6 +13,7 @@ export const createBabelLoaderConfig = (server) => ({
     test: /\.js(x?)$/,
     loader: 'babel',
     include: INCLUDES,
+    exclude: MODULES_DIRECTORIES,
     query: {
         extends: fondationResolve('src', 'config',
             `.babelrc.${server ? 'node' : 'browser'}`),
