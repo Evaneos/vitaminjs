@@ -2,15 +2,15 @@ export default {
     server: {
         host: process.env.HOST || 'localhost',
         port: process.env.PORT || 3000,
-        middlewares: '__fondation__/src/utils/emptyArray',
+        middlewares: '__vitamin__/src/utils/emptyArray',
         basePath: '',
     },
-    routes: '__fondation__/src/utils/emptyArray',
+    routes: '__vitamin__/src/utils/emptyArray',
     redux: {
-        reducers: '__fondation__/src/utils/emptyObject',
-        middlewares: '__fondation__/src/utils/emptyArray',
+        reducers: '__vitamin__/src/utils/emptyObject',
+        middlewares: '__vitamin__/src/utils/emptyArray',
         state: {
-            serializer: '__fondation__/src/shared/defaultStateSerializer',
+            serializer: '__vitamin__/src/shared/defaultStateSerializer',
         },
     },
     build: {
@@ -29,7 +29,7 @@ export default {
     },
 
     // TO REFACTOR, I DONT LIKE THIS
-    init: '__fondation__/src/utils/identityFunction',
+    init: '__vitamin__/src/utils/identityFunction',
     renderFullPage: true,
-    rootElementId: 'fondation-app',
+    rootElementId: 'vitamin-app',
 };

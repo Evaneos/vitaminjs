@@ -7,7 +7,6 @@ import storeCreator from './middleware/store';
 import router from './middleware/router';
 import staticAssetsServer from './middleware/staticAssetsServer';
 import appMiddlewares from '__app_modules__server_middlewares__';
-
 export default compose([
     conditional(),
     etag(),

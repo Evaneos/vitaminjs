@@ -1,13 +1,13 @@
-import { fondationResolve, appResolve } from '../utils';
+import { vitaminResolve, appResolve } from '../utils';
 import appConfig, { moduleMap } from './index';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
 
-const MODULES_DIRECTORIES = [appResolve('node_modules'), fondationResolve('node_modules')];
+const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
 const APP_SOURCE_DIR = appResolve();
 const INCLUDES = [
     APP_SOURCE_DIR,
-    fondationResolve('src'),
+    vitaminResolve('src'),
 ];
 export const createBabelLoaderConfig = (server) => ({
     test: /\.js(x?)$/,
@@ -15,7 +15,7 @@ export const createBabelLoaderConfig = (server) => ({
     include: INCLUDES,
     exclude: MODULES_DIRECTORIES,
     query: {
-        extends: fondationResolve('src', 'config',
+        extends: vitaminResolve('src', 'config',
             `.babelrc.${server ? 'node' : 'browser'}`),
     },
 });

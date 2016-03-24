@@ -1,12 +1,12 @@
 import { createBabelLoaderConfig, config } from './webpack.config.common.js';
-import { concat, fondationResolve } from '../utils';
+import { concat, vitaminResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import appConfig from './index';
 module.exports = function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            fondationResolve('src', 'index.js'),
+            vitaminResolve('src', 'index.js'),
         ],
         output: {
             // TODO : put hash in name
@@ -16,8 +16,8 @@ module.exports = function clientConfig(options) {
             loaders: [
                 createBabelLoaderConfig(false),
                 {
-                    test: fondationResolve('src/config/index.js'),
-                    loader: fondationResolve('src/config/requireLoader'),
+                    test: vitaminResolve('src/config/index.js'),
+                    loader: vitaminResolve('src/config/requireLoader'),
                 }],
         },
         plugins: [

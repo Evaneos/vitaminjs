@@ -1,4 +1,4 @@
-<big><h1 align="center">Fondation</h1></big>
+<big><h1 align="center">vitamin</h1></big>
 <p><big>
  Build toolchain as a dependancy for react/redux application, with a strong emphasis put on DX (Developer eXperience)
 </big></p>
@@ -19,28 +19,28 @@ What's included in the menu
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
 - **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No need to do a `Ctrl+R` ever again. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
 - **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
-- **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/fondation/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/fondation/blob/master/.babelrc.node))
+- **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/vitamin/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/vitamin/blob/master/.babelrc.node))
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
 
 ## How to get started ?
 For now, while the package is still not released :
 ```shell
-$ git clone https://github.com/Evaneos/fondation
+$ git clone https://github.com/Evaneos/vitamin
 ```
 Then, use [npm-link](https://docs.npmjs.com/cli/link) to symlink the package inside your node_modules directory (you may need to run it with sudo)
 ```shell
-$ npm link <path/to/fondation/repo>
+$ npm link <path/to/vitamin/repo>
 ```
 You can then install the peerDependancies
 ```
 $ npm i -S async-props react react-router react-router-redux redux react-helmet isomorphic-style-loader
 ```
-One last thing, create the `.fondationrc` file at the root of your project.
+One last thing, create the `.vitaminrc` file at the root of your project.
 Then
 ```
-$ ./node_modules/bin/fondation start --hot
+$ ./node_modules/bin/vitamin start --hot
 ```
-## `.fondationrc`
+## `.vitaminrc`
 All the configuration of your app is reduced to a single JSON file (with comments supported)
 ### routes
 A path to the module containing the root [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react application. This is basically all you need to provide to have your app working, if you are not using redux.
@@ -49,7 +49,7 @@ All the configuration specific to redux
 #### redux.reducers
 The path to the module that exports an **object** of you app reducers.
 
-Fondation will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
+vitamin will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
 #### redux.middlewares
 A path to a module that exports an array of redux middlewares.
 
@@ -57,7 +57,7 @@ A path to a module that exports an array of redux middlewares.
 * [ ] Prevent CSRF
 * [ ] add webpack-hot-middleware instead of webpack-dev-server
 * [ ] How to handle partial rendering vs the complete page ?
-* [ ] Support global install & use local fondation binary when launched globally (like grunt-cli)
+* [ ] Support global install & use local vitamin binary when launched globally (like grunt-cli)
 * [ ] plugin authentication (?)
 * [ ] Add a HtmlRootComponent
 * [ ] Add a Error 500 component

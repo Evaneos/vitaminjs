@@ -1,8 +1,8 @@
 
 const path = require('path');
 
-export function fondationResolve(...args) {
-    return path.resolve(process.env.FONDATION_PATH, ...args);
+export function vitaminResolve(...args) {
+    return path.resolve(process.env.vitamin_PATH, ...args);
 }
 
 export function appResolve(...args) {

@@ -1,10 +1,10 @@
 import stripJsonComments from 'strip-json-comments';
 import mergeWith from 'lodash.mergewith';
-import { appResolve, fondationResolve } from '../utils';
+import { appResolve, vitaminResolve } from '../utils';
 import { readFileSync } from 'fs';
 import defaults from './defaults';
 
-const rcPath = appResolve('.fondationrc');
+const rcPath = appResolve('.vitaminrc');
 
 let config;
 try {
@@ -63,8 +63,8 @@ function pathToModuleName(path) {
 function resolveModulePath(modulePath) {
     /* eslint no-nested-ternary: 0 */
     return (
-        modulePath.indexOf('__fondation__/') === 0 ?
-            fondationResolve(modulePath.slice(14)) :
+        modulePath.indexOf('__vitamin__/') === 0 ?
+            vitaminResolve(modulePath.slice(14)) :
         modulePath.indexOf('.') === 0 ?
             appResolve(modulePath) :
         // otherwise, it is an external module
