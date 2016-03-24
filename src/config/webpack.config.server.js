@@ -1,5 +1,5 @@
 import { config, createBabelLoaderConfig } from './webpack.config.common';
-import { fondationResolve, appResolve, concat } from '../utils/index';
+import { vitaminResolve, appResolve, concat } from '../utils/index';
 import { BannerPlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import appConfig from './index';
@@ -9,7 +9,7 @@ const externalModules = (modulesPath) => fs
     .readdirSync(modulesPath)
     .filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
-const fondationModules = externalModules(fondationResolve('node_modules'));
+const vitaminModules = externalModules(vitaminResolve('node_modules'));
 const whiteList = ['webpack/hot/poll.js?1000'];
 
 function externals(context, request, callback) {
@@ -20,8 +20,8 @@ function externals(context, request, callback) {
     if (appModules.indexOf(pathStart) !== -1) {
         return callback(null, `commonjs2 ${request}`);
     }
-    if (fondationModules.indexOf(pathStart) !== -1) {
-        return callback(null, `commonjs2 fondation/node_modules/${request}`);
+    if (vitaminModules.indexOf(pathStart) !== -1) {
+        return callback(null, `commonjs2 vitamin/node_modules/${request}`);
     }
     return callback();
 }
@@ -30,7 +30,7 @@ module.exports = function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             ...(options.hot ? ['webpack/hot/poll.js?1000'] : []),
-            fondationResolve('src', 'server', 'server.js'),
+            vitaminResolve('src', 'server', 'server.js'),
         ],
         output: {
             filename: appConfig.build.server.filename,
@@ -53,7 +53,7 @@ module.exports = function serverConfig(options) {
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({
-                banner: 'require("fondation/node_modules/source-map-support").install();',
+                banner: 'require("vitamin/node_modules/source-map-support").install();',
                 raw: true, entryOnly: false,
             })] : []),
         ],

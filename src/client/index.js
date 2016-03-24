@@ -42,7 +42,7 @@ function bootstrapClient() {
         initialState
         );
 
-    // Todo replace by fondation-app-[hash] ?
+    // Todo replace by vitamin-app-[hash] ?
     const appElement = document.getElementById(config.rootElementId);
 
     if (module.hot) {

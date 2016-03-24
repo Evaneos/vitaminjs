@@ -1,18 +1,18 @@
 {
-  "name": "fondation",
+  "name": "vitaminjs",
   "version": "1.0.0-beta1",
   "description": "Build toolchain as a dependancy for react/redux application",
-  "main": "./bin/fondation.es5.js",
+  "main": "./bin/vitamin.es5.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "./node_modules/.bin/eslint ./src"
   },
   "bin": {
-    "fondation": "./bin/fondation.es5.js"
+    "vitamin": "./bin/vitamin.es5.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/evaneos/fondation.git"
+    "url": "https://github.com/evaneos/vitaminjs.git"
   },
   "keywords": [
     "toolchain",

@@ -25,7 +25,7 @@ const renderFullPage = (html, css, head) => `
 
 const renderAppContainer = (html, initialState, script) => `
     <div id="${config.rootElementId}">${html}</div>
-    <div id="fondation-assets">
+    <div id="vitamin-assets">
         <script>
             window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"
         </script>
@@ -38,6 +38,7 @@ const renderAppContainer = (html, initialState, script) => `
 function render(store, renderProps, asyncProps) {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
+    console.log('befor');
     const app = renderToString(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
@@ -45,6 +46,8 @@ function render(store, renderProps, asyncProps) {
             </CSSProvider>
         </Provider>
     );
+    console.log('after');
+
     const head = Helmet.rewind();
     const html = renderAppContainer(
         app,
