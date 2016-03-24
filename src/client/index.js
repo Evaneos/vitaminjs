@@ -7,18 +7,18 @@ import CSSProvider from '../shared/components/CSSProvider';
 import config from '../config';
 import init from '__app_modules__init__';
 import routes from '__app_modules__routes__';
-import reducer from '__app_modules__redux_reducer__';
+import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_state_serializer__';
 
-function render(history, store, routes, element) {
+function render(history, store, rootRoute, element) {
     const insertCss = styles => styles._insertCss();
 
     reactRender(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
                 <Router history={history}>
-                    {routes}
+                    {rootRoute}
                 </Router>
             </CSSProvider>
         </Provider>,
@@ -37,7 +37,7 @@ function bootstrapClient() {
     });
     const store = createStore(
         history,
-        reducer,
+        reducers,
         middlewares,
         initialState
         );
@@ -53,8 +53,8 @@ function bootstrapClient() {
                 rootEl
             );
         };
-        module.hot.accept('__app_modules__redux_reducer__', () => {
-            const newReducer = require('__app_modules__redux_reducer__').default;
+        module.hot.accept('__app_modules__redux_reducers__', () => {
+            const newReducer = require('__app_modules__redux_reducers__').default;
             store.replaceReducer(createRootReducer(newReducer));
         });
         module.hot.accept('__app_modules__routes__', () => {

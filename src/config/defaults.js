@@ -7,7 +7,7 @@ export default {
     },
     routes: '__fondation__/src/utils/emptyArray',
     redux: {
-        reducer: '__fondation__/src/utils/identityFunction',
+        reducers: '__fondation__/src/utils/emptyObject',
         middlewares: '__fondation__/src/utils/emptyArray',
         state: {
             serializer: '__fondation__/src/shared/defaultStateSerializer',
@@ -22,10 +22,8 @@ export default {
         client: {
             // Name of the build output for client bundle (relative to build.path)
             filename: 'client_bundle.js',
-            // For which URL the bundle should be made available (relative to server.basePath)
-            // DISCUSSION:
-            // - If it's made available in static path with a symlink, should it be relative server.static.path instead?
-            // - We can serve it from build.path using a middleware without touching to filesystem.
+            // For which URL the bundle should be made available
+            // (similar to webpack output.publicPath config option)
             publicPath: '/assets/', // was build.js#client.path
         },
     },

@@ -43,7 +43,8 @@ export function config(options) {
                 test: /\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]&importLoaders=1!postcss-loader',
+                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]' +
+                    '&importLoaders=1!postcss-loader',
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,

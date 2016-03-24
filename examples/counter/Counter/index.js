@@ -16,6 +16,7 @@ Counter.propTypes = {
     onDecrement: PropTypes.func.isRequired,
 };
 
+
 const mapStateToProps = ({ counter }) => ({ value: counter });
 const mapDispatchToProps = (dispatch) => ({
     onIncrement: () => dispatch({ type: 'INCREMENT' }),

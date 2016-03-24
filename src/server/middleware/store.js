@@ -1,7 +1,7 @@
 import { create as createStore } from '../../shared/store';
 import { createMemoryHistory, useBasename } from 'history';
 import config from '../../config';
-import reducer from '__app_modules__redux_reducer__';
+import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 
 export default () => function* storeMiddleware(next) {
@@ -10,6 +10,6 @@ export default () => function* storeMiddleware(next) {
         entries: [this.req.url],
     });
     this.state.history = history;
-    this.state.store = createStore(history, reducer, middlewares);
+    this.state.store = createStore(history, reducers, middlewares);
     yield next;
 };

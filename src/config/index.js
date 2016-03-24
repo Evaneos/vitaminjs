@@ -85,7 +85,7 @@ config = mergeConfig(defaults, config);
 const modulePaths = [
     ['routes'],
     ['server', 'middlewares'],
-    ['redux', 'reducer'],
+    ['redux', 'reducers'],
     ['redux', 'middlewares'],
     ['redux', 'state', 'serializer'],
     ['init'],

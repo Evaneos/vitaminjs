@@ -1,5 +1,5 @@
 /* eslint no-var: 0 */
-var path = require('path');
+/* eslint prefer-template: 0 */
 /*
     This loader require the resource and serialize its default export in a JSON object.
 
@@ -11,10 +11,11 @@ var path = require('path');
 */
 
 require('../utils/transpile.js');
-module.exports = function requireLoader(content) {
+module.exports = function requireLoader() {
     try {
         return 'module.exports = ' + JSON.stringify(require(this.resource).default);
     } catch (e) {
         this.emitError(e);
     }
+    return '';
 };
