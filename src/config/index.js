@@ -64,7 +64,7 @@ function resolveModulePath(modulePath) {
     /* eslint no-nested-ternary: 0 */
     return (
         modulePath.indexOf('__vitamin__/') === 0 ?
-            vitaminResolve(modulePath.slice(14)) :
+            vitaminResolve(modulePath.slice('__vitamin__/'.length)) :
         modulePath.indexOf('.') === 0 ?
             appResolve(modulePath) :
         // otherwise, it is an external module

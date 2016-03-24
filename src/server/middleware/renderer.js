@@ -38,7 +38,6 @@ const renderAppContainer = (html, initialState, script) => `
 function render(store, renderProps, asyncProps) {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
-    console.log('befor');
     const app = renderToString(
         <Provider store={store}>
             <CSSProvider insertCss={insertCss}>
@@ -46,7 +45,6 @@ function render(store, renderProps, asyncProps) {
             </CSSProvider>
         </Provider>
     );
-    console.log('after');
 
     const head = Helmet.rewind();
     const html = renderAppContainer(

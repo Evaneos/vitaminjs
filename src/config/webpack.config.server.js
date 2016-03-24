@@ -21,7 +21,7 @@ function externals(context, request, callback) {
         return callback(null, `commonjs2 ${request}`);
     }
     if (vitaminModules.indexOf(pathStart) !== -1) {
-        return callback(null, `commonjs2 vitamin/node_modules/${request}`);
+        return callback(null, `commonjs2 vitaminjs/node_modules/${request}`);
     }
     return callback();
 }
@@ -53,7 +53,7 @@ module.exports = function serverConfig(options) {
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({
-                banner: 'require("vitamin/node_modules/source-map-support").install();',
+                banner: 'require("vitaminjs/node_modules/source-map-support").install();',
                 raw: true, entryOnly: false,
             })] : []),
         ],

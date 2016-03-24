@@ -2,7 +2,7 @@
 const path = require('path');
 
 export function vitaminResolve(...args) {
-    return path.resolve(process.env.vitamin_PATH, ...args);
+    return path.resolve(process.env.VITAMIN_PATH, ...args);
 }
 
 export function appResolve(...args) {

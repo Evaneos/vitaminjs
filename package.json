@@ -1,7 +1,7 @@
 {
   "name": "vitaminjs",
   "version": "1.0.0-beta1",
-  "description": "Build toolchain as a dependancy for react/redux application",
+  "description": "The build toolchain against JavaScript Fatigue",
   "main": "./bin/vitamin.es5.js",
   "scripts": {
     "test": "npm run lint",
