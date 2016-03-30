@@ -1,7 +1,0 @@
-{
-    "presets": ["es2015-webpack", "react", "stage-1"],
-    "plugins": [
-        // Make optional the explicit import of React in JSX files
-        "react-require",
-    ],
-}

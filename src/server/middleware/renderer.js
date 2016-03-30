@@ -2,7 +2,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import AsyncProps, { loadPropsOnServer } from 'async-props';
-import config from '../../config';
+import config from '../../../config';
 import { stringify as stateStringifier } from '__app_modules__redux_state_serializer__';
 import jsStringEscape from 'js-string-escape';
 import CSSProvider from '../../shared/components/CSSProvider';

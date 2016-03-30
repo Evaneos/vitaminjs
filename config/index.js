@@ -1,6 +1,6 @@
 import stripJsonComments from 'strip-json-comments';
 import mergeWith from 'lodash.mergewith';
-import { appResolve, vitaminResolve } from '../utils';
+import { appResolve, vitaminResolve } from './utils';
 import { readFileSync } from 'fs';
 import defaults from './defaults';
 

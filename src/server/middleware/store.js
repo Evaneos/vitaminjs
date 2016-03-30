@@ -1,6 +1,6 @@
 import { create as createStore } from '../../shared/store';
 import { createMemoryHistory, useBasename } from 'history';
-import config from '../../config';
+import config from '../../../config';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 

@@ -1,13 +1,18 @@
 import { config, createBabelLoaderConfig } from './webpack.config.common';
-import { vitaminResolve, appResolve, concat } from '../utils/index';
+import { vitaminResolve, appResolve, concat } from '../utils';
 import { BannerPlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
-import appConfig from './index';
+import appConfig from '../index';
 import fs from 'fs';
+const safeReaddirSync = (path) => {
+    try {
+        return fs.readdirSync(path);
+    } catch (e) {
+        return [];
+    }
+};
 
-const externalModules = (modulesPath) => fs
-    .readdirSync(modulesPath)
-    .filter(m => m !== '.bin');
+const externalModules = (modulesPath) => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
 const vitaminModules = externalModules(vitaminResolve('node_modules'));
 const whiteList = ['webpack/hot/poll.js?1000'];
@@ -26,6 +31,7 @@ function externals(context, request, callback) {
     return callback();
 }
 
+
 module.exports = function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
@@ -38,7 +44,7 @@ module.exports = function serverConfig(options) {
         },
 
         target: 'node',
-        externals: [externals],
+        externals,
         node: {
             console: false,
             global: false,
@@ -49,11 +55,11 @@ module.exports = function serverConfig(options) {
         },
 
         module: {
-            loaders: [createBabelLoaderConfig(true)],
+            loaders: [createBabelLoaderConfig('server')],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({
-                banner: 'require("vitaminjs/node_modules/source-map-support").install();',
+                banner: 'require("source-map-support").install();',
                 raw: true, entryOnly: false,
             })] : []),
         ],

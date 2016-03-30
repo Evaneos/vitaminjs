@@ -3,7 +3,7 @@ import mount from 'koa-mount';
 import compose from 'koa-compose';
 import send from 'koa-send';
 import path from 'path';
-import config from '../../config';
+import config from '../../../config';
 
 export default () =>
     mount(

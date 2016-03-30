@@ -4,7 +4,7 @@ import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
-import config from '../config';
+import config from '../../config';
 import init from '__app_modules__init__';
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
