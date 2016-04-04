@@ -1,14 +1,14 @@
 /* eslint no-console: 0  */
 import koa from 'koa';
 import express from 'express';
-import config from '../config';
+import config from '../../config';
 import app from './app';
 
 
 function hotReloadServer() {
     const server = express();
     const webpack = require('webpack');
-    const clientBuildConfig = require('../config/webpack.config.client')({
+    const clientBuildConfig = require('../../config/build/webpack.config.client')({
         hot: true,
         dev: true,
     });

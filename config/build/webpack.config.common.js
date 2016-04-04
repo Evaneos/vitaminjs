@@ -1,23 +1,19 @@
 import { vitaminResolve, appResolve } from '../utils';
-import appConfig, { moduleMap } from './index';
+import appConfig, { moduleMap } from '../index';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
+import babelrc from './babelrc';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
-const APP_SOURCE_DIR = appResolve();
-const INCLUDES = [
-    APP_SOURCE_DIR,
-    vitaminResolve('src'),
-];
-export const createBabelLoaderConfig = (server) => ({
+
+export const createBabelLoaderConfig = (env) => ({
     test: /\.js(x?)$/,
     loader: 'babel',
-    include: INCLUDES,
-    exclude: MODULES_DIRECTORIES,
-    query: {
-        extends: vitaminResolve('src', 'config',
-            `.babelrc.${server ? 'node' : 'browser'}`),
-    },
+    include: (path) =>
+        path.indexOf('node_modules') === -1 ||
+        path.indexOf('node_modules/vitaminjs') !== -1 &&
+        path.indexOf('node_modules/vitaminjs/node_modules') === -1,
+    query: babelrc(env),
 });
 export function config(options) {
     return {

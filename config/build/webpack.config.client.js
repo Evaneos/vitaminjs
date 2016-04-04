@@ -2,7 +2,7 @@ import { createBabelLoaderConfig, config } from './webpack.config.common.js';
 import { concat, vitaminResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
-import appConfig from './index';
+import appConfig from '../index';
 module.exports = function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
@@ -14,10 +14,11 @@ module.exports = function clientConfig(options) {
         },
         module: {
             loaders: [
-                createBabelLoaderConfig(false),
+                createBabelLoaderConfig('client'),
+                // The following loader will resolve the config to its final value during the build
                 {
-                    test: vitaminResolve('src/config/index.js'),
-                    loader: vitaminResolve('src/config/requireLoader'),
+                    test: vitaminResolve('config/index'),
+                    loader: vitaminResolve('config/build/requireLoader'),
                 }],
         },
         plugins: [

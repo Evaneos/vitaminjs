@@ -6,9 +6,9 @@ import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 
-import webpackConfig from '../src/config/webpack.config';
-import webpackConfigServer from '../src/config/webpack.config.server';
-import config from '../src/config';
+import webpackConfig from '../config/build/webpack.config';
+import webpackConfigServer from '../config/build/webpack.config.server';
+import config from '../config';
 import { version } from '../package.json';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';

@@ -2,13 +2,13 @@ export default {
     server: {
         host: process.env.HOST || 'localhost',
         port: process.env.PORT || 3000,
-        middlewares: '__vitamin__/src/utils/emptyArray',
+        middlewares: '__vitamin__/config/utils/emptyArray',
         basePath: '',
     },
-    routes: '__vitamin__/src/utils/emptyArray',
+    routes: '__vitamin__/config/utils/emptyArray',
     redux: {
-        reducers: '__vitamin__/src/utils/emptyObject',
-        middlewares: '__vitamin__/src/utils/emptyArray',
+        reducers: '__vitamin__/config/utils/emptyObject',
+        middlewares: '__vitamin__/config/utils/emptyArray',
         state: {
             serializer: '__vitamin__/src/shared/defaultStateSerializer',
         },
@@ -28,8 +28,8 @@ export default {
         },
     },
 
-    // TO REFACTOR, I DONT LIKE THIS
-    init: '__vitamin__/src/utils/identityFunction',
+    // TODO REFACTOR, I DONT LIKE THIS
+    init: '__vitamin__/config/utils/identityFunction',
     renderFullPage: true,
     rootElementId: 'vitamin-app',
 };
