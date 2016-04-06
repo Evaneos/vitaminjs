@@ -10,6 +10,9 @@
             "experimentalObjectRestSpread": true
         }
     },
+    "globals": {
+        "__APP_URL__": false
+    },
     "rules": {
         // We use 4 space indent at Evaneos
         "indent": [2, 4],

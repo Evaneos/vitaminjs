@@ -24,7 +24,7 @@ export default {
             filename: 'client_bundle.js',
             // For which URL the bundle should be made available
             // (similar to webpack output.publicPath config option)
-            publicPath: '/assets/', // was build.js#client.path
+            publicPath: '/assets/',
         },
     },
 
