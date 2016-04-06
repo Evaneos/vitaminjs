@@ -1,10 +1,11 @@
 import { vitaminResolve, appResolve } from '../utils';
 import appConfig, { moduleMap } from '../index';
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
+import { HotModuleReplacementPlugin, LoaderOptionsPlugin, DefinePlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
 import babelrc from './babelrc';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
+const server = appConfig.server;
 
 export const createBabelLoaderConfig = (env) => ({
     test: /\.js(x?)$/,
@@ -72,6 +73,11 @@ export function config(options) {
                     debug: true,
                 }),
             ] : []),
+            new DefinePlugin({
+                __APP_URL__: JSON.stringify(
+                    `http://${server.host}:${server.port}${server.basePath}`
+                ),
+            }),
         ],
     };
 }

@@ -21,7 +21,7 @@
     "react-router": "^2.0.1",
     "react-router-redux": "^4.0.0",
     "redux": "^3.3.1",
-    "vitaminjs": "^1.0.0-beta5"
+    "vitaminjs": "^1.0.0-beta6"
   },
   "devDependencies": {
     "source-map-support": "^0.4.0"
