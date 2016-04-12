@@ -4,6 +4,7 @@ export default {
         port: process.env.PORT || 3000,
         middlewares: '__vitamin__/config/utils/emptyArray',
         basePath: '',
+        externalUrl: '',
     },
     routes: '__vitamin__/config/utils/emptyArray',
     redux: {
@@ -24,7 +25,7 @@ export default {
             filename: 'client_bundle.js',
             // For which URL the bundle should be made available
             // (similar to webpack output.publicPath config option)
-            publicPath: '/assets/',
+            publicPath: '/assets',
         },
     },
 

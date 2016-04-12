@@ -29,7 +29,7 @@ function render(history, store, rootRoute, element) {
 
 function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = stateParser(window.__INITIAL_STATE__);
+    const initialState = window.__INITIAL_STATE__ ? stateParser(window.__INITIAL_STATE__) : {};
 
     const history = useRouterHistory(createHistory)({
         basename: config.server.basePath,

@@ -29,6 +29,9 @@ module.exports = function clientConfig(options) {
             ...(!options.dev ? [
                 new webpack.optimize.UglifyJsPlugin({ minimize: true }),
             ] : []),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            }),
         ],
     }, concat);
 };

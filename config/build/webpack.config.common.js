@@ -21,7 +21,7 @@ export function config(options) {
         devtool: options.dev ? 'source-map' : null,
         output: {
             pathinfo: options.dev,
-            publicPath: appConfig.server.basePath + appConfig.build.client.publicPath,
+            publicPath: appConfig.server.externalUrl + appConfig.server.basePath + appConfig.build.client.publicPath + '/',
             path: appConfig.build.path,
         },
         module: {

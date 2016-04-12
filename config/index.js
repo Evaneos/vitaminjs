@@ -103,4 +103,5 @@ modulePaths.forEach(path =>
 ].forEach(path =>
     updatePath(path, appResolve, config)
 );
+
 export default config;
