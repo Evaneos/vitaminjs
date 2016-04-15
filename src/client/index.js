@@ -1,6 +1,7 @@
 import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import CSSProvider from '../shared/components/CSSProvider';
@@ -42,6 +43,8 @@ function bootstrapClient() {
         initialState
         );
 
+    const syncedHistory = syncHistoryWithStore(history, store);
+
     // Todo replace by vitamin-app-[hash] ?
     const appElement = document.getElementById(config.rootElementId);
 
@@ -61,14 +64,14 @@ function bootstrapClient() {
             const newRoutes = require('__app_modules__routes__').default;
             unmountComponentAtNode(appElement);
             try {
-                render(history, store, newRoutes, appElement);
+                render(syncedHistory, store, newRoutes, appElement);
             } catch (e) {
                 renderError(e, appElement);
             }
         });
     }
 
-    render(history, store, routes, appElement);
+    render(syncedHistory, store, routes, appElement);
 }
 
 init();
