@@ -15,9 +15,9 @@ export default compose([
     ),
     conditional(),
     etag(),
+    storeCreator(),
     ...appMiddlewares,
     staticAssetsServer(),
-    storeCreator(),
     router(),
     renderer(),
 ]);
