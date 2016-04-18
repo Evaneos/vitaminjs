@@ -10,7 +10,7 @@ import appMiddlewares from '__app_modules__server_middlewares__';
 export default compose([
     // Enable Hot Reload when vitamin devServer url differs from app url (externalUrl)
     ...(process.env.NODE_ENV !== 'production' ?
-        [function *(next) { this.set('Access-Control-Allow-Origin', '*'); yield next; }] :
+        [function *setCORS(next) { this.set('Access-Control-Allow-Origin', '*'); yield next; }] :
         []
     ),
     conditional(),

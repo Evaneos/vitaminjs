@@ -13,7 +13,8 @@ function hotReloadServer() {
         dev: true,
     });
     const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
-    clientBuildConfig.entry.unshift(`webpack-hot-middleware/client?path=${config.server.externalUrl + hmrPath}`);
+    clientBuildConfig.entry.unshift(`webpack-hot-middleware/client?path=${
+        config.server.externalUrl + hmrPath}`);
     const compiler = webpack(clientBuildConfig);
     server.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,

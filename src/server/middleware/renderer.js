@@ -30,7 +30,9 @@ const renderAppContainer = (html, initialState, script) => `
             window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"
         </script>
         ${script.toString()}
-        <script async src="${config.server.externalUrl + config.server.basePath + config.build.client.publicPath}/${
+        <script async src="${config.server.externalUrl
+            + config.server.basePath
+            + config.build.client.publicPath}/${
             config.build.client.filename}"></script>
     </div>
 `;
