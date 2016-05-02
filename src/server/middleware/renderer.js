@@ -71,13 +71,14 @@ export default () => function* rendererMiddleware() {
             { dispatch: store.dispatch },
             (error, asyncProps) => {
                 if (error) {
-                    this.status = 500;
-                    this.body = error.message;
-                    reject(error); // ?
-                    return;
+                    return reject(error); // ?
                 }
-                this.body = render(store, renderProps, asyncProps);
-                resolve();
+                try {
+                    this.body = render(store, renderProps, asyncProps);
+                } catch (e) {
+                    return reject(e);
+                }
+                return resolve();
             }
         );
     });
