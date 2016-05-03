@@ -15,11 +15,13 @@ import ProgressBar from 'progress';
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const clean = () => {
-    // TODO : be more smart ? and use promise
-    const noop = () => null;
-    rimraf(path.join(config.build.path, '*'), noop);
-};
+
+const clean = () => new Promise((resolve, reject) =>
+    rimraf(
+        path.join(config.build.path, '*'),
+        (err, data) => (!err ? resolve(data) : reject(err))
+    )
+);
 
 const checkHot = (hot) => {
     if (hot && !dev) {
@@ -121,7 +123,8 @@ program
     .option('-h, --hot', 'Activate hot reload')
     .action(options => {
         const hot = checkHot(options.hot);
-        return build({ hot }, hot ? webpackConfigServer : webpackConfig)
+        return clean()
+            .then(() => build({ hot }, hot ? webpackConfigServer : webpackConfig))
             .then(() => {
                 if (hot) {
                     build({ hot, watch: true }, webpackConfigServer);

@@ -7,7 +7,7 @@ import { stringify as stateStringifier } from '__app_modules__redux_state_serial
 import jsStringEscape from 'js-string-escape';
 import CSSProvider from '../../shared/components/CSSProvider';
 
-const renderFullPage = (html, css, head) => `
+export const renderFullPage = (html, css, head) => `
     <!doctype html>
     <html>
         <head>
@@ -59,11 +59,9 @@ function render(store, renderProps, asyncProps) {
         `<style type="text/css">${css.join('')}</style>${html}`;
 }
 
-
 export default () => function* rendererMiddleware() {
     const renderProps = this.state.renderProps;
     const store = this.state.store;
-
     // Wrap async logic into a thenable to keep holding response until data is loaded, or not.
     yield new Promise((resolve, reject) => {
         loadPropsOnServer(
@@ -71,7 +69,7 @@ export default () => function* rendererMiddleware() {
             { dispatch: store.dispatch },
             (error, asyncProps) => {
                 if (error) {
-                    return reject(error); // ?
+                    return reject(error);
                 }
                 try {
                     this.body = render(store, renderProps, asyncProps);

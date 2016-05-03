@@ -3,6 +3,8 @@ export default {
         host: process.env.HOST || 'localhost',
         port: process.env.PORT || 3000,
         middlewares: '__vitamin__/config/utils/emptyArray',
+        Error404Page: '__vitamin__/src/server/components/ErrorPages/Error404',
+        Error500Page: '__vitamin__/src/server/components/ErrorPages/Error500',
         basePath: '',
         externalUrl: '',
     },

@@ -26,12 +26,11 @@
   "author": "Johan Girod <johan@evaneos.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-eslint": "^6.0.0-beta.6",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",
     "eslint-plugin-react": "^4.1.0",
-    "babel-eslint": "^6.0.0-beta.6",
     "parallelshell": "^2.0.0"
-
   },
   "peerDependencies": {
     "async-props": "^0.3.2",
