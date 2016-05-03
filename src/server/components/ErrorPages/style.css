@@ -3,11 +3,11 @@ html, body {
     height: 100%;
     background-color: rgb(245, 245, 245);
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 .page {
     color: rgb(150,150,150);
-    font-family: 'Roboto', sans-serif;
     padding-top: 80px;
     position: relative;
     padding-bottom: 45px;
@@ -47,7 +47,12 @@ html, body {
     padding: 10px;
     border-radius: 20px;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 30px;
+}
+
+.error-details {
+    margin-left: 15px;
+    color: sienna;
 }
 
 code {
