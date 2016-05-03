@@ -9,17 +9,22 @@ const propTypes = {
 const ErrorPage = ({ children }) =>
 (
     <div className={s.page}>
-        <Helmet link={[
-            {
-                href: 'https://fonts.googleapis.com/css?family=Roboto:400,700',
-                rel: 'stylesheet',
-                type: 'text/css',
-            }, {
-                href: 'https://fonts.googleapis.com/css?family=Roboto+Mono',
-                rel: 'stylesheet',
-                type: 'text/css',
-            },
-        ]}
+        <Helmet
+            link={[
+                {
+                    href: 'https://fonts.googleapis.com/css?family=Roboto:400,700',
+                    rel: 'stylesheet',
+                    type: 'text/css',
+                }, {
+                    href: 'https://fonts.googleapis.com/css?family=Roboto+Mono',
+                    rel: 'stylesheet',
+                    type: 'text/css',
+                },
+            ]}
+            meta={[
+                // TODO put in vitamin
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            ]}
         />
         <div className={s.container}>
             {children}

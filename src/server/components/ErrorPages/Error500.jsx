@@ -6,23 +6,24 @@ import s from './style.css';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const propTypes = {
+    /* In production, error is null (prevent leaking internals) */
     error: PropTypes.shape({
         message: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         stack: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
 };
 
-const Error500 = ({ error: { message, name, stack } }) =>
+const Error500 = ({ error }) =>
 (
     <div>
         <Helmet title="500 - VitaminJS" />
-        {process.env.NODE_ENV !== 'production' && stack ?
+        { error ?
             <div className={s['stack-container']}>
                 <h3 className={s['error-details']}>
-                    {name}: {message}
+                    {error.name}: {error.message}
                 </h3>
-                <pre> <code> {stack} </code> </pre>
+                <pre> <code> {error.stack} </code> </pre>
                 <small> Note: the stack trace is not available in production mode.
                     You can customize this page in the config.</small>
             </div>

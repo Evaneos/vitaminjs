@@ -34,7 +34,8 @@ export default () => function *errorHandlerMiddleware(next) {
     try {
         yield next;
     } catch (err) {
-        errorPage = () => <Error500 error ={err} />;
+        errorPage = () =>
+            <Error500 error={process.env.NODE_ENV === 'production' ? null : err} />;
         this.status = 500;
         this.app.emit('error', err, this);
     }
