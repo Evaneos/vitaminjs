@@ -28,8 +28,8 @@
   "devDependencies": {
     "babel-eslint": "^6.0.0-beta.6",
     "eslint": "^2.2.0",
-    "eslint-config-airbnb": "^6.0.2",
-    "eslint-plugin-react": "^4.1.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-react": "^5.1.1",
     "parallelshell": "^2.0.0"
   },
   "peerDependencies": {
@@ -61,7 +61,7 @@
     "koa-send": "^3.2.0",
     "koa-static": "^2.0.0",
     "progress": "^1.1.8",
-    "redux-thunk": "^1.0.3",
+    "redux-thunk": "^2.0.1",
     "rimraf": "^2.5.2",
     "strip-json-comments": "^2.0.1",
     "express": "^4.13.4",
@@ -71,7 +71,7 @@
     "koa-etag": "^2.1.1",
     "lodash.mergewith": "^4.0.4",
     "mocha": "^2.4.5",
-    "postcss-loader": "^0.8.1",
+    "postcss-loader": "^0.9.1",
     "redbox-react": "^1.2.2",
     "source-map-support": "^0.4.0",
     "strip-json-comments-loader": "0.0.2",
