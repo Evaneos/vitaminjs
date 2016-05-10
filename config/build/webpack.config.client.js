@@ -6,7 +6,7 @@ import appConfig from '../index';
 module.exports = function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            vitaminResolve('src', 'index.js'),
+            vitaminResolve('src', 'client', 'index.js'),
         ],
         output: {
             // TODO : put hash in name

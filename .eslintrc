@@ -14,8 +14,23 @@
         // We use 4 space indent at Evaneos
         "indent": [2, 4],
         "no-nested-ternary": 0,
-        "react/jsx-indent-props": [2, 4],
+        "no-underscore-dangle": 0,
+        "react/jsx-indent": [2, 4],
         // We use the react-require loader which require automatically React when using jsx
-        "react/react-in-jsx-scope": 0
+        "react/react-in-jsx-scope": 0,
+        "import/no-unresolved": [2, {
+            "ignore": [
+                "__app_modules__",
+                // Peer dependancies
+                "react",
+                "redux",
+                "react-dom",
+                "react-redux",
+                "react-router",
+                "react-router-redux",
+                "history",
+                "react-helmet",
+            ]
+        } ]
     }
 }
