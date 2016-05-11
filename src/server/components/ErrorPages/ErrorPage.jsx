@@ -35,4 +35,4 @@ const ErrorPage = ({ children }) =>
 
 ErrorPage.propTypes = propTypes;
 
-export default withStyles(ErrorPage, s);
+export default withStyles(s)(ErrorPage);

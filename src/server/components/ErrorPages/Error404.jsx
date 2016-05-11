@@ -25,4 +25,4 @@ const Error404 = () => (
     </ErrorPage>
 );
 
-export default withStyles(Error404, s);
+export default withStyles(s)(Error404);

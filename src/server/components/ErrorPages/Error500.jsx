@@ -47,4 +47,4 @@ const Error500 = ({ error }) =>
 
 Error500.propTypes = propTypes;
 
-export default withStyles(Error500, s);
+export default withStyles(s)(Error500);
