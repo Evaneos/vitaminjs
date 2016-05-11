@@ -13,13 +13,17 @@
     "rules": {
         // We use 4 space indent at Evaneos
         "indent": [2, 4],
-        "no-nested-ternary": 0,
-        "no-underscore-dangle": 0,
         "react/jsx-indent": [2, 4],
+        "react/jsx-indent-props": [2, 4],
+        // Nested ternary can be really convenient sometimes. They can be readable when using new lines.
+        "no-nested-ternary": 0,
+        // We use underscore dangle to underline globals
+        "no-underscore-dangle": 0,
         // We use the react-require loader which require automatically React when using jsx
         "react/react-in-jsx-scope": 0,
         "import/no-unresolved": [2, {
             "ignore": [
+                // App dependancies, as global modules
                 "__app_modules__",
                 // Peer dependancies
                 "react",
