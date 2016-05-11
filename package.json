@@ -35,11 +35,11 @@
     "parallelshell": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^0.15.0",
+    "react": "^15.0.0",
     "react-router": "^2.4.0",
     "react-router-redux": "^4.0.4",
     "redux": "^3.5.2",
-    "react-helmet": "^3.1.2",
+    "react-helmet": "^3.1.0",
     "isomorphic-style-loader": "^1.0.0"
   },
   "dependencies": {
