@@ -8,15 +8,14 @@ const propTypes = {
     style: PropTypes.string.isRequired,
 };
 
-const DivLayout = ({ appHtmlString, initialState, head, style }) => {
-
-    return (<div>
+const DivLayout = ({ appHtmlString, initialState, head, style }) => (
+    <div>
         <style>{style}</style>
         <AppContainer script={head.script} initialState={initialState}>
             {appHtmlString}
         </AppContainer>
-    </div>);
-};
+    </div>
+);
 
 DivLayout.propTypes = propTypes;
 export default DivLayout;

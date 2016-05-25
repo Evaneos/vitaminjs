@@ -8,24 +8,22 @@ const propTypes = {
     style: PropTypes.string.isRequired,
 };
 
-const HtmlLayout = ({ appHtmlString, initialState, head, style }) => {
-    return (
-        <html>
-            <head>
-                {head.title.toComponent()}
-                {head.meta.toComponent()}
-                {head.link.toComponent()}
-                {head.base.toComponent()}
-                <style>{style}</style>
-            </head>
-            <body>
-                <AppContainer script={head.script} initialState={initialState}>
-                    {appHtmlString}
-                </AppContainer>
-            </body>
-        </html>
-    );
-};
+const HtmlLayout = ({ appHtmlString, initialState, head, style }) => (
+    <html>
+        <head>
+            {head.title.toComponent()}
+            {head.meta.toComponent()}
+            {head.link.toComponent()}
+            {head.base.toComponent()}
+            <style>{style}</style>
+        </head>
+        <body>
+            <AppContainer script={head.script} initialState={initialState}>
+                {appHtmlString}
+            </AppContainer>
+        </body>
+    </html>
+);
 
 HtmlLayout.doctype = '<!doctype html>';
 HtmlLayout.propTypes = propTypes;
