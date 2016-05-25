@@ -3,6 +3,7 @@ import mergeWith from 'lodash.mergewith';
 import { appResolve, vitaminResolve } from './utils';
 import { readFileSync } from 'fs';
 import defaults from './defaults';
+import { join, dirname } from 'path';
 
 function loadConfigFile(configPath) {
     let config;
@@ -80,27 +81,26 @@ function getModuleMap(configPaths) {
     }
     return moduleMap;
 }
-function mergeConfigPath(config, configPath) {
-    let newConfig = loadConfigFile(appResolve(configPath));
-    newConfig = mergeConfig(config, newConfig);
-    return newConfig;
 
-}
-function loadExtendedConfig(config) {
+function loadExtendedConfig(config, configPath) {
     if (!config.extends) {
         return config;
     }
 
-    const configPath = config.extends;
+    let extendedConfigPath = config.extends;
     delete config.extends;
-    const newConfig = mergeConfigPath(config, configPath);
-    return loadExtendedConfig(newConfig);
+    extendedConfigPath = extendedConfigPath.startsWith('/') ?
+        extendedConfigPath : join(dirname(configPath), extendedConfigPath);
+
+    let newConfig = loadConfigFile(extendedConfigPath);
+    newConfig = mergeConfig(config, newConfig);
+    return loadExtendedConfig(newConfig, extendedConfigPath);
 }
 
 const rcPath = appResolve('.vitaminrc');
 let config = loadConfigFile(rcPath);
 config = mergeConfig(defaults, config);
-config = loadExtendedConfig(config);
+config = loadExtendedConfig(config, rcPath);
 
 
 const modulePaths = [
