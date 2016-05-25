@@ -6,7 +6,8 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import AsyncProps from 'async-props';
 import Helmet from 'react-helmet';
-import CSSProvider from '../../shared/components/CSSProvider';
+import App from '../../shared/components/App';
+
 
 const propTypes = {
     store: PropTypes.object.isRequired,
@@ -16,13 +17,10 @@ const HtmlLayout = ({ store, ...others }) => {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
 
-    const app = (
-        <CSSProvider insertCss={insertCss}>
-            <Provider store={store}>
-                <AsyncProps {...others} />
-            </Provider>
-        </CSSProvider>
-    );
+    const app = <App store={store} insertCss={insertCss}>
+        <AsyncProps {...others} />
+    </App>;
+
     const appHtmlString = renderToString(app);
     const head = Helmet.rewind();
     return (
