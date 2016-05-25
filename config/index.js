@@ -3,16 +3,18 @@ import mergeWith from 'lodash.mergewith';
 import { appResolve, vitaminResolve } from './utils';
 import { readFileSync } from 'fs';
 import defaults from './defaults';
+import { join, dirname } from 'path';
 
-const rcPath = appResolve('.vitaminrc');
-
-let config;
-try {
-    const json = readFileSync(rcPath, { encoding: 'utf8' });
-    config = JSON.parse(stripJsonComments(json));
-} catch (e) {
-    process.stderr.write(`Couldn't load configuration from ${rcPath}\n${e.message}`);
-    process.exit(1);
+function loadConfigFile(configPath) {
+    let config;
+    try {
+        const json = readFileSync(configPath, {encoding: 'utf8'});
+        config = JSON.parse(stripJsonComments(json));
+        return config;
+    } catch (e) {
+        process.stderr.write(`Couldn't load configuration from ${configPath}\n${e.message}`);
+        process.exit(1);
+    }
 }
 
 function mergeConfig(one, two) {
@@ -80,7 +82,26 @@ function getModuleMap(configPaths) {
     return moduleMap;
 }
 
+function loadExtendedConfig(config, configPath) {
+    if (!config.extends) {
+        return config;
+    }
+
+    let extendedConfigPath = config.extends;
+    delete config.extends;
+    extendedConfigPath = extendedConfigPath.startsWith('/') ?
+        extendedConfigPath : join(dirname(configPath), extendedConfigPath);
+
+    let newConfig = loadConfigFile(extendedConfigPath);
+    newConfig = mergeConfig(config, newConfig);
+    return loadExtendedConfig(newConfig, extendedConfigPath);
+}
+
+const rcPath = appResolve('.vitaminrc');
+let config = loadConfigFile(rcPath);
 config = mergeConfig(defaults, config);
+config = loadExtendedConfig(config, rcPath);
+
 
 const modulePaths = [
     ['routes'],
@@ -100,11 +121,13 @@ export const moduleMap = getModuleMap(modulePaths);
 modulePaths.forEach(path =>
     deletePath(path, config)
 );
+
 // Resolve app path to absolute paths
 [
     ['build', 'path'],
 ].forEach(path =>
     updatePath(path, appResolve, config)
 );
+
 
 export default config;
