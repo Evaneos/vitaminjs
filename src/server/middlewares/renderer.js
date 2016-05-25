@@ -1,17 +1,5 @@
-import { renderToStaticMarkup } from 'react-dom/server';
-import HtmlLayout from '../components/HtmlLayout';
 import { loadPropsOnServer } from 'async-props';
-
-function render(store, renderProps, asyncProps) {
-    return '<!doctype html>\n'
-        + renderToStaticMarkup(
-            <HtmlLayout
-                store={store}
-                {...renderProps}
-                {...asyncProps}
-            />
-        );
-}
+import render from '../render';
 
 export default () => function* rendererMiddleware() {
     const renderProps = this.state.renderProps;

@@ -6,7 +6,7 @@ App.propTypes = {
     store: PropTypes.object.isRequired,
     insertCss: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,
-}
+};
 
 export default function App({ store, insertCss, children }) {
     return <CSSProvider insertCss={insertCss}>

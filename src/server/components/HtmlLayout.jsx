@@ -1,28 +1,14 @@
-import { stringify as stateStringifier } from '__app_modules__redux_state_serializer__';
 import { PropTypes } from 'react';
-import jsStringEscape from 'js-string-escape';
-import config from '../../../config';
-import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
-import AsyncProps from 'async-props';
-import Helmet from 'react-helmet';
-import App from '../../shared/components/App';
-
+import AppContainer from './AppContainer';
 
 const propTypes = {
-    store: PropTypes.object.isRequired,
+    appHtmlString: PropTypes.string.isRequired,
+    initialState: PropTypes.object,
+    head: PropTypes.object.isRequired,
+    style: PropTypes.string.isRequired,
 };
 
-const HtmlLayout = ({ store, ...others }) => {
-    const css = [];
-    const insertCss = (styles) => css.push(styles._getCss());
-
-    const app = <App store={store} insertCss={insertCss}>
-        <AsyncProps {...others} />
-    </App>;
-
-    const appHtmlString = renderToString(app);
-    const head = Helmet.rewind();
+const HtmlLayout = ({ appHtmlString, initialState, head, style }) => {
     return (
         <html>
             <head>
@@ -30,33 +16,17 @@ const HtmlLayout = ({ store, ...others }) => {
                 {head.meta.toComponent()}
                 {head.link.toComponent()}
                 {head.base.toComponent()}
-                <style>{css.join('')}</style>
+                <style>{style}</style>
             </head>
             <body>
-                <div
-                    id={config.rootElementId}
-                    dangerouslySetInnerHTML={{
-                        __html: appHtmlString,
-                    }}
-                />
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `window.__INITIAL_STATE__ = "${
-                            jsStringEscape(stateStringifier(store.getState()))}"`,
-                    }}
-                />
-                {head.script.toComponent()}
-                <script
-                    async
-                    src={`${config.server.externalUrl
-                    + config.server.basePath
-                    + config.build.client.publicPath}/${
-                    config.build.client.filename}`}
-                />
+                <AppContainer script={head.script} initialState={initialState}>
+                    {appHtmlString}
+                </AppContainer>
             </body>
         </html>
     );
 };
 
+HtmlLayout.doctype = '<!doctype html>';
 HtmlLayout.propTypes = propTypes;
 export default HtmlLayout;
