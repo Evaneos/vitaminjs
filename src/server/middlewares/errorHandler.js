@@ -1,9 +1,7 @@
 import Error404 from '__app_modules__server_Error404Page__';
 import Error500 from '__app_modules__server_Error500Page__';
 import { renderToString } from 'react-dom/server';
-import { renderFullPage } from './renderer';
 import CSSProvider from '../../shared/components/CSSProvider';
-import Helmet from 'react-helmet';
 
 // TODO : Add a __PRODUCTION__ global variable, instead of NODE_ENV
 const renderRawError = (status, renderingError) => (
@@ -26,7 +24,8 @@ const renderErrorPage = (ErrorPage) => {
                 <ErrorPage />
             </CSSProvider>
         );
-    return renderFullPage(html, css, Helmet.rewind());
+    // todo : render full page
+    return html;
 };
 
 export default () => function *errorHandlerMiddleware(next) {
