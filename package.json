@@ -5,7 +5,7 @@
   "main": "./bin/vitamin.es5.js",
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint --ext .js,.jsx src/"
+    "lint": "eslint --ext .js,.jsx src bin build"
   },
   "bin": {
     "vitamin": "./bin/vitamin.es5.js"
@@ -27,23 +27,24 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^6.0.0-beta.6",
-    "eslint": "^2.2.0",
-    "eslint-config-airbnb": "^6.0.2",
-    "eslint-plugin-react": "^4.1.0",
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.7.0",
+    "eslint-plugin-jsx-a11y": "^1.2.0",
+    "eslint-plugin-react": "^5.1.1",
     "parallelshell": "^2.0.0"
   },
   "peerDependencies": {
-    "async-props": "^0.3.2",
-    "react": "^0.14.7",
-    "react-router": "^2.0.0",
-    "react-router-redux": "^4.0.0",
-    "redux": "^3.2.1",
-    "react-helmet": "^2.3.1",
-    "isomorphic-style-loader": "^0.0.12",
-    "source-map-support": "^0.4.0"
+    "react": "^15.0.0",
+    "react-router": "^2.4.0",
+    "react-router-redux": "^4.0.4",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "react-helmet": "^3.1.0",
+    "isomorphic-style-loader": "^1.0.0"
   },
   "dependencies": {
-    "async-props": "^0.3.0",
+    "async-props": "^0.3.2",
     "js-string-escape": "^1.0.1",
     "koa": "^1.1.2",
     "autoprefixer": "^6.3.3",
@@ -61,7 +62,7 @@
     "koa-send": "^3.2.0",
     "koa-static": "^2.0.0",
     "progress": "^1.1.8",
-    "redux-thunk": "^1.0.3",
+    "redux-thunk": "^2.0.1",
     "rimraf": "^2.5.2",
     "strip-json-comments": "^2.0.1",
     "express": "^4.13.4",
@@ -71,7 +72,7 @@
     "koa-etag": "^2.1.1",
     "lodash.mergewith": "^4.0.4",
     "mocha": "^2.4.5",
-    "postcss-loader": "^0.8.1",
+    "postcss-loader": "^0.9.1",
     "redbox-react": "^1.2.2",
     "source-map-support": "^0.4.0",
     "strip-json-comments-loader": "0.0.2",

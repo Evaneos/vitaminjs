@@ -1,4 +1,4 @@
-/* eslint no-console: 0  */
+/* eslint-disable no-console, global-require  */
 import koa from 'koa';
 import express from 'express';
 import config from '../../config';

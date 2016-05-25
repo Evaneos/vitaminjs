@@ -10,9 +10,10 @@ import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_state_serializer__';
 import App from '../shared/components/App';
+import RedBox from 'redbox-react';
 
 function render(history, store, rootRoute, element) {
-    const insertCss = styles => styles._insertCss();
+    const insertCss = ({ _insertCss }) => _insertCss();
 
     reactRender(
         <App store={store} insertCss={insertCss}>
@@ -25,7 +26,9 @@ function render(history, store, rootRoute, element) {
 
 function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = window.__INITIAL_STATE__ ? stateParser(window.__INITIAL_STATE__) : {};
+    const initialState = window.__INITIAL_STATE__ ?
+        stateParser(window.__INITIAL_STATE__) :
+        {};
 
     const history = useRouterHistory(createHistory)({
         basename: config.server.basePath,
@@ -45,17 +48,18 @@ function bootstrapClient() {
 
     if (module.hot) {
         const renderError = (error, rootEl) => {
-            const RedBox = require('redbox-react');
             reactRender(
                 <RedBox error={error} />,
                 rootEl
             );
         };
         module.hot.accept('__app_modules__redux_reducers__', () => {
+            // eslint-disable-next-line global-require
             const newReducer = require('__app_modules__redux_reducers__').default;
             store.replaceReducer(createRootReducer(newReducer));
         });
         module.hot.accept('__app_modules__routes__', () => {
+            // eslint-disable-next-line global-require
             const newRoutes = require('__app_modules__routes__').default;
             unmountComponentAtNode(appElement);
             try {

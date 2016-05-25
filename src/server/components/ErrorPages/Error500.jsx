@@ -18,14 +18,16 @@ const Error500 = ({ error }) =>
 (
     <div>
         <Helmet title="500 - VitaminJS" />
-        { error ?
+        {error ?
             <div className={s['stack-container']}>
                 <h3 className={s['error-details']}>
                     {error.name}: {error.message}
                 </h3>
                 <pre> <code> {error.stack} </code> </pre>
-                <small> Note: the stack trace is not available in production mode.
-                    You can customize this page in the config.</small>
+                <small>
+                    Note: the stack trace is not available in production mode.
+                    You can customize this page in the config.
+                </small>
             </div>
             : null
         }
@@ -47,4 +49,4 @@ const Error500 = ({ error }) =>
 
 Error500.propTypes = propTypes;
 
-export default withStyles(Error500, s);
+export default withStyles(s)(Error500);

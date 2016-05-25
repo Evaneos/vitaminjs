@@ -33,8 +33,8 @@ const checkHot = (hot) => {
     return hot;
 };
 
-const build = ({ hot, watch }, config) => new Promise((resolve, reject) => {
-    const compiler = webpack(config({ hot, dev }));
+const build = ({ hot, watch }, webpackBuildConfig) => new Promise((resolve, reject) => {
+    const compiler = webpack(webpackBuildConfig({ hot, dev }));
     const bar = new ProgressBar(
         'Building app... :percent [:bar]',
         { incomplete: ' ', total: 60, width: 50, clear: true }
