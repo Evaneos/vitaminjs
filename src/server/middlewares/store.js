@@ -1,11 +1,11 @@
 import { create as createStore } from '../../shared/store';
-import { createMemoryHistory, useBasename } from 'history';
+import { createMemoryHistory, useBasename, useQueries } from 'history';
 import config from '../../../config';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 
 export default () => function* storeMiddleware(next) {
-    const history = useBasename(createMemoryHistory)({
+    const history = useQueries(useBasename(createMemoryHistory))({
         basename: config.server.basePath,
         entries: [this.req.url],
     });
