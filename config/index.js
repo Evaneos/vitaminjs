@@ -87,6 +87,7 @@ const modulePaths = [
     ['server', 'middlewares'],
     ['server', 'Error404Page'],
     ['server', 'Error500Page'],
+    ['server', 'layout'],
     ['redux', 'reducers'],
     ['redux', 'middlewares'],
     ['redux', 'state', 'serializer'],

@@ -64,3 +64,16 @@ A path to a module that exports an array of redux middlewares.
 ## TODO for PRODUCTION :
 * [ ] add logs handling
 * [ ] Set package.json node version to 5.1.0
+
+
+### Change layout
+
+In your `vitaminrc`:
+
+```json
+{
+    "server": {
+        "layout": "__vitamin__/src/server/components/DivLayout"
+    }
+}
+```

@@ -1,9 +1,10 @@
 import Error404 from '__app_modules__server_Error404Page__';
 import Error500 from '__app_modules__server_Error500Page__';
-import { renderToString } from 'react-dom/server';
-import { renderFullPage } from './renderer';
 import CSSProvider from '../../shared/components/CSSProvider';
+import { renderLayout } from '../render';
+import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
+
 
 // TODO : Add a __PRODUCTION__ global variable, instead of NODE_ENV
 const renderRawError = (status, renderingError) => (
@@ -21,12 +22,16 @@ const renderRawError = (status, renderingError) => (
 const renderErrorPage = (ErrorPage) => {
     const css = [];
     const insertCss = (styles) => css.push(styles._getCss());
-    const html = renderToString(
-            <CSSProvider insertCss={insertCss}>
-                <ErrorPage />
-            </CSSProvider>
-        );
-    return renderFullPage(html, css, Helmet.rewind());
+
+    const app = (<CSSProvider insertCss={insertCss}>
+        <ErrorPage />
+    </CSSProvider>);
+
+    return renderLayout({
+        appHtmlString: renderToString(app),
+        style: css.join(''),
+        head: Helmet.rewind(),
+    });
 };
 
 export default () => function *errorHandlerMiddleware(next) {

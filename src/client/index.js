@@ -1,28 +1,23 @@
 import { render as reactRender, unmountComponentAtNode } from 'react-dom';
-import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
-import CSSProvider from '../shared/components/CSSProvider';
 import config from '../../config';
 import init from '__app_modules__init__';
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_state_serializer__';
+import App from '../shared/components/App';
 
 function render(history, store, rootRoute, element) {
     const insertCss = styles => styles._insertCss();
 
     reactRender(
-        <Provider store={store}>
-            <CSSProvider insertCss={insertCss}>
-                <Router history={history}>
-                    {rootRoute}
-                </Router>
-            </CSSProvider>
-        </Provider>,
+        <App store={store} insertCss={insertCss}>
+            <Router history={history}>{rootRoute}</Router>
+        </App>,
         element
     );
 }

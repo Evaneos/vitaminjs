@@ -7,6 +7,7 @@ export default {
         Error500Page: '__vitamin__/src/server/components/ErrorPages/Error500',
         basePath: '',
         externalUrl: '',
+        layout: '__vitamin__/src/server/components/HtmlLayout',
     },
     routes: '__vitamin__/config/utils/emptyArray',
     redux: {
