@@ -37,11 +37,18 @@ export function config(options) {
             wrappedContextCritical: true,
 
             loaders: [{
-                test: /\.css$/,
+                test: /\.global\.css$/,  // only files with .global will go through this loader
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?module&localIdentName=[name]_[local]_[hash:base64:3]' +
-                    '&importLoaders=1!postcss-loader',
+                    'css-loader?sourceMap&importLoaders=1',
+                    'postcss-loader',
+                ],
+            }, {
+                test: /^((?!\.global).)*\.css$/,  // anything with .global will not go through css modules loader
+                loaders: [
+                    'isomorphic-style-loader',
+                    'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:3]',
+                    'postcss-loader',
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
