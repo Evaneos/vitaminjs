@@ -1,6 +1,6 @@
 {
   "name": "vitaminjs",
-  "version": "1.0.0-beta7",
+  "version": "1.0.0-beta8",
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "./bin/vitamin.es5.js",
   "scripts": {
