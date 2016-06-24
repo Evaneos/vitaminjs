@@ -25,7 +25,7 @@ What's included in the menu
 ## How to get started ?
 First, install the peer dependancies
 ```bash
-npm i -S async-props react react-router react-router-redux redux react-helmet isomorphic-style-loader
+npm i -S async-props react react-router react-router-redux redux react-redux react-helmet isomorphic-style-loader
 ```
 ```bash
 npm i -S vitaminjs
