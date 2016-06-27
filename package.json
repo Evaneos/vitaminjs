@@ -52,7 +52,7 @@
     "babel-plugin-react-require": "^2.1.0",
     "babel-preset-es2015-node5": "^1.1.2",
     "babel-preset-es2015-webpack": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
+    "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.3.13",
     "babel-register": "^6.5.2",
     "css-loader": "^0.23.1",
