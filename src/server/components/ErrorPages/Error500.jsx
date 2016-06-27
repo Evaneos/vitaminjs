@@ -33,7 +33,7 @@ const Error500 = ({ error }) =>
         }
         <ErrorPage>
             <div className={s.pineapple}>
-                5
+                <span>5</span>
                 <Pineapple />
                 <Pineapple />
             </div>
