@@ -30,6 +30,16 @@ body {
     text-align: center;
 }
 
+.pineapple {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.pineapple > * {
+    flex: 1;
+}
+
 @media (max-width: 400px) {
     .pineapple {
         font-size: 150px;
@@ -40,13 +50,6 @@ body {
     .pineapple {
         font-size: 220px;
     }
-}
-
-
-.pineapple > * {
-    width: 33%;
-    vertical-align: middle;
-    display: inline-block;
 }
 
 .stack-container {

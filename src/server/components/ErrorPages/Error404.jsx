@@ -10,9 +10,9 @@ const Error404 = () => (
     <ErrorPage>
         <Helmet title="404 - VitaminJS" />
         <div className={s.pineapple}>
-            4
+            <span>4</span>
             <Pineapple />
-            4
+            <span>4</span>
         </div>
         <h1>Not Found</h1>
         <h2>We can't seem to find the page you asked</h2>
