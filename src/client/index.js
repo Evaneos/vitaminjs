@@ -73,5 +73,5 @@ function bootstrapClient() {
     render(syncedHistory, store, routes, appElement);
 }
 
-if (init instanceof Function) init()
+if (init instanceof Function) init();
 bootstrapClient();

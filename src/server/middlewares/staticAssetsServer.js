@@ -9,8 +9,10 @@ export default () =>
         config.build.client.publicPath,
         compose([
             function* serveClientBundle(next) {
-                if (this.url === `/${config.build.client.filename}`) {
-                    yield send(this, config.build.client.filename, { root: config.build.path });
+                if (this.url === `/${CLIENT_BUNDLE_VERSION + config.build.client.filename}`) {
+                    yield send(this, CLIENT_BUNDLE_VERSION + config.build.client.filename, {
+                        root: config.build.path,
+                    });
                 } else {
                     yield next;
                 }

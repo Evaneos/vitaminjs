@@ -9,6 +9,14 @@ const propTypes = {
     children: PropTypes.string.isRequired,
 };
 
+const buildSourceUrl = () => {
+    return `${config.server.externalUrl
+        + config.server.basePath
+        + config.build.client.publicPath}/${
+        CLIENT_BUNDLE_VERSION }${
+        config.build.client.filename}`
+};
+
 function AppContainer({ script, initialState, children }) {
     return (<div>
         <div
@@ -27,10 +35,7 @@ function AppContainer({ script, initialState, children }) {
         {initialState ?
             <script
                 async
-                src={`${config.server.externalUrl
-                            + config.server.basePath
-                            + config.build.client.publicPath}/${
-                            config.build.client.filename}`}
+                src={buildSourceUrl()}
             /> : null}
     </div>);
 }
