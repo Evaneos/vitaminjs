@@ -3,14 +3,14 @@ import { concat, vitaminResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import appConfig from '../index';
+
 module.exports = function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             vitaminResolve('src', 'client', 'index.js'),
         ],
         output: {
-            // TODO : put hash in name
-            filename: appConfig.build.client.filename,
+            filename: (options.hot ? '' : '[hash]') + appConfig.build.client.filename,
         },
         module: {
             loaders: [

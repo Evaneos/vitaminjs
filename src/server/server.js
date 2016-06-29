@@ -54,5 +54,5 @@ if (module.hot) {
 const { basePath, port, host } = config.server;
 mountedServer.use(basePath, appServer());
 mountedServer.listen(port, host, () => {
-    console.log(`Server listening on ${host}:${port}`);
+    console.log(`Server listening on http://${host}:${port}`);
 });
