@@ -6,14 +6,14 @@ import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 
-import webpackConfig from '../config/build/webpack.config';
+import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import config from '../config';
 import { version } from '../package.json';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
 
-const dev = process.env.NODE_ENV !== 'production';
+const DEV = process.env.NODE_ENV !== 'production';
 
 
 const clean = () => new Promise((resolve, reject) =>
@@ -24,7 +24,7 @@ const clean = () => new Promise((resolve, reject) =>
 );
 
 const checkHot = (hot) => {
-    if (hot && !dev) {
+    if (hot && !DEV) {
         console.warn(`Warning: Hot module reload option ignored in production environment.
 (based on your NODE_ENV variable)`);
         /* eslint no-param-reassign: 0 */
@@ -33,47 +33,67 @@ const checkHot = (hot) => {
     return hot;
 };
 
-const build = ({ hot, watch }, webpackBuildConfig) => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackBuildConfig({ hot, dev }));
-    const bar = new ProgressBar(
-        'Building app... :percent [:bar]',
-        { incomplete: ' ', total: 60, width: 50, clear: true }
-    );
-    const callback = (err, stats) => {
-        if (err || stats.hasErrors()) {
-            console.log(stats.toString({
-                colors: true,
-                errorDetails: true,
-            }));
-            return reject(err);
-        }
-        console.log('Build complete!');
+const buildCallback = (resolve, reject) => (err, stats) => {
+    if (err || stats.hasErrors()) {
         console.log(stats.toString({
             colors: true,
-            timings: true,
-            hash: true,
-            version: false,
-            assets: false,
-            chunks: false,
-            chunkModules: false,
-            modules: false,
-            children: false,
-            cached: false,
-            reasons: false,
-            source: false,
-            errorDetails: false,
-            chunkOrigins: false,
+            errorDetails: true,
         }));
-        return resolve();
-    };
+        return reject(err);
+    }
+    console.log('Build complete!');
+    console.log(stats.toString({
+        colors: true,
+        timings: true,
+        hash: true,
+        version: false,
+        assets: false,
+        chunks: false,
+        chunkModules: false,
+        modules: false,
+        children: false,
+        cached: false,
+        reasons: false,
+        source: false,
+        errorDetails: false,
+        chunkOrigins: false,
+    }));
+    return resolve(stats);
+};
+
+const buildClient = ({ hot }) => new Promise((resolve, reject) => {
+    const compiler = webpack(webpackConfigClient({ hot, dev: DEV }));
+    const bar = new ProgressBar(
+        'Building client... :percent [:bar]',
+        { incomplete: ' ', total: 60, width: 50, clear: true }
+    );
+    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    compiler.run(buildCallback(resolve, reject));
+});
+
+const buildServer = ({ hot, watch, hash }) => new Promise((resolve, reject) => {
+    const compiler = webpack(webpackConfigServer({ hot, dev: DEV, hash }));
+    const bar = new ProgressBar(
+        'Building server... :percent [:bar]',
+        { incomplete: ' ', total: 60, width: 50, clear: true }
+    );
     if (watch) {
         compiler.watch({}, () => null);
     } else {
         compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-        compiler.run(callback);
+        compiler.run(buildCallback(resolve, reject));
     }
 });
 
+const build = ({ hot }) =>
+    // Generate client bundle and hash version
+    (hot ? Promise.resolve({ hash: null }) : buildClient({ hot }))
+        .then(({ hash }) => {
+            // Generate server bundle version, thanks to the hash
+            const promise = buildServer({ hot, hash });
+            if (hot) promise.then(() => buildServer({ hot, hash, watch: true }));
+            return promise;
+        });
 
 const serve = () => {
     console.log('Launching server...');
@@ -102,12 +122,7 @@ program
     .alias('b')
     .description('Build server and client bundles')
     .option('-h, --hot', 'Activate hot module reload')
-    .action(options => {
-        const hot = checkHot(options.hot);
-
-        build({ hot }, webpackConfig);
-    });
-
+    .action(({ hot }) => build({ hot: checkHot(hot) }));
 
 program
     .command('clean')
@@ -121,17 +136,11 @@ program
     .alias('s')
     .description('Build and start application server')
     .option('-h, --hot', 'Activate hot reload')
-    .action(options => {
-        const hot = checkHot(options.hot);
-        return clean()
-            .then(() => build({ hot }, hot ? webpackConfigServer : webpackConfig))
-            .then(() => {
-                if (hot) {
-                    build({ hot, watch: true }, webpackConfigServer);
-                }
-                serve();
-            });
-    });
+    .action(({ hot }) =>
+        clean()
+            .then(() => build({ hot: checkHot(hot) }))
+            .then(serve)
+    );
 
 program
     .command('serve')

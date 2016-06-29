@@ -8,7 +8,7 @@ import { join, dirname } from 'path';
 function loadConfigFile(configPath) {
     let config;
     try {
-        const json = readFileSync(configPath, {encoding: 'utf8'});
+        const json = readFileSync(configPath, { encoding: 'utf8' });
         config = JSON.parse(stripJsonComments(json));
         return config;
     } catch (e) {

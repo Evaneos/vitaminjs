@@ -9,6 +9,16 @@ const propTypes = {
     children: PropTypes.string.isRequired,
 };
 
+const buildSourceUrl = () =>
+    `${config.server.externalUrl
+        + config.server.basePath
+        + config.build.client.publicPath}/${
+        /* global __VITAMIN__CLIENT_BUNDLE_VERSION__ */
+        config.build.client.filename.replace(/\[hash\]/,
+            module.hot ? 'hot' : __VITAMIN__CLIENT_BUNDLE_VERSION__
+        )}`
+;
+
 function AppContainer({ script, initialState, children }) {
     return (<div>
         <div
@@ -27,10 +37,7 @@ function AppContainer({ script, initialState, children }) {
         {initialState ?
             <script
                 async
-                src={`${config.server.externalUrl
-                            + config.server.basePath
-                            + config.build.client.publicPath}/${
-                            config.build.client.filename}`}
+                src={buildSourceUrl()}
             /> : null}
     </div>);
 }

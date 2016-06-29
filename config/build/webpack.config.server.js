@@ -1,6 +1,6 @@
 import { config, createBabelLoaderConfig } from './webpack.config.common';
 import { vitaminResolve, appResolve, concat } from '../utils';
-import { BannerPlugin } from 'webpack';
+import { BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import appConfig from '../index';
 import fs from 'fs';
@@ -62,6 +62,9 @@ module.exports = function serverConfig(options) {
                 banner: 'require("source-map-support").install();',
                 raw: true, entryOnly: false,
             })] : []),
+            new DefinePlugin({
+                __VITAMIN__CLIENT_BUNDLE_VERSION__: `'${options.hash || ''}'`,
+            }),
         ],
     }, concat);
 };

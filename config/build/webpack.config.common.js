@@ -20,34 +20,36 @@ export function config(options) {
         devtool: options.dev ? 'source-map' : null,
         output: {
             pathinfo: options.dev,
-            publicPath: appConfig.server.externalUrl + appConfig.server.basePath + appConfig.build.client.publicPath + '/',
+            publicPath: `${appConfig.server.externalUrl + appConfig.server.basePath +
+                appConfig.build.client.publicPath}/`,
             path: appConfig.build.path,
         },
         module: {
             // Disable handling of unknown requires
             unknownContextRegExp: /$^/,
             unknownContextCritical: true,
-
             // Disable handling of requires with a single expression
             exprContextRegExp: /$^/,
             exprContextCritical: true,
-
             // Disable handling of expression in require
             wrappedContextRegExp: /$^/,
             wrappedContextCritical: true,
 
             loaders: [{
-                test: /\.global\.css$/,  // only files with .global will go through this loader
+                // only files with .global will go through this loader
+                test: /\.global\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
                     'css-loader?sourceMap&importLoaders=1',
                     'postcss-loader',
                 ],
             }, {
-                test: /^((?!\.global).)*\.css$/,  // anything with .global will not go through css modules loader
+                // anything with .global will not go through css modules loader
+                test: /^((?!\.global).)*\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:3]',
+                    'css-loader?modules&sourceMap&importLoaders=1' +
+                        '&localIdentName=[name]__[local]___[hash:base64:3]',
                     'postcss-loader',
                 ],
             }, {

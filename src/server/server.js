@@ -15,6 +15,10 @@ function hotReloadServer() {
     const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
     clientBuildConfig.entry.unshift(`webpack-hot-middleware/client?path=${
         config.server.externalUrl + hmrPath}`);
+
+    clientBuildConfig.output.filename =
+        clientBuildConfig.output.filename.replace(/\[hash\]/, 'hot');
+
     const compiler = webpack(clientBuildConfig);
     server.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,
@@ -54,5 +58,5 @@ if (module.hot) {
 const { basePath, port, host } = config.server;
 mountedServer.use(basePath, appServer());
 mountedServer.listen(port, host, () => {
-    console.log(`Server listening on ${host}:${port}`);
+    console.log(`Server listening on http://${host}:${port}`);
 });

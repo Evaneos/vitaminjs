@@ -44,11 +44,17 @@ body {
     .pineapple {
         font-size: 150px;
     }
+    .pineapple svg {
+        width: 100px;
+    }
 }
 
 @media (min-width: 401px) {
     .pineapple {
         font-size: 220px;
+    }
+    .pineapple svg {
+        width: 150px;
     }
 }
 
