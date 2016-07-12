@@ -42,7 +42,7 @@ function bootstrapClient() {
         );
 
     const syncedHistory = syncHistoryWithStore(history, store);
-
+    if (init instanceof Function) init(store);
     // Todo replace by vitamin-app-[hash] ?
     const appElement = document.getElementById(config.rootElementId);
 
@@ -69,9 +69,7 @@ function bootstrapClient() {
             }
         });
     }
-
     render(syncedHistory, store, routes, appElement);
 }
 
-if (init instanceof Function) init();
 bootstrapClient();
