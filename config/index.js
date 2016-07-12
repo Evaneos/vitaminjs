@@ -111,6 +111,7 @@ const modulePaths = [
     ['server', 'layout'],
     ['redux', 'reducers'],
     ['redux', 'middlewares'],
+    ['redux', 'enhancers'],
     ['redux', 'state', 'serializer'],
     ['init'],
 ];

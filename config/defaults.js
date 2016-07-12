@@ -13,6 +13,7 @@ export default {
     redux: {
         reducers: '__vitamin__/config/utils/emptyObject',
         middlewares: '__vitamin__/config/utils/emptyArray',
+        enhancers: '__vitamin__/config/utils/emptyArray',
         state: {
             serializer: '__vitamin__/src/shared/defaultStateSerializer',
         },
