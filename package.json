@@ -27,7 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^6.0.0-beta.6",
-    "eslint": "^2.13.1",
+    "eslint": "^3.1.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.9.2",
     "eslint-plugin-jsx-a11y": "^1.5.3",
