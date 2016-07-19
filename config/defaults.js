@@ -25,11 +25,18 @@ export default {
             filename: 'server_bundle.js',
         },
         client: {
-            // Name of the build output for client bundle (relative to build.path)
-            filename: 'client_bundle.[hash].js',
-            // For which URL the bundle should be made available
+            // The URL from which the all the public files should be made available
             // (similar to webpack output.publicPath config option)
             publicPath: '/assets',
+            // Name of the build output for client bundle (relative to build.path)
+            filename: 'client_bundle.[hash].js',
+            secondaryEntries: { /*
+                You can specify secondary endpoints for client here, for instance for
+                adding a sw.js file for ServiceWorker. Or if you want to do code splitting.
+                These endpoints will be transpiled (similar to https://webpack.github.io/docs/configuration.html#entry)
+                For instance:
+                'sw.js': './client/ServiceWorker.js'
+            */},
         },
     },
 

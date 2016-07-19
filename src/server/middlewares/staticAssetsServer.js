@@ -4,25 +4,32 @@ import compose from 'koa-compose';
 import send from 'koa-send';
 import path from 'path';
 import config from '../../../config';
-export default () =>
-    mount(
-        config.build.client.publicPath,
-        compose([
-            function* serveClientBundle(next) {
-                /* global __VITAMIN__CLIENT_BUNDLE_VERSION__ */
-                const filename = config.build.client.filename.replace(
-                    /\[hash\]/,
-                    __VITAMIN__CLIENT_BUNDLE_VERSION__
-                );
-                if (this.url === `/${filename}`) {
-                    yield send(this, filename, {
-                        root: config.build.path,
-                    });
-                } else {
-                    yield next;
-                }
-            },
-            mount('/files', serve(path.join(config.build.path, 'files'))),
-        ]),
-    )
-;
+
+const clientEntries = [
+    ...Object.keys(config.build.client.secondaryEntries),
+    config.build.client.filename,
+]
+    /* global __VITAMIN__CLIENT_BUNDLE_VERSION__ */
+    .map(s => s.replace(
+        /\[hash\]/,
+        __VITAMIN__CLIENT_BUNDLE_VERSION__
+    ))
+    .map(s => `/${s}`);
+
+function serveClientEntries(entries) {
+    return function* serveClientEntriesMiddleware(next) {
+        if (entries.indexOf(this.url) !== -1) {
+            yield send(this, this.url.slice(1), { root: config.build.path });
+        } else {
+            yield next;
+        }
+    };
+}
+
+const serveStaticAssets = compose([
+    serveClientEntries(clientEntries),
+    mount('/files', serve(path.join(config.build.path, 'files'))),
+]);
+
+const publicPath = config.build.client.publicPath;
+export default () => (publicPath ? mount(publicPath, serveStaticAssets) : serveStaticAssets);
