@@ -9,8 +9,15 @@ export default () =>
         config.build.client.publicPath,
         compose([
             function* serveClientBundle(next) {
-                if (this.url === `/${config.build.client.filename}`) {
-                    yield send(this, config.build.client.filename, { root: config.build.path });
+                /* global __VITAMIN__CLIENT_BUNDLE_VERSION__ */
+                const filename = config.build.client.filename.replace(
+                    /\[hash\]/,
+                    __VITAMIN__CLIENT_BUNDLE_VERSION__
+                );
+                if (this.url === `/${filename}`) {
+                    yield send(this, filename, {
+                        root: config.build.path,
+                    });
                 } else {
                     yield next;
                 }
