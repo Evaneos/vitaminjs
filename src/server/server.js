@@ -8,21 +8,30 @@ import app from './app';
 function hotReloadServer() {
     const server = express();
     const webpack = require('webpack');
-    const clientBuildConfig = require('../../config/build/webpack.config.client')({
+    let clientBuildConfig = require('../../config/build/webpack.config.client')({
         hot: true,
         dev: true,
     });
     const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
-    clientBuildConfig.entry.unshift(`webpack-hot-middleware/client?path=${
-        config.server.externalUrl + hmrPath}`);
-
-    clientBuildConfig.output.filename =
-        clientBuildConfig.output.filename.replace(/\[hash\]/, 'hot');
-
+    clientBuildConfig = clientBuildConfig
+        .map(webpackConfig => ({
+            ...webpackConfig,
+            entry: [
+                webpackConfig.entry,
+                `webpack-hot-middleware/client?path=${config.server.externalUrl + hmrPath}`,
+            ],
+        }))
+        .map(webpackConfig => ({
+            ...webpackConfig,
+            output: {
+                ...webpackConfig.output,
+                filename: webpackConfig.output.filename.replace(/\[hash\]/, 'hot'),
+            },
+        }));
     const compiler = webpack(clientBuildConfig);
     server.use(require('webpack-dev-middleware')(compiler, {
         noInfo: true,
-        publicPath: clientBuildConfig.output.publicPath,
+        publicPath: clientBuildConfig[0].output.publicPath,
     }));
     server.use(require('webpack-hot-middleware')(compiler, {
         path: hmrPath,

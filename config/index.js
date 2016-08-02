@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 import defaults from './defaults';
 import { join, dirname } from 'path';
 
+// eslint-disable-next-line consistent-return
 function loadConfigFile(configPath) {
     let config;
     try {
@@ -74,14 +75,6 @@ function resolveModulePath(modulePath) {
     );
 }
 
-function getModuleMap(configPaths) {
-    const moduleMap = {};
-    for (const configPath of configPaths) {
-        moduleMap[pathToModuleName(configPath)] = resolveModulePath(lookupPath(configPath, config));
-    }
-    return moduleMap;
-}
-
 function loadExtendedConfig(config, configPath) {
     if (!config.extends) {
         return config;
@@ -97,8 +90,18 @@ function loadExtendedConfig(config, configPath) {
     return loadExtendedConfig(newConfig, extendedConfigPath);
 }
 
+
 const rcPath = appResolve('.vitaminrc');
 let config = loadConfigFile(rcPath);
+
+function getModuleMap(configPaths) {
+    const moduleMap = {};
+    for (const configPath of configPaths) {
+        moduleMap[pathToModuleName(configPath)] = resolveModulePath(lookupPath(configPath, config));
+    }
+    return moduleMap;
+}
+
 config = mergeConfig(defaults, config);
 config = loadExtendedConfig(config, rcPath);
 
@@ -111,6 +114,7 @@ const modulePaths = [
     ['server', 'layout'],
     ['redux', 'reducers'],
     ['redux', 'middlewares'],
+    ['redux', 'enhancers'],
     ['redux', 'state', 'serializer'],
     ['init'],
 ];
@@ -129,5 +133,5 @@ modulePaths.forEach(path =>
     updatePath(path, appResolve, config)
 );
 
-
-export default config;
+const exportedConfig = config;
+export default exportedConfig;

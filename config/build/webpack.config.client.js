@@ -1,16 +1,14 @@
 import { createBabelLoaderConfig, config } from './webpack.config.common.js';
-import { concat, vitaminResolve } from '../utils';
+import { concat, vitaminResolve, appResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import appConfig from '../index';
 
-module.exports = function clientConfig(options) {
+function clientConfig(options, entryName, entryPath) {
     return mergeWith({}, config(options), {
-        entry: [
-            vitaminResolve('src', 'client', 'index.js'),
-        ],
+        entry: entryPath,
         output: {
-            filename: appConfig.build.client.filename,
+            filename: entryName,
         },
         module: {
             loaders: [
@@ -34,4 +32,18 @@ module.exports = function clientConfig(options) {
             }),
         ],
     }, concat);
+}
+
+const secondaryEntries = appConfig.build.client.secondaryEntries;
+for (const key of Object.keys(secondaryEntries)) {
+    secondaryEntries[key] = appResolve(secondaryEntries[key]);
+}
+const entries = {
+    [appConfig.build.client.filename]: vitaminResolve('src', 'client', 'index.js'),
+    ...secondaryEntries,
 };
+module.exports = options =>
+    Object.keys(entries).map(
+        entryName => clientConfig(options, entryName, entries[entryName])
+    );
+
