@@ -4,10 +4,11 @@ import program from 'commander';
 import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigServer from '../config/build/webpack.config.server';
+import webpackConfigTest from '../config/build/webpack.config.tests';
 import config from '../config';
 import { version } from '../package.json';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
@@ -95,6 +96,16 @@ const build = ({ hot }) =>
             return promise;
         });
 
+const buildTest = () => new Promise((resolve, reject) => {
+    const compiler = webpack(webpackConfigTest({ hot: false, dev: true }));
+    const bar = new ProgressBar(
+        'Building client... :percent [:bar]',
+        { incomplete: ' ', total: 60, width: 50, clear: true }
+    );
+    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    compiler.run(buildCallback(resolve, reject));
+});
+
 const serve = () => {
     console.log('Launching server...');
     const serverFile = path.join(
@@ -113,9 +124,27 @@ const serve = () => {
     });
 };
 
+const launchTest = () => {
+    console.log('Launching tests...');
+    const serverFile = path.join(
+        config.build.path,
+        'tests'
+    );
+    const serverProcess = exec(`mocha ${serverFile}`);
+    serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
+    serverProcess.stderr.on('data', data => console.error(data.toString()));
+};
+
 program
     .description('Build framework for react/redux ecosystem')
     .version(version);
+
+program
+    .command('test')
+    .alias('t')
+    .description('Build test suite')
+    .option('-r, --runner', 'Test runner')
+    .action(() => buildTest().then(launchTest));
 
 program
     .command('build')
@@ -138,8 +167,11 @@ program
     .option('-h, --hot', 'Activate hot reload')
     .action(({ hot }) =>
         clean()
-            .then(() => build({ hot: checkHot(hot) }))
-            .then(serve)
+            .then(() => build({ hot: checkHot(hot) }).then(serve))
+            .catch(err => {
+                console.error(err);
+                process.exit(1);
+            })
     );
 
 program
