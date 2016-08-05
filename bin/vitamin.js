@@ -130,7 +130,7 @@ const launchTest = () => {
         config.build.path,
         'tests'
     );
-    const serverProcess = exec(`mocha ${serverFile}`);
+    const serverProcess = exec(`mocha ${serverFile} --color`);
     serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
     serverProcess.stderr.on('data', data => console.error(data.toString()));
 };
@@ -143,8 +143,7 @@ program
     .command('test')
     .alias('t')
     .description('Build test suite')
-    .option('-r, --runner', 'Test runner')
-    .action(() => buildTest().then(launchTest));
+    .action(() => buildTest().then(() => launchTest()));
 
 program
     .command('build')
