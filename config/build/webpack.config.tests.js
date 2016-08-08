@@ -8,6 +8,11 @@ function testConfig(options) {
         output: {
             filename: 'tests.js',
         },
+        externals: {
+            'react/addons': true,
+            'react/lib/ExecutionEnvironment': true,
+            'react/lib/ReactContext': true
+        }
     });
 }
 
