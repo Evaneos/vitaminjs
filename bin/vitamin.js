@@ -96,15 +96,20 @@ const build = ({ hot }) =>
             return promise;
         });
 
-const buildTest = () => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackConfigTest({ hot: false, dev: true }));
-    const bar = new ProgressBar(
-        'Building client... :percent [:bar]',
-        { incomplete: ' ', total: 60, width: 50, clear: true }
-    );
-    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-    compiler.run(buildCallback(resolve, reject));
-});
+const buildTest = () => {
+    if (config.test === undefined) {
+        throw new Error('Please specify a test file path in .vitaminrc');
+    }
+    return new Promise((resolve, reject) => {
+        const compiler = webpack(webpackConfigTest({ hot: false, dev: true }));
+        const bar = new ProgressBar(
+            'Building client... :percent [:bar]',
+            { incomplete: ' ', total: 60, width: 50, clear: true }
+        );
+        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+        compiler.run(buildCallback(resolve, reject));
+    });
+};
 
 const serve = () => {
     console.log('Launching server...');
@@ -124,13 +129,13 @@ const serve = () => {
     });
 };
 
-const launchTest = () => {
+const launchTest = (runner) => {
     console.log('Launching tests...');
     const serverFile = path.join(
         config.build.path,
         'tests'
     );
-    const serverProcess = exec(`mocha ${serverFile} --color`);
+    const serverProcess = exec(`${runner} ${serverFile} --color`);
     serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
     serverProcess.stderr.on('data', data => console.error(data.toString()));
 };
@@ -143,7 +148,8 @@ program
     .command('test')
     .alias('t')
     .description('Build test suite')
-    .action(() => buildTest().then(() => launchTest()));
+    .option('-r, --runner [type]', 'Choose your test suite to run vitamin with', 'mocha')
+    .action(({ runner }) => buildTest().then(() => launchTest(runner)));
 
 program
     .command('build')

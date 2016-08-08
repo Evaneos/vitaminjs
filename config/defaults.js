@@ -39,7 +39,6 @@ export default {
             */},
         },
     },
-    test: './tests/index.js',
 
     // TODO REFACTOR, I DONT LIKE THIS
     init: '__vitamin__/config/utils/identityFunction',
