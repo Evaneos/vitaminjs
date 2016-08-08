@@ -27,12 +27,17 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^6.0.0-beta.6",
+    "enzyme": "^2.4.1",
     "eslint": "^3.2.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.9.2",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
-    "parallelshell": "^2.0.0"
+    "jsdom": "^9.4.1",
+    "mocha": "^3.0.1",
+    "parallelshell": "^2.0.0",
+    "react-addons-test-utils": "^15.3.0",
+    "react-dom": "^15.3.0"
   },
   "peerDependencies": {
     "react": "^15.1.0",
@@ -69,7 +74,7 @@
     "koa-send": "^3.2.0",
     "koa-static": "^2.0.0",
     "lodash.mergewith": "^4.0.4",
-    "mocha": "^2.4.5",
+    "mocha-loader": "^0.7.1",
     "postcss-loader": "^0.9.1",
     "progress": "^1.1.8",
     "redbox-react": "^1.2.9",
