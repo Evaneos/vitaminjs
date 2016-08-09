@@ -2,7 +2,7 @@ import { vitaminResolve } from '../utils';
 export default (env) => ({
     presets: [
         ...(env === 'client' ?
-            ['es2015-webpack'] :
+            ['es2015'] :
             ['es2015-node5']
         ),
         'react',
