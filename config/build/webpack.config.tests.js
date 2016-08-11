@@ -1,6 +1,8 @@
+import webpack from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import appConfig from '../index';
-import { config } from './webpack.config.common';
+import { vitaminResolve, concat } from '../utils';
+import { config, createBabelLoaderConfig } from './webpack.config.common';
 
 function testConfig(options) {
     return mergeWith({}, config(options), {
@@ -8,12 +10,21 @@ function testConfig(options) {
         output: {
             filename: 'tests.js',
         },
+        module: {
+            loaders: [
+                createBabelLoaderConfig('client'),
+                // The following loader will resolve the config to its final value during the build
+                {
+                    test: vitaminResolve('config/index'),
+                    loader: vitaminResolve('config/build/requireLoader'),
+                }],
+        },
         externals: {
             'react/addons': true,
             'react/lib/ExecutionEnvironment': true,
-            'react/lib/ReactContext': true
-        }
-    });
+            'react/lib/ReactContext': true,
+        },
+    }, concat);
 }
 
 module.exports = testConfig;
