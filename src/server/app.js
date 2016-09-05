@@ -6,6 +6,7 @@ import renderer from './middlewares/renderer';
 import errorHandler from './middlewares/errorHandler';
 import storeCreator from './middlewares/store';
 import router from './middlewares/router';
+import actionDispatcher from './middlewares/actionDispatcher';
 import staticAssetsServer from './middlewares/staticAssetsServer';
 import appMiddlewares from '__app_modules__server_middlewares__';
 export default compose([
@@ -20,6 +21,7 @@ export default compose([
     ...appMiddlewares,
     staticAssetsServer(),
     storeCreator(),
+    actionDispatcher(),
     router(),
     renderer(),
 ]);

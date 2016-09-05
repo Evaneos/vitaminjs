@@ -112,6 +112,7 @@ const modulePaths = [
     ['server', 'Error404Page'],
     ['server', 'Error500Page'],
     ['server', 'layout'],
+    ['server', 'actionDispatcher'],
     ['redux', 'reducers'],
     ['redux', 'middlewares'],
     ['redux', 'enhancers'],
