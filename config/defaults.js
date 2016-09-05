@@ -40,8 +40,5 @@ export default {
         },
     },
 
-    // TODO REFACTOR, I DONT LIKE THIS
-    init: '__vitamin__/config/utils/identityFunction',
-    renderFullPage: true,
     rootElementId: 'vitamin-app',
 };

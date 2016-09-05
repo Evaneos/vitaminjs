@@ -116,7 +116,6 @@ const modulePaths = [
     ['redux', 'middlewares'],
     ['redux', 'enhancers'],
     ['redux', 'state', 'serializer'],
-    ['init'],
 ];
 
 export const moduleMap = getModuleMap(modulePaths);
