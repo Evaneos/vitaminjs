@@ -10,6 +10,11 @@
             "experimentalObjectRestSpread": true
         }
     },
+    "globals": {
+        "IS_CLIENT": false,
+        "IS_SERVER": false,
+    },
+
     "rules": {
         // We use 4 space indent at Evaneos
         "indent": [2, 4],
