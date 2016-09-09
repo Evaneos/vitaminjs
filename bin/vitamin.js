@@ -152,7 +152,7 @@ program
     .command('test [runnerArgs...]')
     .alias('t')
     .description('Build test suite')
-    .option('-r, --runner [type]', 'Choose your test suite to run vitamin with', 'mocha')
+    .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
     .option('-h, --hot', 'Activate hot reload for tests')
     .action((runnerArgs, { runner, hot }) => {
         test({ hot, runner, runnerArgs: runnerArgs.join(' ') });
