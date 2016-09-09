@@ -4,7 +4,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
-import init from '__app_modules__init__';
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
@@ -42,9 +41,11 @@ function bootstrapClient() {
         );
 
     const syncedHistory = syncHistoryWithStore(history, store);
-    if (init instanceof Function) init(store);
     // Todo replace by vitamin-app-[hash] ?
     const appElement = document.getElementById(config.rootElementId);
+    const passStore = route => (
+        typeof route === 'function' ? route(store) : route
+    );
 
     if (module.hot) {
         const renderError = (error, rootEl) => {
@@ -63,13 +64,13 @@ function bootstrapClient() {
             const newRoutes = require('__app_modules__routes__').default;
             unmountComponentAtNode(appElement);
             try {
-                render(syncedHistory, store, newRoutes, appElement);
+                render(syncedHistory, store, passStore(newRoutes), appElement);
             } catch (e) {
                 renderError(e, appElement);
             }
         });
     }
-    render(syncedHistory, store, routes, appElement);
+    render(syncedHistory, store, passStore(routes), appElement);
 }
 
 bootstrapClient();

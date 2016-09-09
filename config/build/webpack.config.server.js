@@ -64,6 +64,8 @@ module.exports = function serverConfig(options) {
             })] : []),
             new DefinePlugin({
                 __VITAMIN__CLIENT_BUNDLE_VERSION__: `'${options.hash || ''}'`,
+                IS_CLIENT: false,
+                IS_SERVER: true,
             }),
         ],
     }, concat);

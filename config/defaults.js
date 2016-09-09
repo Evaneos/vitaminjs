@@ -8,6 +8,7 @@ export default {
         basePath: '',
         externalUrl: '',
         layout: '__vitamin__/src/server/components/HtmlLayout',
+        actionDispatcher: '__vitamin__/config/utils/defaultFunction',
     },
     routes: '__vitamin__/config/utils/emptyArray',
     redux: {
@@ -40,8 +41,5 @@ export default {
         },
     },
 
-    // TODO REFACTOR, I DONT LIKE THIS
-    init: '__vitamin__/config/utils/identityFunction',
-    renderFullPage: true,
     rootElementId: 'vitamin-app',
 };

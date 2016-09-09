@@ -1,6 +1,6 @@
 import { vitaminResolve, appResolve } from '../utils';
 import appConfig, { moduleMap } from '../index';
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin } from 'webpack';
+import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
 import babelrc from './babelrc';
 
@@ -76,6 +76,7 @@ export function config(options) {
         plugins: [
             ...(options.hot ? [
                 new HotModuleReplacementPlugin(),
+                new NamedModulesPlugin(),
                 new LoaderOptionsPlugin({
                     test: /\.css$/,
                     debug: true,
