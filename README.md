@@ -23,30 +23,57 @@ What's included in the menu
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
 
 ## How to get started ?
-First, install the peer dependancies
+First, initialize your project and install the peer dependencies with
 ```bash
+npm init
 npm i -S async-props react react-router react-router-redux redux react-redux react-helmet isomorphic-style-loader
-```
-```bash
 npm i -S vitaminjs
 ```
-Create the `.vitaminrc` file at the root of your project (see below). Finally:
 
-```
-$ ./node_modules/bin/vitamin start --hot
-```
-## `.vitaminrc`
-All the configuration of your app is reduced to a single JSON file (with comments supported)
+Then, create the `.vitaminrc` file at the root of your project.
 ### routes
-A path to the module containing the root [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react application. This is basically all you need to provide to have your app working, if you are not using redux.
+It is a path to the module containing the main [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react app.
 ### redux
 All the configuration specific to redux
 #### redux.reducers
 The path to the module that exports an **object** of you app reducers.
 
 vitamin will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
-#### redux.middlewares
+
+#### redux.middlewares (optional)
 A path to a module that exports an array of redux middlewares.
+
+It should look like that:
+```bash
+{
+    "routes": "./routes",
+    "redux": {
+        "reducers": "./reducers"
+    }
+}
+```
+
+Create the `routes.js`file:
+
+```bash
+import { Route } from 'react-router';
+
+export default (
+    <Route path="/">
+
+);
+```
+Create the `reducers.js`file:
+```bash
+export default {};
+```
+
+And finally you can launch your app with
+```bash
+vitamin start --hot
+```
+Open http://localhost:3000.
+
 
 ## TODO
 * [ ] Prevent CSRF
