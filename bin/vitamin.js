@@ -40,7 +40,7 @@ const buildCallback = (resolve, reject) => (err, stats) => {
             colors: true,
             errorDetails: true,
         }));
-        return reject(err);
+        return reject && reject(err);
     }
     console.log('Build complete!');
     console.log(stats.toString({
@@ -59,7 +59,7 @@ const buildCallback = (resolve, reject) => (err, stats) => {
         errorDetails: false,
         chunkOrigins: false,
     }));
-    return resolve(stats);
+    return resolve && resolve(stats);
 };
 
 const buildClient = ({ hot }) => new Promise((resolve, reject) => {
@@ -96,19 +96,34 @@ const build = ({ hot }) =>
             return promise;
         });
 
-const buildTest = () => {
+const test = ({ hot, runner, runnerArgs }) => {
+    const launchTest = () => {
+        console.log('Launching tests...');
+        const serverFile = path.join(
+            config.build.path,
+            'tests'
+        );
+        const serverProcess = exec(`${runner} ${serverFile} ${runnerArgs}`);
+        serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
+        serverProcess.stderr.on('data', data => console.error(data.toString()));
+    };
+
     if (config.test === undefined) {
         throw new Error('Please specify a test file path in .vitaminrc');
     }
-    return new Promise((resolve, reject) => {
-        const compiler = webpack(webpackConfigTest({ hot: false, dev: true }));
-        const bar = new ProgressBar(
-            'Building client... :percent [:bar]',
-            { incomplete: ' ', total: 60, width: 50, clear: true }
-        );
-        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-        compiler.run(buildCallback(resolve, reject));
-    });
+
+    const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
+    const bar = new ProgressBar(
+        'Building tes' +
+        'ts... :percent [:bar]',
+        { incomplete: ' ', total: 60, width: 50, clear: true }
+    );
+    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    if (hot) {
+        compiler.watch({}, buildCallback(launchTest));
+    } else {
+        compiler.run(buildCallback(launchTest));
+    }
 };
 
 const serve = () => {
@@ -129,27 +144,25 @@ const serve = () => {
     });
 };
 
-const launchTest = (runner) => {
-    console.log('Launching tests...');
-    const serverFile = path.join(
-        config.build.path,
-        'tests'
-    );
-    const serverProcess = exec(`${runner} ${serverFile} --color`);
-    serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
-    serverProcess.stderr.on('data', data => console.error(data.toString()));
-};
-
 program
     .description('Build framework for react/redux ecosystem')
     .version(version);
 
 program
-    .command('test')
+    .command('test [runnerArgs...]')
     .alias('t')
     .description('Build test suite')
     .option('-r, --runner [type]', 'Choose your test suite to run vitamin with', 'mocha')
-    .action(({ runner }) => buildTest().then(() => launchTest(runner)));
+    .option('-h, --hot', 'Activate hot reload for tests')
+    .action((runnerArgs, { runner, hot }) => {
+        test({ hot, runner, runnerArgs: runnerArgs.join(' ') });
+    })
+    .on('--help', () => {
+        console.log('  Examples:');
+        console.log('');
+        console.log('    $ vitamin test -r mocha -- --color');
+        console.log('');
+    });
 
 program
     .command('build')
