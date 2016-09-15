@@ -4,7 +4,7 @@ import program from 'commander';
 import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
-import { spawn, exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigServer from '../config/build/webpack.config.server';
@@ -104,8 +104,8 @@ const test = ({ hot, runner, runnerArgs }) => {
             'tests'
         );
         const serverProcess = exec(`${runner} ${serverFile} ${runnerArgs}`);
-        serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
-        serverProcess.stderr.on('data', data => console.error(data.toString()));
+        serverProcess.stdout.pipe(process.stdout);
+        serverProcess.stderr.pipe(process.stderr);
     };
 
     if (config.test === undefined) {
@@ -132,15 +132,15 @@ const serve = () => {
         config.build.path,
         config.build.server.filename
     );
-    const serverProcess = spawn('node', [serverFile]);
-    process.on('SIGINT', () => {
-        serverProcess.kill('SIGINT');
-        process.exit(128 + 2);
-    });
-    serverProcess.stdout.on('data', data => console.log(data.toString().trim()));
-    serverProcess.stderr.on('data', data => console.error(data.toString()));
-    serverProcess.on('close', code => {
-        throw new Error(`Server exit with code ${code}`);
+    const serverProcess = spawn('node', [serverFile], { stdio: 'inherit' });
+    const killServer = signal => () => {
+        serverProcess.kill(signal);
+        process.exit();
+    };
+    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => process.on(signal, killServer(signal)));
+    serverProcess.on('close', () => {
+        throw new Error(`Server process exited unexpectedly. This is probably a problem with
+vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues`);
     });
 };
 
