@@ -28,8 +28,8 @@ file at the root of your project.
    - [filename](#serverFilename)
  - [client](#client)
    - [publicPath](#publicPath)
-   - [filename](#clientFilename)
-   - [secondaryEntries](#secondaryEntries)
+    - [filename](#clientFilename)
+    - [secondaryEntries](#secondaryEntries)
 - [rootElementId](#rootElementId)
 
 ## <a id='routes'></a>[`routes`](#routes)
@@ -136,13 +136,13 @@ Config options for the build files for both server and client
 
 The path relative to the application root where both server and client bundle are going to be generated
 
-### <a id='server'></a>[`server`](#buildServer)
+### <a id='buildServer'></a>[`server`](#buildServer)
 **`Path Object`**
 
 
 Config options for the server build
 
-### <a id='filename'></a>[`filename`](#serverFilename)
+### <a id='serverFilename'></a>[`filename`](#serverFilename)
 **`String `**
 
 
