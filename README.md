@@ -29,7 +29,8 @@ npm install -g vitaminjs-cli
 vitaminjs new
 ```
 
-Then, create the `.vitaminrc` file at the root of your project.
+## vitaminrc
+
 ### routes
 It is a path to the module containing the main [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react app.
 ### redux
