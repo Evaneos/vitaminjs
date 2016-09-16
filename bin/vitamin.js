@@ -8,7 +8,7 @@ import { exec, spawn } from 'child_process';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
 
-import webpackConfigClient from '../config/build/webpack.config.client';
+import webpackConfig from '../config/build/webpack.config';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import config from '../config';
@@ -62,39 +62,19 @@ const buildCallback = (resolve, reject) => (err, stats) => {
     return resolve && resolve(stats);
 };
 
-const buildClient = ({ hot }) => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackConfigClient({ hot, dev: DEV }));
+const build = ({ hot }) => new Promise((resolve, reject) => {
+    const compiler = webpack((hot ? webpackConfigServer : webpackConfig)({ hot, dev: DEV }));
     const bar = new ProgressBar(
-        'Building client... :percent [:bar]',
+        'Building app... :percent [:bar]',
         { incomplete: ' ', total: 60, width: 50, clear: true }
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-    compiler.run(buildCallback(resolve, reject));
-});
-
-const buildServer = ({ hot, watch, hash }) => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackConfigServer({ hot, dev: DEV, hash }));
-    const bar = new ProgressBar(
-        'Building server... :percent [:bar]',
-        { incomplete: ' ', total: 60, width: 50, clear: true }
-    );
-    if (watch) {
-        compiler.watch({}, () => null);
+    if (hot) {
+        compiler.watch({}, buildCallback(resolve, reject));
     } else {
-        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
         compiler.run(buildCallback(resolve, reject));
     }
 });
-
-const build = ({ hot }) =>
-    // Generate client bundle and hash version
-    (hot ? Promise.resolve({ hash: null }) : buildClient({ hot }))
-        .then(({ hash }) => {
-            // Generate server bundle version, thanks to the hash
-            const promise = buildServer({ hot, hash });
-            if (hot) promise.then(() => buildServer({ hot, hash, watch: true }));
-            return promise;
-        });
 
 const test = ({ hot, runner, runnerArgs }) => {
     const launchTest = () => {
@@ -114,8 +94,7 @@ const test = ({ hot, runner, runnerArgs }) => {
 
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
     const bar = new ProgressBar(
-        'Building tes' +
-        'ts... :percent [:bar]',
+        'Building tests... :percent [:bar]',
         { incomplete: ' ', total: 60, width: 50, clear: true }
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));

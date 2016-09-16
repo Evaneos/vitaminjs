@@ -8,20 +8,13 @@ const propTypes = {
     script: PropTypes.object.isRequired,
     initialState: PropTypes.object,
     children: PropTypes.string.isRequired,
+    entryPaths: PropTypes.shape({
+        [config.build.client.filename]: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
-const buildSourceUrl = () =>
-    `${config.server.externalUrl
-        + config.server.basePath
-        + config.build.client.publicPath}/${
-        /* global __VITAMIN__CLIENT_BUNDLE_VERSION__ */
-        config.build.client.filename.replace(/\[hash\]/,
-            module.hot ? 'hot' : __VITAMIN__CLIENT_BUNDLE_VERSION__
-        )}`
-;
-
 /* eslint-disable react/no-danger */
-function AppContainer({ script, initialState, children }) {
+function AppContainer({ script, initialState, children, entryPaths }) {
     return (<div>
         <div
             id={config.rootElementId}
@@ -30,16 +23,18 @@ function AppContainer({ script, initialState, children }) {
         {initialState ?
             <script
                 dangerouslySetInnerHTML={{
-                    __html: `window.__INITIAL_STATE__ = "${
-                        jsStringEscape(stateStringifier(initialState))
-                    }"`,
+                    __html: `
+                        window.__INITIAL_STATE__ = "${
+                            jsStringEscape(stateStringifier(initialState))
+                        }"
+                        window.__ENTRY_PATHS__ = ${JSON.stringify(entryPaths)}`,
                 }}
             /> : null}
         {script.toComponent()}
         {initialState ?
             <script
                 async
-                src={buildSourceUrl()}
+                src={entryPaths[config.build.client.filename]}
             /> : null}
     </div>);
 }
