@@ -25,9 +25,8 @@ What's included in the menu
 ## How to get started ?
 First, initialize your project and install the peer dependencies with
 ```bash
-npm init
-npm i -S async-props react react-router react-router-redux redux react-redux react-helmet isomorphic-style-loader
-npm i -S vitaminjs
+npm install -g vitamin-cli
+vitamin new
 ```
 
 Then, create the `.vitaminrc` file at the root of your project.
