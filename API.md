@@ -10,8 +10,7 @@ file at the root of your project.
  - [reducers](#reducers)
  - [middlewares](#reduxMiddlewares)
  - [enhancers](#enhancers)
- - [state](#state)
-   - [serializer](#serializer)
+ - [stateSerializer](#stateSerializer)
 - [server](#server)
  - [host](#host)
  - [port](#port)
@@ -56,7 +55,23 @@ a simple reducer with combineReducer
 A path to a file exporting an array of [redux middleware](http://redux.js.org/docs/advanced/Middleware.html). By default, vitamin adds the [router](https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions) and
 [redux-thunk](https://github.com/gaearon/redux-thunk) middleware.
 
-## Server
+### <a id='enhancers'></a>[`enhancers`](#enhancers)
+**`Path [ StoreEnhancers ]`**
+
+
+A path to a file exporting an array of [store enhancers](https://github.com/reactjs/redux/blob/master/docs/Glossary.md#store-enhancer).
+
+### <a id='stateSerializer'></a>[`stateSerializer`](#stateSerializer)
+**`Path`**
+ 
+ 
+Path to a file exporting two functions.
+ - **`stringify`**: `State-> String`
+ - **`parse`**: `String -> State`
+
+Used for transmetting the state computed by the server to the client. By default, it serialize the state with JSON. It should be good if you're doing Vanilla redux. If, however, you use some fancy structure in your state (for instance [Immutable.js](https://facebook.github.io/immutable-js/), you can specify a different parser and stringifier.
+
+## <a id='server'></a>[`server`](#server)
 Config option for server side rendering, specified in the `server` key of the config object.
 ### <a id='host'></a>[`host`](#host)
 **`String`**
@@ -125,9 +140,6 @@ The page that display when a error occurs during the server side rendering.
 - `error` (optional): the error throwed. Useful for printing stack. Only passed when in dev mode.
 
 ## <a id='build'></a>[`build`](#build)
-**`Path Object`**
-
-
 Config options for the build files for both server and client
 
 ### <a id='buildPath'></a>[`path`](#buildPath)
@@ -171,7 +183,7 @@ Define the filename of the client build. It is relative to [`build.path`](#build
 
 TODO 
 
-### <a id='rootElementId'></a>[`rootElementId`](#rootElementId)
+## <a id='rootElementId'></a>[`rootElementId`](#rootElementId)
 **`String`**
 
 If you want to run your application without headers, you can define here the element ID where the app will append itself. By default, it's `vitamin-app`
