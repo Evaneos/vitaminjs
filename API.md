@@ -23,7 +23,7 @@ file at the root of your project.
  - [Error404Page](#Error404)
  - [Error500Page](#Error500)
 - [build](#build)
- - [path](#path)
+ - [path](#buildPath)
  - [server](#buildServer)
    - [filename](#serverFilename)
  - [client](#client)
@@ -130,7 +130,7 @@ The page that display when a error occurs during the server side rendering.
 
 Config options for the build files for both server and client
 
-### <a id='path'></a>[`path`](#path)
+### <a id='buildPath'></a>[`path`](#buildPath)
 **`String`**
 
 
@@ -146,7 +146,7 @@ Config options for the server build
 **`String `**
 
 
-Define the filename of the server build. It is relative to [`build.path`](#path). By default, it's `server_bundle.js`
+Define the filename of the server build. It is relative to [`build.path`](#buildPath). By default, it's `server_bundle.js`
 
 ### <a id='client'></a>[`client`](#client)
 **`Path Object`**
@@ -164,7 +164,7 @@ The URL from which all the public files should be made available. It is similar 
 **`String`**
 
 
-Define the filename of the client build. It is relative to [`build.path`](#path). You can include a hash with the placeholder `[hash]`. By default, it's `client_bundle.[hash].js`
+Define the filename of the client build. It is relative to [`build.path`](#buildPath). You can include a hash with the placeholder `[hash]`. By default, it's `client_bundle.[hash].js`
 
 ### <a id='secondaryEntries'></a>[`secondaryEntries`](#secondaryEntries)
 **`Path Object`**
