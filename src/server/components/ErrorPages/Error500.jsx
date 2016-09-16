@@ -1,9 +1,9 @@
 import Helmet from 'react-helmet';
+import { PropTypes } from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Pineapple from './Pineapple';
 import ErrorPage from './ErrorPage';
-import { PropTypes } from 'react';
 import s from './style.css';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const propTypes = {
     /* In production, error is null (prevent leaking internals) */

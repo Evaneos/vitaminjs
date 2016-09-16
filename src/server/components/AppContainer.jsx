@@ -1,6 +1,7 @@
 import { PropTypes } from 'react';
-import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 import jsStringEscape from 'js-string-escape';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 import config from '../../../config';
 
 const propTypes = {
@@ -19,6 +20,7 @@ const buildSourceUrl = () =>
         )}`
 ;
 
+/* eslint-disable react/no-danger */
 function AppContainer({ script, initialState, children }) {
     return (<div>
         <div

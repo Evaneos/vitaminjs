@@ -1,7 +1,7 @@
 import Helmet from 'react-helmet';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { PropTypes } from 'react';
 import s from './style.css';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const propTypes = {
     children: PropTypes.node.isRequired,

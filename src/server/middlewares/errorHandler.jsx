@@ -1,9 +1,12 @@
-import Error404 from '__app_modules__server_Error404Page__';
-import Error500 from '__app_modules__server_Error500Page__';
-import CSSProvider from '../../shared/components/CSSProvider';
-import { renderLayout } from '../render';
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
+/* eslint-disable import/no-extraneous-dependencies */
+import Error404 from '__app_modules__server_Error404Page__';
+import Error500 from '__app_modules__server_Error500Page__';
+/* eslint-enable import/no-extraneous-dependencies */
+
+import CSSProvider from '../../shared/components/CSSProvider';
+import { renderLayout } from '../render';
 
 
 // TODO : Add a __PRODUCTION__ global variable, instead of NODE_ENV
@@ -21,7 +24,7 @@ const renderRawError = (status, renderingError) => (
 
 const renderErrorPage = (ErrorPage) => {
     const css = [];
-    const insertCss = (styles) => css.push(styles._getCss());
+    const insertCss = styles => css.push(styles._getCss());
 
     const app = (<CSSProvider insertCss={insertCss}>
         <ErrorPage />
@@ -34,7 +37,7 @@ const renderErrorPage = (ErrorPage) => {
     });
 };
 
-export default () => function *errorHandlerMiddleware(next) {
+export default () => function* errorHandlerMiddleware(next) {
     let errorPage;
     try {
         yield next;

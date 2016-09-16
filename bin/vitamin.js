@@ -5,14 +5,14 @@ import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
 import { exec, spawn } from 'child_process';
+import ProgressPlugin from 'webpack/lib/ProgressPlugin';
+import ProgressBar from 'progress';
 
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import config from '../config';
 import { version } from '../package.json';
-import ProgressPlugin from 'webpack/lib/ProgressPlugin';
-import ProgressBar from 'progress';
 
 const DEV = process.env.NODE_ENV !== 'production';
 
@@ -186,7 +186,7 @@ program
     .action(({ hot }) =>
         clean()
             .then(() => build({ hot: checkHot(hot) }).then(serve))
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
                 process.exit(1);
             })

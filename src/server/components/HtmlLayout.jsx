@@ -9,7 +9,7 @@ const propTypes = {
 };
 
 const HtmlLayout = ({ appHtmlString, initialState, head, style }) => (
-    <html>
+    <html lang={head.htmlAttributes.lang} {...head.htmlAttributes}>
         <head>
             {head.title.toComponent()}
             {head.meta.toComponent()}

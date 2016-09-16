@@ -2,14 +2,17 @@ import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
-import { create as createStore, createRootReducer } from '../shared/store';
-import config from '../../config';
+import RedBox from 'redbox-react';
+/* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
+/* eslint-enable import/no-extraneous-dependencies */
+
+import { create as createStore, createRootReducer } from '../shared/store';
+import config from '../../config';
 import App from '../shared/components/App';
-import RedBox from 'redbox-react';
 
 function render(history, store, rootRoute, element) {
     const insertCss = ({ _insertCss }) => _insertCss();
@@ -42,7 +45,7 @@ function bootstrapClient() {
 
     const syncedHistory = syncHistoryWithStore(history, store);
     // Todo replace by vitamin-app-[hash] ?
-    const appElement = document.getElementById(config.rootElementId);
+    const appElement = window.document.getElementById(config.rootElementId);
     const passStore = route => (
         typeof route === 'function' ? route(store) : route
     );
@@ -55,13 +58,15 @@ function bootstrapClient() {
             );
         };
         module.hot.accept('__app_modules__redux_reducers__', () => {
-            // eslint-disable-next-line global-require
+            // eslint-disable-next-line global-require, import/no-extraneous-dependencies
             const newReducer = require('__app_modules__redux_reducers__').default;
+
             store.replaceReducer(createRootReducer(newReducer));
         });
         module.hot.accept('__app_modules__routes__', () => {
-            // eslint-disable-next-line global-require
+            // eslint-disable-next-line global-require, import/no-extraneous-dependencies
             const newRoutes = require('__app_modules__routes__').default;
+
             unmountComponentAtNode(appElement);
             try {
                 render(syncedHistory, store, passStore(newRoutes), appElement);

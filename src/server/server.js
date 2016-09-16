@@ -12,6 +12,7 @@ function hotReloadServer() {
         hot: true,
         dev: true,
     });
+
     const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
     clientBuildConfig = clientBuildConfig
         .map(webpackConfig => ({
@@ -39,6 +40,7 @@ function hotReloadServer() {
         noInfo: true,
         reload: true,
     }));
+
     return server;
 }
 
