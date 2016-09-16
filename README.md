@@ -25,8 +25,8 @@ What's included in the menu
 ## How to get started ?
 First, initialize your project and install the peer dependencies with
 ```bash
-npm install -g vitamin-cli
-vitamin new
+npm install -g vitaminjs-cli
+vitaminjs new
 ```
 
 Then, create the `.vitaminrc` file at the root of your project.
