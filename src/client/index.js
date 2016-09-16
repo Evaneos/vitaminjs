@@ -7,7 +7,7 @@ import config from '../../config';
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
-import { parse as stateParser } from '__app_modules__redux_state_serializer__';
+import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 import App from '../shared/components/App';
 import RedBox from 'redbox-react';
 

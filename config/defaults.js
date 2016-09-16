@@ -15,9 +15,7 @@ export default {
         reducers: '__vitamin__/config/utils/emptyObject',
         middlewares: '__vitamin__/config/utils/emptyArray',
         enhancers: '__vitamin__/config/utils/emptyArray',
-        state: {
-            serializer: '__vitamin__/src/shared/defaultStateSerializer',
-        },
+        stateSerializer: '__vitamin__/src/shared/defaultStateSerializer',
     },
     build: {
         // Relative to application root

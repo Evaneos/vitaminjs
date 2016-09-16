@@ -1,5 +1,5 @@
 import { PropTypes } from 'react';
-import { stringify as stateStringifier } from '__app_modules__redux_state_serializer__';
+import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 import jsStringEscape from 'js-string-escape';
 import config from '../../../config';
 
