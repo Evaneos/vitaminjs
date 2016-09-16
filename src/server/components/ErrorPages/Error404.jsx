@@ -1,9 +1,9 @@
 /* eslint no-script-url: "off" */
 
 import Helmet from 'react-helmet';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Pineapple from './Pineapple';
 import s from './style.css';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ErrorPage from './ErrorPage';
 
 const Error404 = () => (

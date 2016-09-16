@@ -6,8 +6,9 @@ import {
 } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
+/* eslint-disable import/no-extraneous-dependencies */
 import appEnhancers from '__app_modules__redux_enhancers__';
-import { storeEnhancers as devEnhancers } from './devTools';
+import devEnhancers from './devTools';
 
 export function createRootReducer(reducers) {
     return combineReducers({ ...reducers, routing: routerReducer });

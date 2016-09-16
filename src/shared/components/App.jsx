@@ -1,6 +1,6 @@
 import { PropTypes } from 'react';
-import CSSProvider from './CSSProvider';
 import { Provider } from 'react-redux';
+import CSSProvider from './CSSProvider';
 
 const propTypes = {
     store: PropTypes.object.isRequired,

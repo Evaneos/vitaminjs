@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import AsyncProps from 'async-props';
@@ -11,7 +12,7 @@ export function renderLayout(props) {
 
 export default function render(store, renderProps, asyncProps) {
     const css = [];
-    const insertCss = (styles) => css.push(styles._getCss());
+    const insertCss = styles => css.push(styles._getCss());
 
     const app = (<App store={store} insertCss={insertCss}>
         <AsyncProps {...renderProps} {...asyncProps} />

@@ -1,8 +1,9 @@
-export const storeEnhancers = [];
-
+const storeEnhancers = [];
 if (process.env.NODE_ENV !== 'production') {
     if (typeof window !== 'undefined' &&
         typeof window.devToolsExtension !== 'undefined') {
         storeEnhancers.push(window.devToolsExtension());
     }
 }
+
+export default storeEnhancers;
