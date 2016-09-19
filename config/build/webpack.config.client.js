@@ -41,7 +41,7 @@ for (const key of Object.keys(secondaryEntries)) {
     secondaryEntries[key] = appResolve(secondaryEntries[key]);
 }
 const entries = {
-    [appConfig.build.client.filename]: vitaminResolve('src', 'client', 'index.js'),
+    [appConfig.build.client.filename]: vitaminResolve('src', 'client', 'index.jsx'),
     ...secondaryEntries,
 };
 module.exports = options =>
