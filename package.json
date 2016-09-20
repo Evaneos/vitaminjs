@@ -84,7 +84,7 @@
     "strip-json-comments": "^2.0.1",
     "strip-json-comments-loader": "0.0.2",
     "url-loader": "^0.5.7",
-    "webpack": "^2.1.0-beta.21",
+    "webpack": "2.1.0-beta.22",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.11.0"
   },
