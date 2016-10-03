@@ -1,17 +1,21 @@
-import { createBabelLoaderConfig, config } from './webpack.config.common.js';
-import { concat, vitaminResolve, appResolve } from '../utils';
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
+import AssetsPlugin from 'assets-webpack-plugin';
+import { createBabelLoaderConfig, config } from './webpack.config.common.js';
+import { concat, vitaminResolve, appResolve } from '../utils';
 import appConfig from '../index';
 
-function clientConfig(options, entryName, entryPath) {
+function clientConfig(options, entryName, entryPath, assetPlugin) {
+    const hmrPath = `${appConfig.server.basePath + appConfig.build.client.publicPath}/__webpack_hmr`;
+    const hotMiddlewareAsset =
+        `webpack-hot-middleware/client?path=${appConfig.server.externalUrl + hmrPath}`;
     return mergeWith({}, config(options), {
-        entry: entryPath,
+        entry: { [entryName]: options.hot ? [entryPath, hotMiddlewareAsset] : entryPath },
         output: {
             filename: entryName,
         },
         module: {
-            loaders: [
+            rules: [
                 createBabelLoaderConfig('client'),
                 // The following loader will resolve the config to its final value during the build
                 {
@@ -32,6 +36,7 @@ function clientConfig(options, entryName, entryPath) {
                 IS_CLIENT: true,
                 IS_SERVER: false,
             }),
+            assetPlugin,
         ],
     }, concat);
 }
@@ -44,8 +49,12 @@ const entries = {
     [appConfig.build.client.filename]: vitaminResolve('src', 'client', 'index.jsx'),
     ...secondaryEntries,
 };
-module.exports = options =>
-    Object.keys(entries).map(
-        entryName => clientConfig(options, entryName, entries[entryName])
+module.exports = (options) => {
+    const assetPlugin = new AssetsPlugin({
+        path: appConfig.build.path,
+        prettyPrint: true,
+    });
+    return Object.keys(entries).map(
+        entryName => clientConfig(options, entryName, entries[entryName], assetPlugin)
     );
-
+};

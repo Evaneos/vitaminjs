@@ -6,13 +6,13 @@ import babelrc from './babelrc';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
 
-export const createBabelLoaderConfig = (env) => ({
+export const createBabelLoaderConfig = env => ({
     test: /\.js(x?)$/,
     loader: 'babel',
-    include: (path) =>
+    include: path =>
         path.indexOf('node_modules') === -1 ||
-        path.indexOf('node_modules/vitaminjs') !== -1 &&
-        path.indexOf('node_modules/vitaminjs/node_modules') === -1,
+        (path.indexOf('node_modules/vitaminjs') !== -1 &&
+        path.indexOf('node_modules/vitaminjs/node_modules') === -1),
     query: babelrc(env),
 });
 export function config(options) {
@@ -35,7 +35,7 @@ export function config(options) {
             wrappedContextRegExp: /$^/,
             wrappedContextCritical: true,
 
-            loaders: [{
+            rules: [{
                 // only files with .global will go through this loader
                 test: /\.global\.css$/,
                 loaders: [
@@ -70,16 +70,15 @@ export function config(options) {
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
         },
-        postcss() {
-            return [autoprefixer];
-        },
         plugins: [
             ...(options.hot ? [
                 new HotModuleReplacementPlugin(),
                 new NamedModulesPlugin(),
                 new LoaderOptionsPlugin({
                     test: /\.css$/,
+                    context: __dirname,
                     debug: true,
+                    postcss: [autoprefixer],
                 }),
             ] : []),
         ],
