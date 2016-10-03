@@ -11,7 +11,7 @@ const Error404 = () => (
             <span>4</span>
         </div>
         <h1>Not Found</h1>
-        <h2>We can't seem to find the page you asked</h2>
+        <h2>We can&apos;t seem to find the page you asked</h2>
         <p>
             Maybe the resource you were looking for have been moved, or deleted.
             Maybe it has never existed. Anyway, you can
