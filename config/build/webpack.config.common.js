@@ -71,15 +71,15 @@ export function config(options) {
             extensions: ['.js', '.jsx', '.json', '.css'],
         },
         plugins: [
+            new LoaderOptionsPlugin({
+                test: /\.css$/,
+                context: __dirname,
+                debug: true,
+                postcss: [autoprefixer],
+            }),
             ...(options.hot ? [
                 new HotModuleReplacementPlugin(),
                 new NamedModulesPlugin(),
-                new LoaderOptionsPlugin({
-                    test: /\.css$/,
-                    context: __dirname,
-                    debug: true,
-                    postcss: [autoprefixer],
-                }),
             ] : []),
         ],
     };
