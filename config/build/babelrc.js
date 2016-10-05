@@ -6,7 +6,7 @@ export default env => ({
             ['es2015', { modules: false }] :
             'es2015-node6/object-rest'
         ),
-        'react', 'es2016', 'es2017', 'stage-1',
+        'react', 'stage-1',
     ],
     plugins: [
         // Make optional the explicit import of React in JSX files
@@ -15,7 +15,7 @@ export default env => ({
         ...(env === 'server' ?
             ['transform-runtime'] :
             // in the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
-            // bundle the smallest possible.
+            // bundle size the smallest possible.
             []
         ),
 

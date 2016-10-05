@@ -19,8 +19,8 @@ file at the root of your project.
  - [middlewares](#serverMiddlewares)
  - [actionDispatcher](#actionDispatcher)
  - [layout](#layout)
- - [Error404Page](#Error404)
- - [Error500Page](#Error500)
+ - [ErrorPage](#ErrorPage)
+ - [onError](#onError)
 - [build](#build)
  - [path](#buildPath)
  - [server](#buildServer)
@@ -63,8 +63,8 @@ A path to a file exporting an array of [store enhancers](https://github.com/reac
 
 ### <a id='stateSerializer'></a>[`stateSerializer`](#stateSerializer)
 **`Path`**
- 
- 
+
+
 Path to a file exporting two functions.
  - **`stringify`**: `State-> String`
  - **`parse`**: `String -> State`
@@ -125,19 +125,33 @@ You can customize the html layout rendered by the server (if you really need to)
 - `head`: The head from [`react-helmet`](https://github.com/nfl/react-helmet#server-usage)
 - `appHTML`: The CSS of the page as a string (to be rendered inside a style tag)
 
-### <a id='Error404'></a>[`Error404Page`](#Error404)
+### <a id='ErrorPage'></a>[`ErrorPage`](#ErrorPage)
 **`Path <ReactComponent>`**
 
-
-The page that display when a route is not found.
-
-### <a id='Error500'></a>[`Error500Page`](#Error500)
-**`Path <ReactComponent>`**
-
-
-The page that display when a error occurs during the server side rendering.
+The page displayed when an error occurs.
 #### Props
-- `error` (optional): the error throwed. Useful for printing stack. Only passed when in dev mode.
+- `HTTPStatus`: the error throwed. Useful for printing stack. Only passed when in dev mode.
+- `request`: The koa request object
+- `error` (optional): If the page is displayed because of an error thrown during rendering (500)
+    you'll find here the javascript Error object (with the usual `name`, `message` and `stack` props)
+- `state` (optional): The redux state object, if it's present
+
+
+### <a id='onError'></a>[`onError`](#onError)
+**`Path (context: { HTTPStatus: Number, request: [`[`KoaRequest`](http://koajs.com/#request)]`, error: `[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)`, state: ReduxState })`**
+
+This function will be called server side when an error occurs during the application rendering.
+Useful for advanced logging.
+
+#### Parameters
+- `context`: An object containing specifics about the error
+    - `HTTPStatus`: the error throwed. Useful for printing stack. Only passed when in dev mode.
+    - `request`: The koa request object
+    - `error` (optional): If the page is displayed because of an error thrown during rendering (500)
+        you'll find here the javascript Error object (with the usual `name`, `message` and `stack`
+        properties)
+    - `state` (optional): The redux state object, if it's present
+
 
 ## <a id='build'></a>[`build`](#build)
 Config options for the build files for both server and client
@@ -181,7 +195,7 @@ Define the filename of the client build. It is relative to [`build.path`](#build
 ### <a id='secondaryEntries'></a>[`secondaryEntries`](#secondaryEntries)
 **`Path Object`**
 
-TODO 
+TODO
 
 ## <a id='rootElementId'></a>[`rootElementId`](#rootElementId)
 **`String`**

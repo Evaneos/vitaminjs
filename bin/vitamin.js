@@ -7,6 +7,7 @@ import rimraf from 'rimraf';
 import { exec, spawn } from 'child_process';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
+import chalk from 'chalk';
 
 import webpackConfig from '../config/build/webpack.config';
 import webpackConfigServer from '../config/build/webpack.config.server';
@@ -26,8 +27,10 @@ const clean = () => new Promise((resolve, reject) =>
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
-        console.warn(`Warning: Hot module reload option ignored in production environment.
-(based on your NODE_ENV variable)`);
+        console.log(chalk.orange(
+            chalk.bold('Warning: Hot module reload option ignored in production environment.'),
+            '(based on your NODE_ENV variable)',
+        ));
         /* eslint no-param-reassign: 0 */
         return false;
     }
@@ -37,36 +40,30 @@ const checkHot = (hot) => {
 const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
         console.log(stats.toString({
+            hash: false,
+            timings: false,
+            chunks: false,
+            chunkModules: false,
+            modules: false,
+            children: true,
+            version: true,
+            cached: false,
+            cachedAssets: false,
+            reasons: false,
+            source: false,
+            errorDetails: false,
             colors: true,
-            errorDetails: true,
         }));
         return reject && reject(err);
     }
-    console.log('Build complete!');
-    console.log(stats.toString({
-        colors: true,
-        timings: true,
-        hash: true,
-        version: false,
-        assets: false,
-        chunks: false,
-        chunkModules: false,
-        modules: false,
-        children: false,
-        cached: false,
-        reasons: false,
-        source: false,
-        errorDetails: false,
-        chunkOrigins: false,
-    }));
     return resolve && resolve(stats);
 };
 
 const build = ({ hot }) => new Promise((resolve, reject) => {
     const compiler = webpack((hot ? webpackConfigServer : webpackConfig)({ hot, dev: DEV }));
     const bar = new ProgressBar(
-        'Building app... :percent [:bar]',
-        { incomplete: ' ', total: 60, width: 50, clear: true }
+        `${chalk.blue('Building app...')} :percent [:bar]`,
+        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout }
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
     if (hot) {
@@ -78,7 +75,7 @@ const build = ({ hot }) => new Promise((resolve, reject) => {
 
 const test = ({ hot, runner, runnerArgs }) => {
     const launchTest = () => {
-        console.log('Launching tests...');
+        console.log(chalk.blue('Launching tests...'));
         const serverFile = path.join(
             config.build.path,
             'tests'
@@ -94,8 +91,8 @@ const test = ({ hot, runner, runnerArgs }) => {
 
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
     const bar = new ProgressBar(
-        'Building tests... :percent [:bar]',
-        { incomplete: ' ', total: 60, width: 50, clear: true }
+        `${chalk.blue('Building tests...')} :percent [:bar]`,
+        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout }
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
     if (hot) {
@@ -106,7 +103,7 @@ const test = ({ hot, runner, runnerArgs }) => {
 };
 
 const serve = () => {
-    console.log('Launching server...');
+    process.stdout.write(chalk.blue('Launching server...'));
     const serverFile = path.join(
         config.build.path,
         config.build.server.filename
@@ -117,9 +114,16 @@ const serve = () => {
         process.exit();
     };
     ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => process.on(signal, killServer(signal)));
-    serverProcess.on('close', () => {
-        throw new Error(`Server process exited unexpectedly. This is probably a problem with
-vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues`);
+    serverProcess.on('close', (code) => {
+        if (code === 0) {
+            return;
+        }
+        console.error(chalk.red(
+`\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
+might be because of a problem with vitaminjs itself. Please report it to
+https://github.com/Evaneos/vitaminjs/issues`
+        ));
+        process.exit(1);
     });
 };
 
