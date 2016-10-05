@@ -108,11 +108,12 @@ Path to a file exporting an array of koa middlewares. Useful for additional logg
 authentication or other things on server.
 
 ### <a id='actionDispatcher'></a>[`actionDispatcher`](#actionDispatcher)
-**`Path (`[`HTTPRequest`](https://nodejs.org/api/http.html#http_class_http_clientrequest)`, `[`dispatch`](https://redux.js.org/docs/api/Store.html#getState)`, `[`getState`](http://redux.js.org/docs/api/Store.html#getState)`) -> yieldable`**
+**`Path (`[`KoaRequest`](http://koajs.com/#request)`, `[`dispatch`](https://redux.js.org/docs/api/Store.html#getState)`, `[`getState`](http://redux.js.org/docs/api/Store.html#getState)`) -> yieldable`**
 
 
 Path to a file exporting an actionDispatcher. Useful for populating the store on the server before rendering.
-It is passed the node http request object, the dispatch function, and getState. It's expected to return something that can be yield (Promise, Generator, etc..) or nothing. If it returns a yieldable, then the server will wait for its completion before continuing.
+The actionDispatcher is passed the node http request object, the dispatch function, and getState
+as parameters. It's expected to return something that can be yield (Promise, Generator, etc..) or nothing. If it returns a yieldable, then the server will wait for its completion before continuing.
 
 ### <a id='layout'></a>[`layout`](#layout)
 **`Path <ReactComponent>`**
