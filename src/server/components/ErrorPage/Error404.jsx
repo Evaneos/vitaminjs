@@ -1,14 +1,10 @@
 /* eslint no-script-url: "off" */
-
-import Helmet from 'react-helmet';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Pineapple from './Pineapple';
 import s from './style.css';
-import ErrorPage from './ErrorPage';
 
 const Error404 = () => (
-    <ErrorPage>
-        <Helmet title="404 - VitaminJS" />
+    <div>
         <div className={s.pineapple}>
             <span>4</span>
             <Pineapple />
@@ -22,7 +18,7 @@ const Error404 = () => (
             always <a href="javascript:history.back()">go back</a> where you came
             from.
         </p>
-    </ErrorPage>
+    </div>
 );
 
 export default withStyles(s)(Error404);

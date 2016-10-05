@@ -109,8 +109,8 @@ config = loadExtendedConfig(config, rcPath);
 const modulePaths = [
     ['routes'],
     ['server', 'middlewares'],
-    ['server', 'Error404Page'],
-    ['server', 'Error500Page'],
+    ['server', 'ErrorPage'],
+    ['server', 'onError'],
     ['server', 'layout'],
     ['server', 'actionDispatcher'],
     ['redux', 'reducers'],
