@@ -1,43 +1,43 @@
-/* eslint-disable no-console, global-require  */
+/* eslint-disable global-require, no-console */
+
 import koa from 'koa';
 import express from 'express';
+import chalk from 'chalk';
 import config from '../../config';
 import app from './app';
-
 
 function hotReloadServer() {
     const server = express();
     const webpack = require('webpack');
-    let clientBuildConfig = require('../../config/build/webpack.config.client')({
+    const clientBuildConfig = require('../../config/build/webpack.config.client')({
         hot: true,
         dev: true,
     });
 
-    const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
-    clientBuildConfig = clientBuildConfig
-        .map(webpackConfig => ({
-            ...webpackConfig,
-            entry: [
-                webpackConfig.entry,
-                `webpack-hot-middleware/client?path=${config.server.externalUrl + hmrPath}`,
-            ],
-        }))
-        .map(webpackConfig => ({
-            ...webpackConfig,
-            output: {
-                ...webpackConfig.output,
-                filename: webpackConfig.output.filename.replace(/\[hash\]/, 'hot'),
-            },
-        }));
     const compiler = webpack(clientBuildConfig);
     server.use(require('webpack-dev-middleware')(compiler, {
-        noInfo: true,
+        quiet: true,
         publicPath: clientBuildConfig[0].output.publicPath,
+        stats: {
+            hash: false,
+            timings: false,
+            chunks: false,
+            chunkModules: false,
+            modules: false,
+            children: true,
+            version: true,
+            cached: false,
+            cachedAssets: false,
+            reasons: false,
+            source: false,
+            errorDetails: false,
+            colors: true,
+        },
     }));
+
+    const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
     server.use(require('webpack-hot-middleware')(compiler, {
         path: hmrPath,
-        quiet: true,
-        noInfo: true,
         reload: true,
     }));
 
@@ -68,6 +68,11 @@ if (module.hot) {
 
 const { basePath, port, host } = config.server;
 mountedServer.use(basePath, appServer());
+
+
 mountedServer.listen(port, host, () => {
-    console.log(`Server listening on http://${host}:${port}`);
+    process.stdout.write(chalk.blue(`\x1b[0GServer listening on ${
+        chalk.bold.underline(`http://${host}:${port}${basePath}`)
+    }\n\n`));
 });
+

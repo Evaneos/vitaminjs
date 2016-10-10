@@ -1,33 +1,32 @@
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
+import chalk from 'chalk';
 /* eslint-disable import/no-extraneous-dependencies */
-import Error404 from '__app_modules__server_Error404Page__';
-import Error500 from '__app_modules__server_Error500Page__';
+import ErrorPage from '__app_modules__server_ErrorPage__';
+import userOnError from '__app_modules__server_onError__';
 /* eslint-enable import/no-extraneous-dependencies */
 
 import CSSProvider from '../../shared/components/CSSProvider';
 import { renderLayout } from '../render';
 
-
-// TODO : Add a __PRODUCTION__ global variable, instead of NODE_ENV
 const renderRawError = (status, renderingError) => (
     process.env.NODE_ENV === 'production' ?
             status
         : `
             <h2> Error while rendering the ${status} error page.</h2>
-            <p>You might want to check the Error${status} component</p>
+            <p>You might want to check your ErrorPage component</p>
             <strong>${renderingError.name}: ${renderingError.message}</strong>
             <pre><code>${renderingError.stack}</pre></code>
             <hr>
         `
 );
 
-const renderErrorPage = (ErrorPage) => {
+const renderErrorPage = (props) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
 
     const app = (<CSSProvider insertCss={insertCss}>
-        <ErrorPage />
+        <ErrorPage {...props} />
     </CSSProvider>);
 
     return renderLayout({
@@ -37,25 +36,62 @@ const renderErrorPage = (ErrorPage) => {
     });
 };
 
+const onError = (context) => {
+    console.error(
+        chalk.red(`Error ${context.HTTPStatus}:`),
+        `${context.request.method} ${context.request.url}`,
+    );
+    if (context.HTTPStatus === 500) {
+        /* eslint-disable no-console */
+        console.error(chalk.red.bold(context.error.message));
+        console.error(chalk.grey(context.error.stack));
+        /* eslint-enable no-console */
+    }
+    userOnError(context);
+};
+
+function getContext(error) {
+    return {
+        ...(error ? { error } : {}),
+        ...(this.state.store ? { state: this.state.store.getState() } : {}),
+        HTTPStatus: this.status,
+        request: this.request,
+    };
+}
+
+function renderError(error) {
+    try {
+        const context = getContext.call(this, error);
+        this.body = renderErrorPage(context);
+        onError(context);
+    } catch (renderingError) {
+        this.body = renderRawError(this.status, renderingError);
+        onError(getContext.call(this, renderingError));
+    }
+    this.type = 'html';
+}
+
 export default () => function* errorHandlerMiddleware(next) {
-    let errorPage;
     try {
         yield next;
-    } catch (err) {
-        errorPage = () =>
-            <Error500 error={process.env.NODE_ENV === 'production' ? null : err} />;
+    } catch (error) {
         this.status = 500;
-        this.app.emit('error', err, this);
+        renderError.call(this, error);
     }
     if (this.status === 404) {
-        errorPage = Error404;
-    }
-    if (errorPage) {
-        try {
-            this.body = renderErrorPage(errorPage);
-        } catch (renderingError) {
-            this.body = renderRawError(this.status, renderingError);
+        if (this.state.store) {
+            renderError.call(this);
+        } else {
+            // If there is no store, it means that it is a middleware that put a 404, we don't
+            // print a vitaminjs 404
+            onError(getContext.call(this));
+            if (!process.env.NODE_ENV === 'production' && !this.body) {
+                console.warn(chalk.yellow(`\
+It seems that one of your custom koa middleware returned a 404 with no response body.
+This might be intentional, or you might have forgot to yield next.
+(see https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware)`
+                ));
+            }
         }
-        this.type = 'html';
     }
 };
