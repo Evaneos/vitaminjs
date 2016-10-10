@@ -16,7 +16,7 @@ const safeReaddirSync = (path) => {
 const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
 const vitaminModules = externalModules(vitaminResolve('node_modules'));
-const whiteList = ['webpack/hot/poll.js?1000&quiet=true'];
+const whiteList = ['webpack/hot/poll.js?1000'];
 
 function externals(context, request, callback) {
     const pathStart = request.split('/')[0];
@@ -36,7 +36,7 @@ function externals(context, request, callback) {
 module.exports = function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            ...(options.hot ? ['webpack/hot/poll.js?1000&quiet=true'] : []),
+            ...(options.hot ? ['webpack/hot/poll.js?1000'] : []),
             vitaminResolve('src', 'server', 'server.js'),
         ],
         output: {

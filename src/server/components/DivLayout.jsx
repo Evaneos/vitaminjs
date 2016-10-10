@@ -1,20 +1,16 @@
 import { PropTypes } from 'react';
-import AppContainer from './AppContainer';
 
 const propTypes = {
-    appHtmlString: PropTypes.string.isRequired,
-    initialState: PropTypes.object,
     head: PropTypes.object.isRequired,
     style: PropTypes.string.isRequired,
-    entryPaths: PropTypes.objectOf(PropTypes.string).isRequired,
+    children: PropTypes.node.isRequired,
 };
 
-const DivLayout = ({ appHtmlString, initialState, head, style, entryPaths }) =>
+const DivLayout = ({ children, style, head }) =>
     <div>
         <style>{style}</style>
-        <AppContainer script={head.script} initialState={initialState} entryPaths={entryPaths} >
-            {appHtmlString}
-        </AppContainer>
+        {children}
+        {head.script.toComponent()}
     </div>
 ;
 

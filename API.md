@@ -118,12 +118,11 @@ It is passed the node http request object, the dispatch function, and getState. 
 **`Path <ReactComponent>`**
 
 
-You can customize the html layout rendered by the server (if you really need to).
+You can customize the HTML layout rendered by the server (if you really need to).
 ####Props
-- `appHTML`: The HTML of the page as a string
-- `initialState`: The redux initial state as a serializable object
 - `head`: The head from [`react-helmet`](https://github.com/nfl/react-helmet#server-usage)
-- `appHTML`: The CSS of the page as a string (to be rendered inside a style tag)
+- `style`: The CSS of the page as a string
+- `children`: The app itself (or the error pages)
 
 ### <a id='ErrorPage'></a>[`ErrorPage`](#ErrorPage)
 **`Path <ReactComponent>`**
