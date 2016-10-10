@@ -4,15 +4,23 @@ import Helmet from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
 
+import config from '../../config';
+import AppContainer from './components/AppContainer';
 import App from '../shared/components/App';
 import getClientEntryPaths from './getClientEntryPaths';
 
-export const renderLayout = props =>
+export const renderLayout = ({ children, ...props }) =>
     `${Layout.doctype ? `${Layout.doctype}\n` : ''}${
-    renderToStaticMarkup(<Layout {...props} />)}`
+    renderToStaticMarkup(
+        <Layout {...props}>
+            <div id={config.rootElementId}>
+                {children}
+            </div>
+        </Layout>
+    )}`
 ;
 
-// Return a promise that resolves to the html string
+// Return a promise that resolves to the HTML string
 export default (renderProps, store) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
@@ -26,13 +34,16 @@ export default (renderProps, store) => {
                 }
                 try {
                     return resolve(renderLayout({
-                        appHtmlString: renderToString(<App store={store} insertCss={insertCss}>
-                            <AsyncProps {...renderProps} {...asyncProps} />
-                        </App>),
+                        children:
+                            <AppContainer initialState={store.getState()} entryPaths={entryPaths}>
+                                {renderToString(
+                                    <App store={store} insertCss={insertCss}>
+                                        <AsyncProps {...renderProps} {...asyncProps} />
+                                    </App>
+                                )}
+                            </AppContainer>,
                         style: css.join(''),
                         head: Helmet.rewind(),
-                        initialState: store.getState(),
-                        entryPaths,
                     }));
                 } catch (err) {
                     return reject(err);

@@ -1,15 +1,12 @@
 import { PropTypes } from 'react';
-import AppContainer from './AppContainer';
 
 const propTypes = {
-    appHtmlString: PropTypes.string.isRequired,
-    initialState: PropTypes.object,
     head: PropTypes.object.isRequired,
     style: PropTypes.string.isRequired,
-    entryPaths: PropTypes.objectOf(PropTypes.string),
+    children: PropTypes.node.isRequired,
 };
 
-const HtmlLayout = ({ appHtmlString, initialState, head, style, entryPaths = {} }) => (
+const HtmlLayout = ({ head, style, children }) => (
     <html lang={head.htmlAttributes.lang} {...head.htmlAttributes}>
         <head>
             {head.title.toComponent()}
@@ -19,10 +16,9 @@ const HtmlLayout = ({ appHtmlString, initialState, head, style, entryPaths = {} 
             <style>{style}</style>
         </head>
         <body>
-            <AppContainer script={head.script} initialState={initialState} entryPaths={entryPaths}>
-                {appHtmlString}
-            </AppContainer>
+            {children}
         </body>
+        {head.script.toComponent()}
     </html>
 );
 

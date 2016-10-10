@@ -81,7 +81,7 @@ Open http://localhost:3000.
 * [x] How to handle partial rendering vs the complete page ?
 * [ ] Support global install & use local vitamin binary when launched globally (like grunt-cli)
 * [ ] plugin authentication (?)
-* [x] Add a HtmlRootComponent
+* [x] Add a HTMLRootComponent
 * [x] Add a Error 500 component
 * [x] Add a Error 404 component
 * [ ] Add default app explaning how to get started

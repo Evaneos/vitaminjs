@@ -7,7 +7,7 @@ export default {
         onError: '__vitamin__/config/utils/defaultFunction',
         basePath: '',
         externalUrl: '',
-        layout: '__vitamin__/src/server/components/HtmlLayout',
+        layout: '__vitamin__/src/server/components/HTMLLayout',
         actionDispatcher: '__vitamin__/config/utils/defaultFunction',
     },
     routes: '__vitamin__/config/utils/emptyArray',
@@ -32,7 +32,7 @@ export default {
             secondaryEntries: { /*
                 You can specify secondary endpoints for client here, for instance for
                 adding a sw.js file for ServiceWorker. Or if you want to do code splitting.
-                These endpoints will be transpiled (similar to https://webpack.github.io/docs/configuration.html#entry)
+                These endpoints will be transpiled (similar to https://webpack.github.io/docs/configuration.HTML#entry)
                 For instance:
                 'sw.js': './client/ServiceWorker.js'
             */},

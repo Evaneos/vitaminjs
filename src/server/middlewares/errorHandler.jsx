@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 import chalk from 'chalk';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import ErrorPage from '__app_modules__server_ErrorPage__';
 import userOnError from '__app_modules__server_onError__';
@@ -25,28 +26,31 @@ const renderErrorPage = (props) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
 
-    const app = (<CSSProvider insertCss={insertCss}>
-        <ErrorPage {...props} />
-    </CSSProvider>);
-
     return renderLayout({
-        appHtmlString: renderToString(app),
+        children:
+            <div
+                dangerouslySetInnerHTML={{ __html: renderToString(
+                    <CSSProvider insertCss={insertCss}>
+                        <ErrorPage {...props} />
+                    </CSSProvider>
+                ) }}
+            />,
         style: css.join(''),
         head: Helmet.rewind(),
     });
 };
 
 const onError = (context) => {
+    /* eslint-disable no-console */
     console.error(
         chalk.red(`Error ${context.HTTPStatus}:`),
         `${context.request.method} ${context.request.url}`,
     );
     if (context.HTTPStatus === 500) {
-        /* eslint-disable no-console */
         console.error(chalk.red.bold(context.error.message));
         console.error(chalk.grey(context.error.stack));
-        /* eslint-enable no-console */
     }
+    /* eslint-enable no-console */
     userOnError(context);
 };
 
@@ -86,6 +90,7 @@ export default () => function* errorHandlerMiddleware(next) {
             // print a vitaminjs 404
             onError(getContext.call(this));
             if (!process.env.NODE_ENV === 'production' && !this.body) {
+                // eslint-disable-next-line no-console
                 console.warn(chalk.yellow(`\
 It seems that one of your custom koa middleware returned a 404 with no response body.
 This might be intentional, or you might have forgot to yield next.
