@@ -3,8 +3,11 @@
 import koa from 'koa';
 import express from 'express';
 import chalk from 'chalk';
+import fetch from 'node-fetch';
 import config from '../../config';
 import app from './app';
+
+global.fetch = fetch;
 
 function hotReloadServer() {
     const server = express();
