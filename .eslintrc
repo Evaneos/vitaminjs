@@ -29,6 +29,7 @@
         "react/react-in-jsx-scope": 0,
         // PropType.Shape seems buggy
         "react/no-unused-prop-types": [2, { "skipShapeProps": true }],
+        "import/extensions" : 0,
         "import/no-unresolved": [2, {
             "ignore": [
                 // App dependancies, as global modules
