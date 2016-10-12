@@ -7,6 +7,7 @@ import presetStage1 from 'babel-preset-stage-1';
 import pluginReactRequire from 'babel-plugin-react-require';
 import pluginTransformRuntime from 'babel-plugin-transform-runtime';
 import pluginMinifyReplace from 'babel-plugin-minify-replace';
+import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
 import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
 import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressions';
 import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
@@ -43,9 +44,10 @@ export default env => ({
                 },
             ],
         }],
-        [pluginMinifyDeadCodeElimination],
-        [pluginMinifyGuardedExpressions],
-        [pluginDiscardModuleReferences, { targets: [], unusedWhitelist: [] }],
+        pluginNodeEnvInline,
+        pluginMinifyDeadCodeElimination,
+        pluginMinifyGuardedExpressions,
+        [pluginDiscardModuleReferences, { targets: [] }],
     ],
     sourceRoot: vitaminResolve(),
 });
