@@ -33,8 +33,6 @@ function clientConfig(options, entryName, entryPath, assetPlugin) {
             ] : []),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-                IS_CLIENT: true,
-                IS_SERVER: false,
             }),
             assetPlugin,
         ],

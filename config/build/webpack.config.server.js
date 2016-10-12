@@ -1,4 +1,4 @@
-import { BannerPlugin, DefinePlugin } from 'webpack';
+import { BannerPlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
 import { config, createBabelLoaderConfig } from './webpack.config.common';
@@ -64,10 +64,6 @@ module.exports = function serverConfig(options) {
                 raw: true,
                 entryOnly: false,
             })] : []),
-            new DefinePlugin({
-                IS_CLIENT: false,
-                IS_SERVER: true,
-            }),
         ],
     }, concat);
 };
