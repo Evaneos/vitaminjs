@@ -6,6 +6,10 @@ import preset2017 from 'babel-preset-es2017';
 import presetStage1 from 'babel-preset-stage-1';
 import pluginReactRequire from 'babel-plugin-react-require';
 import pluginTransformRuntime from 'babel-plugin-transform-runtime';
+import pluginMinifyReplace from 'babel-plugin-minify-replace';
+import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
+import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressions';
+import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
 import { vitaminResolve } from '../utils';
 
 export default env => ({
@@ -26,7 +30,22 @@ export default env => ({
             // bundle size the smallest possible.
             []
         ),
-
+        // Remove server-only or client-only imports
+        [pluginMinifyReplace, {
+            replacements: [
+                {
+                    identifierName: 'IS_CLIENT',
+                    replacement: { type: 'booleanLiteral', value: env === 'client' },
+                },
+                {
+                    identifierName: 'IS_SERVER',
+                    replacement: { type: 'booleanLiteral', value: env === 'server' },
+                },
+            ],
+        }],
+        [pluginMinifyDeadCodeElimination],
+        [pluginMinifyGuardedExpressions],
+        [pluginDiscardModuleReferences, { targets: [], unusedWhitelist: [] }],
     ],
     sourceRoot: vitaminResolve(),
 });
