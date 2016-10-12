@@ -39,7 +39,7 @@ function bootstrapClient() {
         {};
 
     const history = useRouterHistory(createHistory)({
-        basename: config.server.basePath,
+        basename: config.basePath,
         queryKey: false,
     });
     const store = createStore(

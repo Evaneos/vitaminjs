@@ -12,23 +12,21 @@ file at the root of your project.
  - [enhancers](#enhancers)
  - [stateSerializer](#stateSerializer)
 - [server](#server)
+ - [buildPath](#buildPath)
+ - [filename](#serverFilename)
  - [host](#host)
  - [port](#port)
- - [basepath](#basepath)
- - [externalURL](externalUrl)
  - [middlewares](#serverMiddlewares)
  - [actionDispatcher](#actionDispatcher)
  - [layout](#layout)
  - [ErrorPage](#ErrorPage)
  - [onError](#onError)
-- [build](#build)
- - [path](#buildPath)
- - [server](#buildServer)
-   - [filename](#serverFilename)
- - [client](#client)
-   - [publicPath](#publicPath)
-    - [filename](#clientFilename)
-    - [secondaryEntries](#secondaryEntries)
+- [basePath](#basepath)
+- [publicPath](#publicPath)
+- [client](#client)
+ - [filename](#clientFilename)
+ - [buildPath](#clientBuildPath)
+ - [serviceWorker](#serviceWorker)
 - [rootElementId](#rootElementId)
 
 ## <a id='routes'></a>[`routes`](#routes)
@@ -85,13 +83,6 @@ if not set
 
 
 The port on which the node server is listening. Default to `process.env.PORT`or `3000`
-
-### <a id='basepath'></a>[`basepath`](#basepath)
-**`String`**
-
-
-You can specify a basepath for your vitaminjs application. It will be prepended to all the internal
-link inside your app. Useful for mounting your whole app on a subpath.
 
 ### <a id='externalUrl'></a>[`externalUrl`](#externalUrl)
 **`String`**
@@ -152,50 +143,58 @@ Useful for advanced logging.
         properties)
     - `state` (optional): The redux state object, if it's present
 
-
-## <a id='build'></a>[`build`](#build)
-Config options for the build files for both server and client
-
-### <a id='buildPath'></a>[`path`](#buildPath)
+### <a id='serverBuildPath'></a>[`builPath`](#serverBuildPath)
 **`String`**
 
 
-The path relative to the application root where both server and client bundle are going to be generated
-
-### <a id='buildServer'></a>[`server`](#buildServer)
-**`Path Object`**
-
-
-Config options for the server build
+The path relative to the application root where both server bundle is going to
+be generated. Default to `./build`
 
 ### <a id='serverFilename'></a>[`filename`](#serverFilename)
 **`String `**
 
+Define the filename of the server bundle. It will be created at the root of
+[`server.buildPath`](#buildPath). By default, it's `server_bundle.js`
 
-Define the filename of the server build. It is relative to [`build.path`](#buildPath). By default, it's `server_bundle.js`
-
-### <a id='client'></a>[`client`](#client)
-**`Path Object`**
-
-
-Config options for the client build
-
-### <a id='publicPath'></a>[`publicPath`](#publicPath)
+## <a id='basepath'></a>[`basepath`](#basepath)
 **`String`**
 
 
-The URL from which all the public files should be made available. It is similar to [webpack output.publicPath](https://webpack.github.io/docs/configuration.html#output-publicpath) option. By default, it's `build`.
+You can specify a basepath for your vitaminjs application. It will be prepended to all the internal
+link inside your app. Useful for mounting your whole app on a subpath.
+## <a id='publicPath'></a>[`publicPath`](#publicPath)
+**`String`**
+
+The path from which all the public ressources should be made available. If it's
+relative, the public folder will be mounted on it. It can also be absolute. It
+behave similarly to the [webpack `output.publicPath`](https://webpack.github.io/docs/configuration.html#output-publicpath) option. Default to `assets`.
+
+## <a id='client'></a>[`client`](#client)
+Config options for the client
+
+### <a id='clientBuildPath'></a>[`builPath`](#clientBuildPath)
+**`String`**
+
+
+The path relative to the application root where the clients assets will
+be generated (bundle, files, sourcemaps...). This path will be served statically
+by vitamin server. Default to `./public`
 
 ### <a id='clientFilename'></a>[`filename`](#clientFilename)
 **`String`**
 
 
-Define the filename of the client build. It is relative to [`build.path`](#buildPath). You can include a hash with the placeholder `[hash]`. By default, it's `client_bundle.[hash].js`
+Define the filename of the client build. It is relative to [`build.path`](#buildPath). You can include a hash, with the placeholder `[hash]`. Behave like
+[webpack `output.filename`](https://github.com/webpack/docs/wiki/Configuration#outputfilename). By default, it's `client_bundle.[hash].js`
 
-### <a id='secondaryEntries'></a>[`secondaryEntries`](#secondaryEntries)
-**`Path Object`**
+### <a id='serviceWorker'></a>[`serviceWorker`](#serviceWorker)
+**`Path`**
 
-TODO
+Path to the service worker, if you have one. Vitaminjs will prepend a constant named `serviceWorkerOption` during the compilation. This constant will contains
+all the assets names generated during compilation. You'll have to cache them
+manually, register the service manually etc... This is juste a little helper.
+You can access the service worker under `/`[`<basePath>`](#basePath)`/`[`<publicPath>`](#publicPath)`/sw.js`. Default to `false
+
 
 ## <a id='rootElementId'></a>[`rootElementId`](#rootElementId)
 **`String`**

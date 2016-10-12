@@ -4,6 +4,7 @@ import koa from 'koa';
 import express from 'express';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
+import readline from 'readline';
 import config from '../../config';
 import app from './app';
 
@@ -18,28 +19,26 @@ function hotReloadServer() {
     });
 
     const compiler = webpack(clientBuildConfig);
+    let clientBuilt = false;
     server.use(require('webpack-dev-middleware')(compiler, {
         quiet: true,
-        publicPath: clientBuildConfig[0].output.publicPath,
-        stats: {
-            hash: false,
-            timings: false,
-            chunks: false,
-            chunkModules: false,
-            modules: false,
-            children: true,
-            version: true,
-            cached: false,
-            cachedAssets: false,
-            reasons: false,
-            source: false,
-            errorDetails: false,
-            colors: true,
+        noInfo: true,
+        publicPath: config.publicPath,
+        reporter: (stats) => {
+            if (stats.hasErrors || clientBuilt) {
+                return;
+            }
+            clientBuilt = true;
+            process.stdout.write(`\x1b[0G\t${chalk.green('\u2713')
+                } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`
+            );
         },
+        serverSideRender: true,
     }));
 
-    const hmrPath = `${config.server.basePath + config.build.client.publicPath}/__webpack_hmr`;
+    const hmrPath = `${config.publicPath}/__webpack_hmr`;
     server.use(require('webpack-hot-middleware')(compiler, {
+        log: () => {},
         path: hmrPath,
         reload: true,
     }));
@@ -69,13 +68,20 @@ if (module.hot) {
     });
 }
 
-const { basePath, port, host } = config.server;
-mountedServer.use(basePath, appServer());
-
+const { port, host } = config.server;
+mountedServer.use(config.basePath, appServer());
 
 mountedServer.listen(port, host, () => {
-    process.stdout.write(chalk.blue(`\x1b[0GServer listening on ${
-        chalk.bold.underline(`http://${host}:${port}${basePath}`)
-    }\n\n`));
+    readline.clearLine(process.stdout);
+    readline.cursorTo(0, process.stdout);
+    process.stdout.write(`\x1b[0G\t${chalk.green('\u2713')} Server listening on: ${
+        chalk.bold.underline(`http://${host}:${port}${config.basePath}`)
+    }\n`);
+    if (module.hot) {
+        console.log(`\t${chalk.green('\u2713')} ${chalk.bold('Hot module reload')} activated`);
+        process.stdout.write(`\x1b[0G${
+            chalk.blue('\t\uD83D\uDD50  Building client bundle [in memory]...')
+        }`);
+    }
 });
 

@@ -1,4 +1,3 @@
-import webpack from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import appConfig from '../index';
 import { vitaminResolve, concat } from '../utils';
@@ -9,6 +8,7 @@ function testConfig(options) {
         entry: `${appConfig.test}`,
         output: {
             filename: 'tests.js',
+            path: appConfig.server.buildPath,
         },
         module: {
             loaders: [
