@@ -2,7 +2,7 @@
   "name": "vitaminjs",
   "version": "1.0.0-beta10",
   "description": "The build toolchain against JavaScript Fatigue",
-  "main": "./bin/vitamin.es5.js",
+  "main": "./src/shared/index.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint --ext .js,.jsx src bin build"
@@ -43,8 +43,7 @@
     "react-router-redux": "^4.0.5",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "react-helmet": "^3.1.0",
-    "isomorphic-style-loader": "^1.0.0"
+    "react-helmet": "^3.1.0"
   },
   "dependencies": {
     "assets-webpack-plugin": "^3.4.0",
@@ -73,6 +72,7 @@
     "express": "^4.14.0",
     "file-loader": "^0.9.0",
     "history": "^4.2.0",
+    "isomorphic-style-loader": "^1.0.0",
     "js-string-escape": "^1.0.1",
     "json-loader": "^0.5.4",
     "koa": "^1.1.2",
