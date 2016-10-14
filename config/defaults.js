@@ -7,7 +7,7 @@ export default {
         onError: '__vitamin__/config/utils/defaultFunction',
         basePath: '',
         externalUrl: '',
-        layout: '__vitamin__/src/server/components/HTMLLayout',
+        layout: '__vitamin__/src/server/components/HtmlLayout',
         actionDispatcher: '__vitamin__/config/utils/defaultFunction',
     },
     routes: '__vitamin__/config/utils/emptyArray',
