@@ -47,7 +47,7 @@ export default env => ({
         pluginNodeEnvInline,
         pluginMinifyDeadCodeElimination,
         pluginMinifyGuardedExpressions,
-        [pluginDiscardModuleReferences, { targets: [] }],
+        pluginDiscardModuleReferences,
     ],
     sourceRoot: vitaminResolve(),
 });
