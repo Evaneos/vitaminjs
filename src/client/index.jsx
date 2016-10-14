@@ -1,5 +1,6 @@
 import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
+import AsyncProps from 'async-props';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import RedBox from 'redbox-react';
@@ -19,7 +20,12 @@ function render(history, store, rootRoute, element) {
 
     reactRender(
         <App store={store} insertCss={insertCss}>
-            <Router history={history}>{rootRoute}</Router>
+            <Router
+                history={history}
+                render={props =>
+                    <AsyncProps {...props} loadContext={{ dispatch: store.dispatch }} />
+                }
+            >{rootRoute}</Router>
         </App>,
         element
     );
