@@ -12,6 +12,6 @@ export default () => function* storeMiddleware(next) {
         entries: [this.req.url],
     });
     this.state.history = history;
-    this.state.store = createStore(history, reducers, middlewares);
+    this.state.store = createStore(reducers, middlewares);
     yield next;
 };

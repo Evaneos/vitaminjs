@@ -1,6 +1,5 @@
 import { render as reactRender, unmountComponentAtNode } from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import RedBox from 'redbox-react';
 /* eslint-disable import/no-extraneous-dependencies */
@@ -37,13 +36,11 @@ function bootstrapClient() {
         queryKey: false,
     });
     const store = createStore(
-        history,
         reducers,
         middlewares,
         initialState
-        );
+    );
 
-    const syncedHistory = syncHistoryWithStore(history, store);
     // Todo replace by vitamin-app-[hash] ?
     const appElement = window.document.getElementById(config.rootElementId);
     const passStore = route => (
@@ -69,13 +66,13 @@ function bootstrapClient() {
 
             unmountComponentAtNode(appElement);
             try {
-                render(syncedHistory, store, passStore(newRoutes), appElement);
+                render(history, store, passStore(newRoutes), appElement);
             } catch (e) {
                 renderError(e, appElement);
             }
         });
     }
-    render(syncedHistory, store, passStore(routes), appElement);
+    render(history, store, passStore(routes), appElement);
 }
 
 bootstrapClient();
