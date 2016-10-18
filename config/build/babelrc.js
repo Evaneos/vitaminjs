@@ -26,7 +26,7 @@ export default env => ({
         pluginReactRequire,
         // Add Object.entries, Object.values and other ES2017 functionalities
         ...(env === 'server' ?
-            [pluginTransformRuntime] :
+            [[pluginTransformRuntime, { polyfill: false }]] :
             // in the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
             // bundle size the smallest possible.
             []
