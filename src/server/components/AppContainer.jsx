@@ -7,24 +7,21 @@ import config from '../../../config';
 const propTypes = {
     initialState: PropTypes.object.isRequired,
     children: PropTypes.string.isRequired,
-    entryPaths: PropTypes.shape({
-        [config.build.client.filename]: PropTypes.string.isRequired,
-    }).isRequired,
+    mainEntry: PropTypes.string.isRequired,
 };
 
 /* eslint-disable react/no-danger */
-function AppContainer({ initialState, children, entryPaths }) {
+function AppContainer({ initialState, children, mainEntry }) {
     return (<div>
         <div
             dangerouslySetInnerHTML={{ __html: children }}
         />
         <script
             dangerouslySetInnerHTML={{ __html: `
-                window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"
-                window.__ENTRY_PATHS__ = ${JSON.stringify(entryPaths)}`,
+                window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"`,
             }}
         />
-        <script async src={entryPaths[config.build.client.filename]} />
+        <script async src={`${config.publicPath}/${mainEntry}`} />
     </div>);
 }
 

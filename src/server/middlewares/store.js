@@ -8,7 +8,7 @@ import config from '../../../config';
 
 export default () => function* storeMiddleware(next) {
     const history = useQueries(useBasename(createMemoryHistory))({
-        basename: config.server.basePath,
+        basename: config.basePath,
         entries: [this.req.url],
     });
     this.state.history = history;

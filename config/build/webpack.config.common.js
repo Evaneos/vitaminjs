@@ -1,7 +1,7 @@
-import { vitaminResolve, appResolve } from '../utils';
-import appConfig, { moduleMap } from '../index';
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
+import { vitaminResolve, appResolve } from '../utils';
+import appConfig, { moduleMap } from '../index';
 import babelrc from './babelrc';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
@@ -17,12 +17,10 @@ export const createBabelLoaderConfig = env => ({
 });
 export function config(options) {
     return {
-        devtool: options.dev ? 'source-map' : null,
+        devtool: options.dev && 'source-map',
         output: {
             pathinfo: options.dev,
-            publicPath: `${appConfig.server.externalUrl + appConfig.server.basePath +
-                appConfig.build.client.publicPath}/`,
-            path: appConfig.build.path,
+            publicPath: `${appConfig.publicPath}/`,
         },
         module: {
             // Disable handling of unknown requires

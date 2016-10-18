@@ -1,5 +1,4 @@
-/* eslint no-var: 0 */
-/* eslint prefer-template: 0 */
+/* eslint-disable prefer-template, no-var, global-require, import/no-dynamic-require */
 /*
     This loader require the resource and serialize the default export in a JSON object.
 
@@ -12,9 +11,11 @@
 */
 
 require('../utils/transpile');
+
 module.exports = function requireLoader() {
     try {
-        return 'module.exports = ' + JSON.stringify(require(this.resource).default);
+        return 'module.exports = ' +
+            JSON.stringify(require(this.resource).default);
     } catch (e) {
         this.emitError(e);
     }

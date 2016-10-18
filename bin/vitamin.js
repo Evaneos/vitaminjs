@@ -8,9 +8,10 @@ import { exec, spawn } from 'child_process';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
+import readline from 'readline';
 
-import webpackConfig from '../config/build/webpack.config';
 import webpackConfigServer from '../config/build/webpack.config.server';
+import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import config from '../config';
 import { version } from '../package.json';
@@ -20,7 +21,7 @@ const DEV = process.env.NODE_ENV !== 'production';
 
 const clean = () => new Promise((resolve, reject) =>
     rimraf(
-        path.join(config.build.path, '*'),
+        path.join(config.server.buildPath, '*'),
         (err, data) => (!err ? resolve(data) : reject(err))
     )
 );
@@ -39,6 +40,8 @@ const checkHot = (hot) => {
 
 const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
+        readline.clearLine(process.stdout);
+        readline.cursorTo(process.stdout, 0);
         console.log(stats.toString({
             hash: false,
             timings: false,
@@ -59,25 +62,57 @@ const buildCallback = (resolve, reject) => (err, stats) => {
     return resolve && resolve(stats);
 };
 
-const build = ({ hot }) => new Promise((resolve, reject) => {
-    const compiler = webpack((hot ? webpackConfigServer : webpackConfig)({ hot, dev: DEV }));
+const commonBuild = (webpackConfig, message, options) => new Promise((resolve, reject) => {
+    const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
     const bar = new ProgressBar(
-        `${chalk.blue('Building app...')} :percent [:bar]`,
+        `${chalk.blue(message)} :percent [:bar]`,
         { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout }
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-    if (hot) {
+    if (options.hot) {
         compiler.watch({}, buildCallback(resolve, reject));
     } else {
         compiler.run(buildCallback(resolve, reject));
     }
 });
 
+const build = options => (options.hot ?
+    commonBuild(
+        webpackConfigServer,
+        `\t\uD83D\uDD50  Building server bundle ${chalk.bold('[hot]')}...`,
+        options
+    ).then(() => {
+        readline.clearLine(process.stdout);
+        readline.cursorTo(process.stdout, 0);
+        console.log(`\t${chalk.green('\u2713')} Server bundle successfully ${chalk.bold('built')}!`);
+    })
+:
+    commonBuild(webpackConfigClient, '\t\uD83D\uDD50  Building client bundle(s)...', options)
+        .then((stats) => {
+            readline.clearLine(process.stdout);
+            readline.cursorTo(process.stdout, 0);
+            console.log(`\t${chalk.green('\u2713')
+                } Client bundle(s) successfully ${chalk.bold('built')}!`);
+            return stats;
+        })
+        .then(stats => commonBuild(
+            webpackConfigServer, '\t\uD83D\uDD50  Building server bundle...',
+            { ...options, assetsByChunkName: stats.toJson().assetsByChunkName }
+        ))
+        .then(() => {
+            readline.clearLine(process.stdout);
+            readline.cursorTo(process.stdout, 0);
+            console.log(`\t${chalk.green('\u2713')
+                } Server bundle successfully ${chalk.bold('built')}!`);
+        })
+);
+
+
 const test = ({ hot, runner, runnerArgs }) => {
     const launchTest = () => {
-        console.log(chalk.blue('Launching tests...'));
+        console.log(chalk.blue('\t\uD83D\uDD50  Launching tests...'));
         const serverFile = path.join(
-            config.build.path,
+            config.server.buildPath,
             'tests'
         );
         const serverProcess = exec(`${runner} ${serverFile} ${runnerArgs}`);
@@ -103,10 +138,10 @@ const test = ({ hot, runner, runnerArgs }) => {
 };
 
 const serve = () => {
-    process.stdout.write(chalk.blue('Launching server...'));
+    process.stdout.write(chalk.blue('\t\uD83D\uDD50  Launching server...'));
     const serverFile = path.join(
-        config.build.path,
-        config.build.server.filename
+        config.server.buildPath,
+        config.server.filename
     );
     const serverProcess = spawn('node', [serverFile], { stdio: 'inherit' });
     const killServer = signal => () => {

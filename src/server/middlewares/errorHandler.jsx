@@ -51,7 +51,12 @@ const onError = (context) => {
         console.error(chalk.grey(context.error.stack));
     }
     /* eslint-enable no-console */
-    userOnError(context);
+    try {
+        userOnError(context);
+    } catch (err) {
+        console.error(chalk.red('An error occured while calling the onError function'));
+        console.error(err);
+    }
 };
 
 function getContext(error) {

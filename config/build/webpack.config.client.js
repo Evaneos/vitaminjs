@@ -1,18 +1,22 @@
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
-import AssetsPlugin from 'assets-webpack-plugin';
+import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
+
 import { createBabelLoaderConfig, config } from './webpack.config.common.js';
 import { concat, vitaminResolve, appResolve } from '../utils';
 import appConfig from '../index';
 
-function clientConfig(options, entryName, entryPath, assetPlugin) {
-    const hmrPath = `${appConfig.server.basePath + appConfig.build.client.publicPath}/__webpack_hmr`;
-    const hotMiddlewareAsset =
-        `webpack-hot-middleware/client?path=${appConfig.server.externalUrl + hmrPath}`;
+function clientConfig(options) {
+    const hotMiddlewareEntry =
+        `webpack-hot-middleware/client?path=${appConfig.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
-        entry: { [entryName]: options.hot ? [entryPath, hotMiddlewareAsset] : entryPath },
+        entry: [
+            vitaminResolve('src', 'client', 'index.jsx'),
+            ...(options.hot ? [hotMiddlewareEntry] : []),
+        ],
         output: {
-            filename: entryName,
+            path: appConfig.client.buildPath,
+            filename: appConfig.client.filename,
         },
         module: {
             rules: [
@@ -34,25 +38,13 @@ function clientConfig(options, entryName, entryPath, assetPlugin) {
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
-            assetPlugin,
+            ...(appConfig.client.serviceWorker ? [
+                new ServiceWorkerWebpackPlugin({
+                    entry: appResolve(appConfig.client.serviceWorker),
+                }),
+            ] : []),
         ],
     }, concat);
 }
 
-const secondaryEntries = appConfig.build.client.secondaryEntries;
-for (const key of Object.keys(secondaryEntries)) {
-    secondaryEntries[key] = appResolve(secondaryEntries[key]);
-}
-const entries = {
-    [appConfig.build.client.filename]: vitaminResolve('src', 'client', 'index.jsx'),
-    ...secondaryEntries,
-};
-module.exports = (options) => {
-    const assetPlugin = new AssetsPlugin({
-        path: appConfig.build.path,
-        prettyPrint: true,
-    });
-    return Object.keys(entries).map(
-        entryName => clientConfig(options, entryName, entries[entryName], assetPlugin)
-    );
-};
+module.exports = clientConfig;

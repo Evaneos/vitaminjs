@@ -1,4 +1,4 @@
-import { BannerPlugin } from 'webpack';
+import { BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
 import { config, createBabelLoaderConfig } from './webpack.config.common';
@@ -16,13 +16,11 @@ const safeReaddirSync = (path) => {
 const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
 const vitaminModules = externalModules(vitaminResolve('node_modules'));
-const whiteList = ['webpack/hot/poll.js?1000'];
+const hotPoll = vitaminResolve('config', 'utils', 'customHotPoll.js?1000');
 
 function externals(context, request, callback) {
     const pathStart = request.split('/')[0];
-    if (whiteList.indexOf(request) !== -1) {
-        return callback();
-    }
+
     if (appModules.indexOf(pathStart) !== -1) {
         return callback(null, `commonjs2 ${request}`);
     }
@@ -36,11 +34,12 @@ function externals(context, request, callback) {
 module.exports = function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            ...(options.hot ? ['webpack/hot/poll.js?1000'] : []),
+            ...(options.hot ? [hotPoll] : []),
             vitaminResolve('src', 'server', 'server.js'),
         ],
         output: {
-            filename: appConfig.build.server.filename,
+            filename: appConfig.server.filename,
+            path: appConfig.server.buildPath,
             libraryTarget: 'commonjs2',
         },
 
@@ -64,6 +63,9 @@ module.exports = function serverConfig(options) {
                 raw: true,
                 entryOnly: false,
             })] : []),
+            new DefinePlugin({
+                ASSETS_BY_CHUNK_NAME: JSON.stringify(options.assetsByChunkName),
+            }),
         ],
     }, concat);
 };

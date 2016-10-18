@@ -1,9 +1,9 @@
 import stripJsonComments from 'strip-json-comments';
 import mergeWith from 'lodash.mergewith';
-import { appResolve, vitaminResolve } from './utils';
 import { readFileSync } from 'fs';
-import defaults from './defaults';
 import { join, dirname } from 'path';
+import { appResolve, vitaminResolve } from './utils';
+import defaults from './defaults';
 
 // eslint-disable-next-line consistent-return
 function loadConfigFile(configPath) {
@@ -48,7 +48,9 @@ function deletePath(path, conf) {
     return conf;
 }
 
-
+// Apply update function to the key path in the config.
+// (similar to https://facebook.github.io/immutable-js/docs/#/Map/updateIn, but
+// modify the config object in place)
 function updatePath(path, update, conf) {
     // Ternary version is left as an exercise to the reader.
     if (path.length === 1) {
@@ -128,10 +130,23 @@ modulePaths.forEach(path =>
 
 // Resolve app path to absolute paths
 [
-    ['build', 'path'],
+    ['server', 'buildPath'],
+    ['client', 'buildPath'],
 ].forEach(path =>
     updatePath(path, appResolve, config)
 );
+
+// Prepend / to publicPath and basePath if necessary
+const prependSlash = path => (path.match(/^(http|\/|$)/) ? '' : '/') + path;
+[['publicPath'], ['basePath']].forEach(
+    path => updatePath(path, prependSlash, config)
+);
+
+// If public path is not absolute url, prepend basePath
+updatePath(['publicPath'], publicPath =>
+    (!publicPath.match(/^(http|\/\/)/) ? config.basePath : '') + config.publicPath,
+config);
+
 
 const exportedConfig = config;
 export default exportedConfig;
