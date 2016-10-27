@@ -56,7 +56,7 @@ function bootstrapClient() {
         typeof route === 'function' ? route(store) : route
     );
 
-    if (module.hot) {
+    if (module.hot && process.env.NODE_ENV !== 'production') {
         const renderError = (error, rootEl) => {
             reactRender(
                 <RedBox error={error} />,
@@ -74,14 +74,26 @@ function bootstrapClient() {
             const newRoutes = require('__app_modules__routes__').default;
 
             unmountComponentAtNode(appElement);
+
             try {
-                render(syncedHistory, store, passStore(newRoutes), appElement);
+                Promise.resolve(passStore(newRoutes))
+                    .then(appRoutes => render(syncedHistory, store, appRoutes, appElement))
+                    .catch(err => renderError(err, appElement));
             } catch (e) {
                 renderError(e, appElement);
             }
         });
     }
-    render(syncedHistory, store, passStore(routes), appElement);
+
+    return Promise.resolve(passStore(routes))
+        .then(appRoutes => render(syncedHistory, store, appRoutes, appElement))
+        .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.log(err.stack || err.message || err);
+            if (process.env.NODE_ENV !== 'production') {
+                reactRender(<RedBox error={err} />, appElement);
+            }
+        });
 }
 
 bootstrapClient();
