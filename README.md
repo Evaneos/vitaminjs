@@ -1,12 +1,12 @@
 <big><h1 align="center">vitamin</h1></big>
 <p><big>
- Build toolchain as a dependancy for react/redux application, with a strong emphasis put on DX (Developer eXperience)
+ Build toolchain as a dependency for react/redux application, with a strong emphasis put on DX (Developer eXperience)
 </big></p>
 
 ## Why ?
 Actual state of development for react apps leads to a tremendous amount of boilerplate code for initializing the tooling. Usually, we proceed by finding (or creating) a boilerplate project with approximatly the stack we need, fork it, and start working on it.
 
-However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we choose to externalize all the toolchain and building config of a project as an npm dependancy.
+However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we choose to externalize all the toolchain and building config of a project as an npm dependency.
 
 
 Inspiration : https://github.com/bdefore/universal-redux & https://github.com/kriasoft/react-starter-kit
