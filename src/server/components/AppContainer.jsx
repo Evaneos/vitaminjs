@@ -13,6 +13,7 @@ const propTypes = {
 /* eslint-disable react/no-danger */
 function AppContainer({ initialState, children, mainEntry }) {
     return (<div>
+        <script async src={`${config.publicPath}/${mainEntry}`} />
         <div
             dangerouslySetInnerHTML={{ __html: children }}
         />
@@ -21,7 +22,6 @@ function AppContainer({ initialState, children, mainEntry }) {
                 window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"`,
             }}
         />
-        <script async src={`${config.publicPath}/${mainEntry}`} />
     </div>);
 }
 
