@@ -51,7 +51,7 @@ export function config(options) {
                     'postcss-loader',
                 ],
             }, {
-                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
                 loader: 'url-loader?limit=10000&name=files/[hash].[ext]',
             }, {
                 test: /\.json$/,
