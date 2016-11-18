@@ -9,9 +9,9 @@ import fs from 'fs';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
-import Logger, { formatter } from '../config/utils/consoleLogger';
 import readline from 'readline';
 
+import Logger, { formatter } from '../config/utils/consoleLogger';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
