@@ -5,6 +5,7 @@ import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
 import { exec, spawn } from 'child_process';
+import fs from 'fs';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
@@ -143,6 +144,18 @@ const serve = () => {
         config.server.buildPath,
         config.server.filename
     );
+    try {
+        fs.accessSync(serverFile, fs.F_OK);
+    } catch (e) {
+        console.log('\n');
+        console.error(e);
+        console.error(chalk.red(
+            `\n\nCannot access the server bundle file. Make sure you built
+the app with \`vitamin build\` before calling \`vitamin serve\`, and that
+the file is accessible by the current user`
+        ));
+        process.exit(1);
+    }
     const serverProcess = spawn('node', [serverFile], { stdio: 'inherit' });
     const killServer = signal => () => {
         serverProcess.kill(signal);
@@ -154,7 +167,7 @@ const serve = () => {
             return;
         }
         console.error(chalk.red(
-`\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
+    `\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
 might be because of a problem with vitaminjs itself. Please report it to
 https://github.com/Evaneos/vitaminjs/issues`
         ));
