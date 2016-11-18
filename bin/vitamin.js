@@ -166,8 +166,7 @@ the file is accessible by the current user`,
         Logger.error(
     `\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
 might be because of a problem with vitaminjs itself. Please report it to
-https://github.com/Evaneos/vitaminjs/issues`,
-        );
+https://github.com/Evaneos/vitaminjs/issues`);
         process.exit(1);
     });
 };
