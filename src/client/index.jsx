@@ -47,22 +47,24 @@ function bootstrapClient() {
         reducers,
         middlewares,
         initialState,
-        );
+    );
 
     const syncedHistory = syncHistoryWithStore(history, store);
     // Todo replace by vitamin-app-[hash] ?
     const appElement = window.document.getElementById(config.rootElementId);
-    const passStore = route => (
-        typeof route === 'function' ? route(store) : route
-    );
+
+    const renderWithRoutes = appRoutes => Promise.resolve()
+        .then(() => (typeof appRoutes === 'function' ? appRoutes(store) : appRoutes))
+        .then(loadedAppRoutes => render(syncedHistory, store, loadedAppRoutes, appElement))
+        .catch((err) => {
+            if (process.env.NODE_ENV !== 'production') {
+                reactRender(<RedBox error={err} />, appElement);
+            } else {
+                throw err;
+            }
+        });
 
     if (module.hot && process.env.NODE_ENV !== 'production') {
-        const renderError = (error, rootEl) => {
-            reactRender(
-                <RedBox error={error} />,
-                rootEl,
-            );
-        };
         module.hot.accept('__app_modules__redux_reducers__', () => {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies
             const newReducer = require('__app_modules__redux_reducers__').default;
@@ -74,26 +76,11 @@ function bootstrapClient() {
             const newRoutes = require('__app_modules__routes__').default;
 
             unmountComponentAtNode(appElement);
-
-            try {
-                Promise.resolve(passStore(newRoutes))
-                    .then(appRoutes => render(syncedHistory, store, appRoutes, appElement))
-                    .catch(err => renderError(err, appElement));
-            } catch (e) {
-                renderError(e, appElement);
-            }
+            renderWithRoutes(newRoutes);
         });
     }
 
-    return Promise.resolve(passStore(routes))
-        .then(appRoutes => render(syncedHistory, store, appRoutes, appElement))
-        .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.log(err.stack || err.message || err);
-            if (process.env.NODE_ENV !== 'production') {
-                reactRender(<RedBox error={err} />, appElement);
-            }
-        });
+    return renderWithRoutes(routes);
 }
 
 bootstrapClient();
