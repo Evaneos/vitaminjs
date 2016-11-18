@@ -28,5 +28,6 @@ export default {
         filename: 'client_bundle.[hash].js',
         serviceWorker: false,
     },
+    filesPath: 'files',
     rootElementId: 'vitamin-app',
 };

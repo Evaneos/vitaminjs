@@ -1,5 +1,6 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
 import autoprefixer from 'autoprefixer';
+import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import appConfig, { moduleMap } from '../index';
 import babelrc from './babelrc';
@@ -52,7 +53,7 @@ export function config(options) {
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
-                loader: 'url-loader?limit=10000&name=files/[hash].[ext]',
+                loader: `url-loader?limit=10000&name=${join(appConfig.filesPath, '[hash].[ext]')}`,
             }, {
                 test: /\.json$/,
                 loader: 'json',
