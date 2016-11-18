@@ -1,4 +1,9 @@
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
+import {
+  HotModuleReplacementPlugin,
+  LoaderOptionsPlugin,
+  NamedModulesPlugin,
+  ContextReplacementPlugin,
+} from 'webpack';
 import autoprefixer from 'autoprefixer';
 import { vitaminResolve, appResolve } from '../utils';
 import appConfig, { moduleMap } from '../index';
@@ -69,6 +74,11 @@ export function config(options) {
             extensions: ['.js', '.jsx', '.json', '.css'],
         },
         plugins: [
+            ...appConfig.contextReplacements.map(contextReplacement => (
+                new ContextReplacementPlugin(...contextReplacement.map(v => (
+                  v.startsWith('/') && v.endsWith('/') ? new RegExp(v) : v
+                )))
+            )),
             new LoaderOptionsPlugin({
                 test: /\.css$/,
                 context: __dirname,

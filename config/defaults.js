@@ -28,5 +28,12 @@ export default {
         filename: 'client_bundle.[hash].js',
         serviceWorker: false,
     },
+    contextReplacements: [
+        // https://github.com/webpack/webpack/tree/master/test/configCases/context-replacement/System.import
+        // API:
+        // [resourceRegExp, newContentResource, newContentRecursive, newContentRegExp]
+        // Example:
+        // ["/src\/locales$/", ".", { "./module1/fr-FR": "./module1/fr-FR.json" }]
+    ],
     rootElementId: 'vitamin-app',
 };
