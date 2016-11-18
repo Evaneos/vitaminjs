@@ -2,9 +2,7 @@ import { match } from 'react-router';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import routes from '__app_modules__routes__';
 
-const routesWithStore = store => (
-    typeof routes === 'function' ? routes(store) : routes
-);
+const routesWithStore = typeof routes === 'function' ? store => routes(store) : () => routes;
 
 export default () => function* routerMiddleware(next) {
     const url = this.req.url;
