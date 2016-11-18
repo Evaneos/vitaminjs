@@ -52,7 +52,7 @@ export function config(options) {
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
-                loader: 'url-loader?limit=10000&name=files/[hash].[ext]',
+                loader: `url-loader?limit=10000&name=${appConfig.folderName}[hash].[ext]`,
             }, {
                 test: /\.json$/,
                 loader: 'json',
