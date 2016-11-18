@@ -6,6 +6,7 @@ import preset2017 from 'babel-preset-es2017';
 import presetStage1 from 'babel-preset-stage-1';
 import pluginReactRequire from 'babel-plugin-react-require';
 import pluginTransformRuntime from 'babel-plugin-transform-runtime';
+import pluginTransformExportDefaultName from 'babel-plugin-transform-export-default-name-forked';
 import pluginMinifyReplace from 'babel-plugin-minify-replace';
 import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
 import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
@@ -47,6 +48,7 @@ export default env => ({
         pluginNodeEnvInline,
         [pluginMinifyDeadCodeElimination, { keepFnName: true }],
         pluginMinifyGuardedExpressions,
+        pluginTransformExportDefaultName,
         pluginDiscardModuleReferences,
     ],
     sourceRoot: vitaminResolve(),
