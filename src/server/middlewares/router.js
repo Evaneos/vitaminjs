@@ -8,7 +8,9 @@ export default () => function* routerMiddleware(next) {
     const url = this.req.url;
     const history = this.state.history;
 
-    match({ routes: routesWithStore(this.state.store), location: url, history },
+    const appRoutes = yield routesWithStore(this.state.store);
+
+    match({ routes: appRoutes, location: url, history },
         (error, redirectLocation, renderProps) => {
             if (error) {
                 this.status = 500;
