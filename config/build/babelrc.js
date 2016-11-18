@@ -45,7 +45,7 @@ export default env => ({
             ],
         }],
         pluginNodeEnvInline,
-        pluginMinifyDeadCodeElimination,
+        [pluginMinifyDeadCodeElimination, { keepFnName: true }],
         pluginMinifyGuardedExpressions,
         pluginDiscardModuleReferences,
     ],
