@@ -152,7 +152,7 @@ const serve = () => {
         console.error(chalk.red(
             `\n\nCannot access the server bundle file. Make sure you built
 the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`
+the file is accessible by the current user`,
         ));
         process.exit(1);
     }
