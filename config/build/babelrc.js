@@ -1,5 +1,5 @@
 import { buildPreset as buildPreset2015 } from 'babel-preset-es2015';
-import presetNode6 from 'babel-preset-es2015-node6';
+import presetNode6 from 'babel-preset-es2015-node6/object-rest';
 import presetReact from 'babel-preset-react';
 import preset2016 from 'babel-preset-es2016';
 import preset2017 from 'babel-preset-es2017';
