@@ -15,7 +15,7 @@ export const renderLayout = ({ children, ...props }) =>
             <div id={config.rootElementId}>
                 {children}
             </div>
-        </Layout>
+        </Layout>,
     )}`
 ;
 
@@ -40,7 +40,7 @@ export default (renderProps, store, mainEntry) => {
                             {renderToString(
                                 <App store={store} insertCss={insertCss}>
                                     <AsyncProps {...renderProps} {...asyncProps} />
-                                </App>
+                                </App>,
                             )}
                         </AppContainer>,
                     style: css.join(''),
@@ -49,6 +49,6 @@ export default (renderProps, store, mainEntry) => {
             } catch (err) {
                 return reject(err);
             }
-        }
+        },
     ));
 };

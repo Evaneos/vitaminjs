@@ -32,7 +32,7 @@ const renderErrorPage = (props) => {
                 dangerouslySetInnerHTML={{ __html: renderToString(
                     <CSSProvider insertCss={insertCss}>
                         <ErrorPage {...props} />
-                    </CSSProvider>
+                    </CSSProvider>,
                 ) }}
             />,
         style: css.join(''),
@@ -99,7 +99,7 @@ export default () => function* errorHandlerMiddleware(next) {
                 console.warn(chalk.yellow(`\
 It seems that one of your custom koa middleware returned a 404 with no response body.
 This might be intentional, or you might have forgot to yield next.
-(see https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware)`
+(see https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware)`,
                 ));
             }
         }

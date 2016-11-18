@@ -23,8 +23,8 @@ const DEV = process.env.NODE_ENV !== 'production';
 const clean = () => new Promise((resolve, reject) =>
     rimraf(
         path.join(config.server.buildPath, '*'),
-        (err, data) => (!err ? resolve(data) : reject(err))
-    )
+        (err, data) => (!err ? resolve(data) : reject(err)),
+    ),
 );
 
 const checkHot = (hot) => {
@@ -67,7 +67,7 @@ const commonBuild = (webpackConfig, message, options) => new Promise((resolve, r
     const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
     const bar = new ProgressBar(
         `${chalk.blue(message)} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout }
+        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
     if (options.hot) {
@@ -81,7 +81,7 @@ const build = options => (options.hot ?
     commonBuild(
         webpackConfigServer,
         `\t\uD83D\uDD50  Building server bundle ${chalk.bold('[hot]')}...`,
-        options
+        options,
     ).then(() => {
         readline.clearLine(process.stdout);
         readline.cursorTo(process.stdout, 0);
@@ -98,7 +98,7 @@ const build = options => (options.hot ?
         })
         .then(stats => commonBuild(
             webpackConfigServer, '\t\uD83D\uDD50  Building server bundle...',
-            { ...options, assetsByChunkName: stats.toJson().assetsByChunkName }
+            { ...options, assetsByChunkName: stats.toJson().assetsByChunkName },
         ))
         .then(() => {
             readline.clearLine(process.stdout);
@@ -114,7 +114,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         console.log(chalk.blue('\t\uD83D\uDD50  Launching tests...'));
         const serverFile = path.join(
             config.server.buildPath,
-            'tests'
+            'tests',
         );
         const serverProcess = exec(`${runner} ${serverFile} ${runnerArgs}`);
         serverProcess.stdout.pipe(process.stdout);
@@ -128,7 +128,7 @@ const test = ({ hot, runner, runnerArgs }) => {
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
     const bar = new ProgressBar(
         `${chalk.blue('Building tests...')} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout }
+        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
     );
     compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
     if (hot) {
@@ -142,7 +142,7 @@ const serve = () => {
     process.stdout.write(chalk.blue('\t\uD83D\uDD50  Launching server...'));
     const serverFile = path.join(
         config.server.buildPath,
-        config.server.filename
+        config.server.filename,
     );
     try {
         fs.accessSync(serverFile, fs.F_OK);
@@ -152,7 +152,7 @@ const serve = () => {
         console.error(chalk.red(
             `\n\nCannot access the server bundle file. Make sure you built
 the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`
+the file is accessible by the current user`,
         ));
         process.exit(1);
     }
@@ -169,7 +169,7 @@ the file is accessible by the current user`
         console.error(chalk.red(
     `\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
 might be because of a problem with vitaminjs itself. Please report it to
-https://github.com/Evaneos/vitaminjs/issues`
+https://github.com/Evaneos/vitaminjs/issues`,
         ));
         process.exit(1);
     });
@@ -220,7 +220,7 @@ program
             .catch((err) => {
                 console.error(err);
                 process.exit(1);
-            })
+            }),
     );
 
 program

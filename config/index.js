@@ -98,9 +98,9 @@ let config = loadConfigFile(rcPath);
 
 function getModuleMap(configPaths) {
     const moduleMap = {};
-    for (const configPath of configPaths) {
+    configPaths.forEach((configPath) => {
         moduleMap[pathToModuleName(configPath)] = resolveModulePath(lookupPath(configPath, config));
-    }
+    });
     return moduleMap;
 }
 
@@ -125,7 +125,7 @@ export const moduleMap = getModuleMap(modulePaths);
 
 // Cleanify config export by removing module paths
 modulePaths.forEach(path =>
-    deletePath(path, config)
+    deletePath(path, config),
 );
 
 // Resolve app path to absolute paths
@@ -133,13 +133,13 @@ modulePaths.forEach(path =>
     ['server', 'buildPath'],
     ['client', 'buildPath'],
 ].forEach(path =>
-    updatePath(path, appResolve, config)
+    updatePath(path, appResolve, config),
 );
 
 // Prepend / to publicPath and basePath if necessary
 const prependSlash = path => (path.match(/^(http|\/|$)/) ? '' : '/') + path;
 [['publicPath'], ['basePath']].forEach(
-    path => updatePath(path, prependSlash, config)
+    path => updatePath(path, prependSlash, config),
 );
 
 // If public path is not absolute url, prepend basePath

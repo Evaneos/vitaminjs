@@ -30,7 +30,7 @@ function hotReloadServer() {
             }
             clientBuilt = true;
             process.stdout.write(`\x1b[0G\t${chalk.green('\u2713')
-                } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`
+                } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
             );
         },
         serverSideRender: true,
