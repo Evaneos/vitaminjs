@@ -27,7 +27,7 @@ function render(history, store, rootRoute, element) {
                 }
             >{rootRoute}</Router>
         </App>,
-        element
+        element,
     );
 }
 
@@ -46,7 +46,7 @@ function bootstrapClient() {
         history,
         reducers,
         middlewares,
-        initialState
+        initialState,
         );
 
     const syncedHistory = syncHistoryWithStore(history, store);
@@ -60,7 +60,7 @@ function bootstrapClient() {
         const renderError = (error, rootEl) => {
             reactRender(
                 <RedBox error={error} />,
-                rootEl
+                rootEl,
             );
         };
         module.hot.accept('__app_modules__redux_reducers__', () => {
