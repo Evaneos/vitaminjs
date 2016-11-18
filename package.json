@@ -35,7 +35,7 @@
     "eslint-plugin-react": "^6.7.1",
     "jsdom": "^9.4.1",
     "parallelshell": "^2.0.0",
-    "react-addons-test-utils": "^15.3.0"
+    "react-addons-test-utils": "^15.4.0"
   },
   "peerDependencies": {
     "react": "^15.4.0",
