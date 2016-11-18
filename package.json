@@ -86,7 +86,7 @@
     "node-fetch": "^1.6.3",
     "postcss-loader": "^1.0.0",
     "progress": "^1.1.8",
-    "react-dom": "^15.3.0",
+    "react-dom": "^15.4.0",
     "redbox-react": "^1.2.9",
     "redux-thunk": "^2.0.1",
     "rimraf": "^2.5.2",
