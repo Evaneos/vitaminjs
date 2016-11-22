@@ -26,4 +26,4 @@ export default compose([
     actionDispatcher(),
     router(),
     renderer(),
-]);
+].filter(Boolean));

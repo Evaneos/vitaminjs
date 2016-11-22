@@ -17,6 +17,7 @@ export default {
     // (similar to webpack output.publicPath config option)
     // Name of the build output for client bundle (relative to build.path)
     publicPath: '/assets',
+    servePublic: true,
     redux: {
         reducers: '__vitamin__/config/utils/emptyObject',
         middlewares: '__vitamin__/config/utils/emptyArray',
