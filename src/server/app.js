@@ -13,10 +13,8 @@ import staticAssetsServer from './middlewares/staticAssetsServer';
 
 export default compose([
     // Enable Hot Reload when vitamin devServer url differs from app url (externalUrl)
-    ...(process.env.NODE_ENV !== 'production' ?
-        [function* setCORS(next) { this.set('Access-Control-Allow-Origin', '*'); yield next; }] :
-        []
-    ),
+    process.env.NODE_ENV !== 'production' &&
+        function* setCORS(next) { this.set('Access-Control-Allow-Origin', '*'); yield next; },
     conditional(),
     etag(),
     errorHandler(),
