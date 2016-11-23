@@ -23,6 +23,7 @@ file at the root of your project.
  - [onError](#onError)
 - [basePath](#basepath)
 - [publicPath](#publicPath)
+- [servePublic](#servePublic)
 - [client](#client)
  - [filename](#clientFilename)
  - [buildPath](#clientBuildPath)
@@ -71,9 +72,9 @@ Used for transmetting the state computed by the server to the client. By default
 
 ## <a id='server'></a>[`server`](#server)
 Config option for server side rendering, specified in the `server` key of the config object.
+
 ### <a id='host'></a>[`host`](#host)
 **`String`**
-
 
 The host of the node server. Default to `process.env.HOST`or `localhost`
 if not set
@@ -81,12 +82,10 @@ if not set
 ### <a id='port'></a>[`port`](#port)
 **`String | Integer`**
 
-
 The port on which the node server is listening. Default to `process.env.PORT`or `3000`
 
 ### <a id='externalUrl'></a>[`externalUrl`](#externalUrl)
 **`String`**
-
 
 If you don't want to serve the static files with vitaminjs, but use a custom server instead, you can
 specify its URL here (usually it means you want to use a CDN, or that you don't not using server side rendering). [TODO : change name to staticAssetsPath]
@@ -94,13 +93,11 @@ specify its URL here (usually it means you want to use a CDN, or that you don't 
 ### <a id='serverMiddlewares'></a>[`middlewares`](#serverMiddlewares)
 **`Path [ koaMiddleware ]`**
 
-
 Path to a file exporting an array of koa middlewares. Useful for additional logging, proxy request,
 authentication or other things on server.
 
 ### <a id='actionDispatcher'></a>[`actionDispatcher`](#actionDispatcher)
 **`Path (`[`KoaRequest`](http://koajs.com/#request)`, `[`dispatch`](https://redux.js.org/docs/api/Store.html#getState)`, `[`getState`](http://redux.js.org/docs/api/Store.html#getState)`) -> yieldable`**
-
 
 Path to a file exporting an actionDispatcher. Useful for populating the store on the server before rendering.
 The actionDispatcher is passed the node http request object, the dispatch function, and getState
@@ -109,8 +106,8 @@ as parameters. It's expected to return something that can be yield (Promise, Gen
 ### <a id='layout'></a>[`layout`](#layout)
 **`Path <ReactComponent>`**
 
-
 You can customize the HTML layout rendered by the server (if you really need to).
+
 ####Props
 - `head`: The head from [`react-helmet`](https://github.com/nfl/react-helmet#server-usage)
 - `style`: The CSS of the page as a string
@@ -120,6 +117,7 @@ You can customize the HTML layout rendered by the server (if you really need to)
 **`Path <ReactComponent>`**
 
 The page displayed when an error occurs.
+
 #### Props
 - `HTTPStatus`: the error throwed. Useful for printing stack. Only passed when in dev mode.
 - `request`: The koa request object
@@ -143,9 +141,8 @@ Useful for advanced logging.
         properties)
     - `state` (optional): The redux state object, if it's present
 
-### <a id='serverBuildPath'></a>[`builPath`](#serverBuildPath)
+### <a id='serverBuildPath'></a>[`buildPath`](#serverBuildPath)
 **`String`**
-
 
 The path relative to the application root where both server bundle is going to
 be generated. Default to `./build`
@@ -159,9 +156,9 @@ Define the filename of the server bundle. It will be created at the root of
 ## <a id='basepath'></a>[`basepath`](#basepath)
 **`String`**
 
-
 You can specify a basepath for your vitaminjs application. It will be prepended to all the internal
 link inside your app. Useful for mounting your whole app on a subpath.
+
 ## <a id='publicPath'></a>[`publicPath`](#publicPath)
 **`String`**
 
@@ -169,12 +166,16 @@ The path from which all the public ressources should be made available. If it's
 relative, the public folder will be mounted on it. It can also be absolute. It
 behave similarly to the [webpack `output.publicPath`](https://webpack.github.io/docs/configuration.html#output-publicpath) option. Default to `assets`.
 
+## <a id='servePublic'></a>[`servePublic`](#servePublic)
+**`Boolean`** (defaults `true`)
+
+If true serve `buildPath` folder at `publicPath`'s pathname.
+
 ## <a id='client'></a>[`client`](#client)
 Config options for the client
 
-### <a id='clientBuildPath'></a>[`builPath`](#clientBuildPath)
+### <a id='clientBuildPath'></a>[`buildPath`](#clientBuildPath)
 **`String`**
-
 
 The path relative to the application root where the clients assets will
 be generated (bundle, files, sourcemaps...). This path will be served statically
@@ -182,7 +183,6 @@ by vitamin server. Default to `./public`
 
 ### <a id='clientFilename'></a>[`filename`](#clientFilename)
 **`String`**
-
 
 Define the filename of the client build. It is relative to [`build.path`](#buildPath). You can include a hash, with the placeholder `[hash]`. Behave like
 [webpack `output.filename`](https://github.com/webpack/docs/wiki/Configuration#outputfilename). By default, it's `client_bundle.[hash].js`
