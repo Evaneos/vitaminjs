@@ -53,7 +53,7 @@
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.7",
     "babel-plugin-discard-module-references": "^1.1.2",
-    "babel-plugin-minify-dead-code-elimination": "0.1.0",
+    "babel-plugin-minify-dead-code-elimination": "0.1.1",
     "babel-plugin-minify-guarded-expressions": "0.0.3",
     "babel-plugin-minify-replace": "0.0.1",
     "babel-plugin-react-require": "^3.0.0",
