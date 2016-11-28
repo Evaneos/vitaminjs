@@ -1,11 +1,16 @@
 import compose from 'koa-compose';
 import etag from 'koa-etag';
 import conditional from 'koa-conditional-get';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
+/*
+ * We want to load errorHandler first, because usually, the global uncaught exception
+ * catch will be instanciated inside it.
+ */
+import errorHandler from './middlewares/errorHandler';
+// eslint-disable-next-line import/no-extraneous-dependencies, import/first
 import appMiddlewares from '__app_modules__server_middlewares__';
 
 import renderer from './middlewares/renderer';
-import errorHandler from './middlewares/errorHandler';
 import storeCreator from './middlewares/store';
 import router from './middlewares/router';
 import actionDispatcher from './middlewares/actionDispatcher';

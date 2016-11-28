@@ -72,9 +72,10 @@ export function config(options) {
         plugins: [
             new LoaderOptionsPlugin({
                 test: /\.css$/,
-                context: __dirname,
                 debug: true,
-                postcss: [autoprefixer],
+                context: __dirname,
+                postcss: [autoprefixer()],
+
             }),
             ...(options.hot ? [
                 new HotModuleReplacementPlugin(),

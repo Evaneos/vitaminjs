@@ -6,9 +6,9 @@ import config from '../../../config';
 const parsedPath = parseUrl(config.publicPath).pathname || '';
 const mountPath = parsedPath.slice(config.basePath.length);
 
-export default !config.servePublic ? () => null : () => (
-    mountPath.length ?
-        mount(mountPath, serve(config.client.buildPath)) :
-        /* otherwise */
-        serve(config.client.buildPath)
+const servePublic = serve(config.client.buildPath);
+
+export default (config.servePublic ?
+    () => (mountPath.length ? mount(mountPath, servePublic) : servePublic) :
+    () => null
 );
