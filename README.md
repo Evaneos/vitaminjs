@@ -70,7 +70,7 @@ export default {};
 
 And finally you can launch your app with
 ```bash
-vitamin start --hot
+vitamin start
 ```
 Open http://localhost:3000.
 
