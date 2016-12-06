@@ -1,5 +1,6 @@
 /* eslint-disable global-require, no-console */
 
+import { parse as parseUrl } from 'url';
 import koa from 'koa';
 import express from 'express';
 import chalk from 'chalk';
@@ -20,10 +21,11 @@ function hotReloadServer() {
 
     const compiler = webpack(clientBuildConfig);
     let clientBuilt = false;
+    const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
     server.use(require('webpack-dev-middleware')(compiler, {
         quiet: true,
         noInfo: true,
-        publicPath: config.publicPath,
+        publicPath: parsedPublicPath,
         reporter: (stats) => {
             if (stats.hasErrors || clientBuilt) {
                 return;
@@ -36,7 +38,7 @@ function hotReloadServer() {
         serverSideRender: true,
     }));
 
-    const hmrPath = `${config.publicPath}/__webpack_hmr`;
+    const hmrPath = `${parsedPublicPath}/__webpack_hmr`;
     server.use(require('webpack-hot-middleware')(compiler, {
         log: () => {},
         path: hmrPath,
