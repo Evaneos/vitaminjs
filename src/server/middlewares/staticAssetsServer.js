@@ -1,14 +1,14 @@
+import { parse as parseUrl } from 'url';
 import serve from 'koa-static';
 import mount from 'koa-mount';
 import config from '../../../config';
 
-const mountPath = config.publicPath.slice(config.basePath.length);
+const parsedPath = parseUrl(config.publicPath).pathname || '';
+const mountPath = parsedPath.slice(config.basePath.length);
 
-export default () => (
-    config.publicPath.match(/^(https?:)?\/\//) ?
-        function* continueNext(next) { yield next; } :
+export default !config.servePublic ? () => null : () => (
     mountPath.length ?
         mount(mountPath, serve(config.client.buildPath)) :
-    /* otherwise */
+        /* otherwise */
         serve(config.client.buildPath)
 );

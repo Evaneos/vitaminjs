@@ -180,9 +180,9 @@ program
     .alias('t')
     .description('Build test suite')
     .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
-    .option('-h, --hot', 'Activate hot reload for tests')
-    .action((runnerArgs, { runner, hot }) => {
-        test({ hot, runner, runnerArgs: runnerArgs.join(' ') });
+    .option('--no-hmr', 'Disable hot reload')
+    .action((runnerArgs, { runner, hmr }) => {
+        test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
     })
     .on('--help', () => {
         logger.log('  Examples:');
@@ -209,10 +209,10 @@ program
     .command('start')
     .alias('s')
     .description('Build and start application server')
-    .option('-h, --hot', 'Activate hot reload')
-    .action(({ hot }) =>
+    .option('--no-hmr', 'Disable hot reload')
+    .action(({ hmr }) =>
         clean()
-            .then(() => build({ hot: checkHot(hot) }).then(serve))
+            .then(() => build({ hot: checkHot(hmr) }).then(serve))
             .catch((err) => {
                 logger.error(err);
                 process.exit(1);
