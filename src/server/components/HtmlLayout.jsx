@@ -26,10 +26,10 @@ const HTMLLayout = ({ head, style, children }) => (
             {head.link.toComponent()}
             {head.base.toComponent()}
             <style>{style}</style>
+            {head.script.toComponent()}
         </head>
         <body>
             {children}
-            {head.script.toComponent()}
         </body>
     </html>
 );
