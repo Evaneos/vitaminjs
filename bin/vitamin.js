@@ -11,7 +11,7 @@ import ProgressBar from 'progress';
 import chalk from 'chalk';
 import readline from 'readline';
 
-import Logger, { formatter } from '../config/utils/consoleLogger';
+import logger, { formatter } from '../config/utils/consoleLogger';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
@@ -30,7 +30,7 @@ const clean = () => new Promise((resolve, reject) =>
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
-        Logger.warning(chalk.bold('Warning: Hot module reload option ignored in production environment.'),
+        logger.warning(chalk.bold('Warning: Hot module reload option ignored in production environment.'),
             '(based on your NODE_ENV variable)');
         /* eslint no-param-reassign: 0 */
         return false;
@@ -42,7 +42,7 @@ const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
         readline.clearLine(process.stdout);
         readline.cursorTo(process.stdout, 0);
-        Logger.log(stats.toString({
+        logger.log(stats.toString({
             hash: false,
             timings: false,
             chunks: false,
@@ -84,14 +84,14 @@ const build = options => (options.hot ?
     ).then(() => {
         readline.clearLine(process.stdout);
         readline.cursorTo(process.stdout, 0);
-        Logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
+        logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
     })
 :
     commonBuild(webpackConfigClient, '\t\uD83D\uDD50  Building client bundle(s)...', options)
         .then((stats) => {
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0);
-            Logger.success(`Client bundle(s) successfully ${chalk.bold('built')}!`);
+            logger.success(`Client bundle(s) successfully ${chalk.bold('built')}!`);
             return stats;
         })
         .then(stats => commonBuild(
@@ -101,14 +101,14 @@ const build = options => (options.hot ?
         .then(() => {
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0);
-            Logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
+            logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
         })
 );
 
 
 const test = ({ hot, runner, runnerArgs }) => {
     const launchTest = () => {
-        Logger.pending('\uD83D\uDD50 Launching tests...');
+        logger.pending('\uD83D\uDD50 Launching tests...');
         const serverFile = path.join(
             config.server.buildPath,
             'tests',
@@ -163,7 +163,7 @@ the file is accessible by the current user`,
         if (code === 0) {
             return;
         }
-        Logger.error(
+        logger.error(
     `\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
 might be because of a problem with vitaminjs itself. Please report it to
 https://github.com/Evaneos/vitaminjs/issues`);
@@ -185,10 +185,10 @@ program
         test({ hot, runner, runnerArgs: runnerArgs.join(' ') });
     })
     .on('--help', () => {
-        Logger.log('  Examples:');
-        Logger.log('');
-        Logger.log('    $ vitamin test -r mocha -- --color');
-        Logger.log('');
+        logger.log('  Examples:');
+        logger.log('');
+        logger.log('    $ vitamin test -r mocha -- --color');
+        logger.log('');
     });
 
 program
@@ -214,7 +214,7 @@ program
         clean()
             .then(() => build({ hot: checkHot(hot) }).then(serve))
             .catch((err) => {
-                Logger.error(err);
+                logger.error(err);
                 process.exit(1);
             }),
     );
