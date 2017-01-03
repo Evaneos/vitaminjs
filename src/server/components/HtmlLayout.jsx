@@ -25,7 +25,7 @@ const HTMLLayout = ({ head, style, children }) => (
             {head.meta.toComponent()}
             {head.link.toComponent()}
             {head.base.toComponent()}
-            <style>{style}</style>
+            <style dangerouslySetInnerHTML={{ __html: style }} />
         </head>
         <body>
             {children}
