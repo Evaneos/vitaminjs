@@ -8,7 +8,7 @@ const propTypes = {
 
 const DivLayout = ({ children, style, head }) =>
     <div>
-        <style>{style}</style>
+        <style dangerouslySetInnerHTML={{ __html: style }} />
         {children}
         {head.script.toComponent()}
     </div>
