@@ -65,11 +65,13 @@ const buildCallback = (resolve, reject) => (err, stats) => {
 
 const commonBuild = (webpackConfig, message, options) => new Promise((resolve, reject) => {
     const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
-    const bar = new ProgressBar(
-        `${chalk.blue(message)} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
-    );
-    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    if (process.stdout.isTTY) {
+        const bar = new ProgressBar(
+            `${chalk.blue(message)} :percent [:bar]`,
+            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
+        );
+        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    }
     if (options.hot) {
         compiler.watch({}, buildCallback(resolve, reject));
     } else {
@@ -126,11 +128,13 @@ const test = ({ hot, runner, runnerArgs }) => {
     }
 
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
-    const bar = new ProgressBar(
-        `${chalk.blue('Building tests...')} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
-    );
-    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    if (process.stdout.isTTY) {
+        const bar = new ProgressBar(
+            `${chalk.blue('Building tests...')} :percent [:bar]`,
+            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
+        );
+        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    }
     if (hot) {
         compiler.watch({}, buildCallback(launchTest));
     } else {
