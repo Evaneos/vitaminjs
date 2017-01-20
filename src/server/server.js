@@ -6,8 +6,9 @@ import express from 'express';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import readline from 'readline';
-import config from '../../config';
+
 import app from './app';
+import config from '../../config';
 
 global.fetch = fetch;
 
