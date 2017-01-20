@@ -39,7 +39,7 @@
     "react-router-redux": "^4.0.5",
     "react-redux": "^5.0.0",
     "redux": "^3.5.2",
-    "react-helmet": "^3.1.0"
+    "react-helmet": "^4.0.0"
   },
   "dependencies": {
     "assets-webpack-plugin": "^3.4.0",
@@ -49,8 +49,8 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-discard-module-references": "^1.1.2",
     "babel-plugin-minify-dead-code-elimination": "0.1.2",
-    "babel-plugin-minify-guarded-expressions": "0.0.3",
-    "babel-plugin-minify-replace": "0.0.1",
+    "babel-plugin-minify-guarded-expressions": "0.0.4",
+    "babel-plugin-minify-replace": "0.0.2",
     "babel-plugin-react-require": "^3.0.0",
     "babel-plugin-transform-export-default-name-forked": "^1.0.6",
     "babel-plugin-transform-node-env-inline": "^6.8.0",
