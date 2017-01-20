@@ -49,7 +49,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-discard-module-references": "^1.1.2",
     "babel-plugin-minify-dead-code-elimination": "0.1.2",
-    "babel-plugin-minify-guarded-expressions": "0.0.3",
+    "babel-plugin-minify-guarded-expressions": "0.0.4",
     "babel-plugin-minify-replace": "0.0.1",
     "babel-plugin-react-require": "^3.0.0",
     "babel-plugin-transform-export-default-name-forked": "^1.0.6",
