@@ -39,7 +39,7 @@ export function config(options) {
                 test: /\.global\.css$/,
                 loaders: [
                     'isomorphic-style-loader',
-                    'css-loader?sourceMap&importLoaders=1',
+                    'css-loader?sourceMap&importLoaders=1!postcss-loader',
                     'postcss-loader',
                 ],
             }, {
@@ -48,7 +48,7 @@ export function config(options) {
                 loaders: [
                     'isomorphic-style-loader',
                     'css-loader?modules&sourceMap&importLoaders=1' +
-                        '&localIdentName=[name]__[local]___[hash:base64:3]',
+                        '&localIdentName=[name]__[local]___[hash:base64:3]!postcss-loader',
                     'postcss-loader',
                 ],
             }, {
@@ -71,10 +71,13 @@ export function config(options) {
         },
         plugins: [
             new LoaderOptionsPlugin({
+                options: {
+                    context: __dirname,
+                    postcss: [autoprefixer()],
+                },
                 test: /\.css$/,
-                context: __dirname,
                 debug: true,
-                postcss: [autoprefixer],
+
             }),
             ...(options.hot ? [
                 new HotModuleReplacementPlugin(),

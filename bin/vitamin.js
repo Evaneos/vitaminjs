@@ -64,11 +64,13 @@ const buildCallback = (resolve, reject) => (err, stats) => {
 
 const commonBuild = (webpackConfig, message, options) => new Promise((resolve, reject) => {
     const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
-    const bar = new ProgressBar(
-        `${formatter(message, 'pending')} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
-    );
-    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    if (process.stdout.isTTY) {
+        const bar = new ProgressBar(
+            `${formatter(message, 'pending')} :percent [:bar]`,
+            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
+        );
+        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    }
     if (options.hot) {
         compiler.watch({}, buildCallback(resolve, reject));
     } else {
@@ -123,11 +125,13 @@ const test = ({ hot, runner, runnerArgs }) => {
     }
 
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
-    const bar = new ProgressBar(
-        `${formatter('Building tests...')} :percent [:bar]`,
-        { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
-    );
-    compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    if (process.stdout.isTTY) {
+        const bar = new ProgressBar(
+            `${formatter('Building tests...')} :percent [:bar]`,
+            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
+        );
+        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+    }
     if (hot) {
         compiler.watch({}, buildCallback(launchTest));
     } else {
@@ -164,9 +168,14 @@ the file is accessible by the current user`,
             return;
         }
         logger.error(
-    `\n\nServer process exited unexpectedly. If it is not an EADDRINUSE error, it
-might be because of a problem with vitaminjs itself. Please report it to
-https://github.com/Evaneos/vitaminjs/issues`);
+            `${chalk.bold(`\n\nServer process exited unexpectedly. \n`)}` +
+            '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
+            ' in your `.vitaminrc` file\n' +
+            '- If it occurs during initialization, it is probably an error in your app. Check the' +
+            ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
+            '- If your positive it\'s not any of that, it might be because of a problem with ' +
+            'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
+        );
         process.exit(1);
     });
 };

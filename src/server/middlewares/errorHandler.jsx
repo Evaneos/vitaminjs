@@ -3,8 +3,8 @@ import Helmet from 'react-helmet';
 import chalk from 'chalk';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import ErrorPage from '__app_modules__server_ErrorPage__';
 import userOnError from '__app_modules__server_onError__';
+import ErrorPage from '__app_modules__server_ErrorPage__';
 /* eslint-enable import/no-extraneous-dependencies */
 
 import CSSProvider from '../../shared/components/CSSProvider';

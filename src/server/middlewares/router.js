@@ -17,7 +17,8 @@ export default () => function* routerMiddleware(next) {
                 this.body = error.message;
             } else if (redirectLocation) {
                 this.redirect(
-                    redirectLocation.basename + redirectLocation.pathname + redirectLocation.search,
+                    (redirectLocation.basename || '') +
+                    redirectLocation.pathname + redirectLocation.search,
                 );
             } else if (renderProps) {
                 this.status = 200;

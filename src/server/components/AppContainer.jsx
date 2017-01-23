@@ -14,13 +14,13 @@ const propTypes = {
 function AppContainer({ initialState, children, mainEntry }) {
     return (<div>
         <script async src={`${config.publicPath}/${mainEntry}`} />
-        <div
-            dangerouslySetInnerHTML={{ __html: children }}
-        />
         <script
             dangerouslySetInnerHTML={{ __html: `
                 window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(initialState))}"`,
             }}
+        />
+        <div
+            dangerouslySetInnerHTML={{ __html: children }}
         />
     </div>);
 }
