@@ -10,26 +10,29 @@ export default () => function* routerMiddleware(next) {
 
     const appRoutes = yield Promise.resolve(routesWithStore(this.state.store));
 
-    match({ routes: appRoutes, location: url, history },
-        (error, redirectLocation, renderProps) => {
-            if (error) {
-                this.status = 500;
-                this.body = error.message;
-            } else if (redirectLocation) {
-                this.redirect(
-                    (redirectLocation.basename || '') +
-                    redirectLocation.pathname + redirectLocation.search,
-                );
-            } else if (renderProps) {
-                this.status = 200;
-                this.state.renderProps = renderProps;
-            } else {
-                // TODO yield down the middleware chain
-                this.status = 404;
-                this.body = 'Not found';
+    const matchPromise = yield new Promise(resolve => {
+        match({ routes: appRoutes, location: url, history },
+            (error, redirectLocation, renderProps) => {
+                if (error) {
+                    this.status = 500;
+                    this.body = error.message;
+                } else if (redirectLocation) {
+                    this.redirect(
+                        (redirectLocation.basename || '') +
+                        redirectLocation.pathname + redirectLocation.search,
+                    );
+                } else if (renderProps) {
+                    this.status = 200;
+                    this.state.renderProps = renderProps;
+                } else {
+                    this.status = 404;
+                    this.body = 'Not found';
+                }
+                resolve();
             }
-        },
-    );
+        );
+    });
+
     if (this.status === 200) {
         yield next;
     }
