@@ -10,7 +10,7 @@ export default () => function* routerMiddleware(next) {
 
     const appRoutes = yield Promise.resolve(routesWithStore(this.state.store));
 
-    const matchPromise = yield new Promise(resolve => {
+    yield new Promise((resolve) => {
         match({ routes: appRoutes, location: url, history },
             (error, redirectLocation, renderProps) => {
                 if (error) {
@@ -29,7 +29,7 @@ export default () => function* routerMiddleware(next) {
                     this.body = 'Not found';
                 }
                 resolve();
-            }
+            },
         );
     });
 
