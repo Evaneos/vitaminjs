@@ -3,7 +3,6 @@ import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
 import { config, createBabelLoaderConfig } from './webpack.config.common';
 import { vitaminResolve, appResolve, concat } from '../utils';
-import appConfig from '../index';
 
 const safeReaddirSync = (path) => {
     try {
@@ -16,7 +15,7 @@ const safeReaddirSync = (path) => {
 const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
 const appModules = externalModules(appResolve('node_modules'));
 const vitaminModules = externalModules(vitaminResolve('node_modules'));
-const hotPoll = vitaminResolve('config', 'utils', 'customHotPoll.js?1000');
+const hotPoll = vitaminResolve('config', 'utils', 'hot.js');
 
 function externals(context, request, callback) {
     const pathStart = request.split('/')[0];
@@ -38,8 +37,8 @@ module.exports = function serverConfig(options) {
             vitaminResolve('src', 'server', 'server.js'),
         ],
         output: {
-            filename: appConfig.server.filename,
-            path: appConfig.server.buildPath,
+            filename: options.server.filename,
+            path: options.server.buildPath,
             libraryTarget: 'commonjs2',
         },
 

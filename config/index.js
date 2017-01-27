@@ -93,7 +93,7 @@ function loadExtendedConfig(config, configPath) {
 }
 
 
-const rcPath = appResolve('.vitaminrc');
+export const rcPath = appResolve('.vitaminrc');
 let config = loadConfigFile(rcPath);
 
 function getModuleMap(configPaths) {

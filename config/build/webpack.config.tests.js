@@ -1,14 +1,13 @@
 import mergeWith from 'lodash.mergewith';
-import appConfig from '../index';
 import { vitaminResolve, concat } from '../utils';
 import { config, createBabelLoaderConfig } from './webpack.config.common';
 
 function testConfig(options) {
     return mergeWith({}, config(options), {
-        entry: `${appConfig.test}`,
+        entry: `${options.test}`,
         output: {
             filename: 'tests.js',
-            path: appConfig.server.buildPath,
+            path: options.server.buildPath,
         },
         module: {
             loaders: [
