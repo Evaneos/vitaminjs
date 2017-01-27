@@ -41,8 +41,6 @@ const checkHot = (hot) => {
 
 const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
-        readline.clearLine(process.stdout);
-        readline.cursorTo(process.stdout, 0);
         console.log(stats.toString({
             hash: false,
             timings: false,
@@ -70,7 +68,14 @@ const commonBuild = (webpackConfig, message, options) => new Promise((resolve, r
             `${chalk.blue(message)} :percent [:bar]`,
             { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
         );
-        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+        compiler.apply(new ProgressPlugin((percentage, msg) => {
+            if (percentage === 1) {
+                readline.clearLine(process.stdout);
+                readline.cursorTo(process.stdout, 0);
+            } else {
+                bar.update(percentage, { msg });
+            }
+        }));
     }
     if (options.hot) {
         compiler.watch({}, buildCallback(resolve, reject));
@@ -85,15 +90,11 @@ const build = options => (options.hot ?
         `\t\uD83D\uDD50  Building server bundle ${chalk.bold('[hot]')}...`,
         options,
     ).then(() => {
-        readline.clearLine(process.stdout);
-        readline.cursorTo(process.stdout, 0);
         console.log(`\t${chalk.green('\u2713')} Server bundle successfully ${chalk.bold('built')}!`);
     })
 :
     commonBuild(webpackConfigClient, '\t\uD83D\uDD50  Building client bundle(s)...', options)
         .then((stats) => {
-            readline.clearLine(process.stdout);
-            readline.cursorTo(process.stdout, 0);
             console.log(`\t${chalk.green('\u2713')
                 } Client bundle(s) successfully ${chalk.bold('built')}!`);
             return stats;
@@ -103,8 +104,6 @@ const build = options => (options.hot ?
             { ...options, assetsByChunkName: stats.toJson().assetsByChunkName },
         ))
         .then(() => {
-            readline.clearLine(process.stdout);
-            readline.cursorTo(process.stdout, 0);
             console.log(`\t${chalk.green('\u2713')
                 } Server bundle successfully ${chalk.bold('built')}!`);
         })
