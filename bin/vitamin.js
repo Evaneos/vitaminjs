@@ -7,6 +7,7 @@ import rimraf from 'rimraf';
 import { exec, spawn } from 'child_process';
 import fs from 'fs';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
+import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
 import readline from 'readline';
@@ -76,6 +77,7 @@ const commonBuild = (webpackConfig, message, options) => new Promise((resolve, r
                 bar.update(percentage, { msg });
             }
         }));
+        compiler.apply(new FriendlyErrorsWebpackPlugin());
     }
     if (options.hot) {
         compiler.watch({}, buildCallback(resolve, reject));
