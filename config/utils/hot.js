@@ -37,6 +37,7 @@ module.hot.check().then(function(updatedModules) {
     ));
     if (unacceptedModules.length) {
       process.send('restart');
+      return;
     }
 
     checkForUpdate(true);
