@@ -33,7 +33,9 @@ export default env => ({
         // in the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
         // bundle size the smallest possible.
         env === 'server' && pluginTransformRuntime,
-        // Remove server-only or client-only imports
+        // replace process.env.NODE_ENV by its current value
+        pluginNodeEnvInline,
+        // replace IS_CLIENT and IS_SERVER
         [pluginMinifyReplace, {
             replacements: [
                 {
@@ -46,11 +48,14 @@ export default env => ({
                 },
             ],
         }],
-        pluginNodeEnvInline,
+        // Dead code elimination (for example: if (IS_CLIENT) { ... } becames if (false) { }
         [pluginMinifyDeadCodeElimination, { keepFnName: true }],
+        // transforms `IS_CLIENT && doSomething()` => `false && doSomething()` to `false`
         pluginMinifyGuardedExpressions,
-        pluginTransformExportDefaultName,
+        // Remove server-only or client-only imports
         pluginDiscardModuleReferences,
+        // easier debugging on export default arrow functions with the filename
+        pluginTransformExportDefaultName,
     ].filter(Boolean),
     sourceRoot: vitaminResolve(),
 });
