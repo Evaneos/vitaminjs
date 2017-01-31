@@ -3,17 +3,20 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
+import jsStringEscape from 'js-string-escape';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 
 import config from '../../config';
-import AppContainer from './components/AppContainer';
 import App from '../shared/components/App';
 
-export const renderLayout = ({ children, ...props }) =>
+/* eslint-disable react/no-danger */
+export const renderLayout = ({ appHTMLString, ...props }) =>
     `${Layout.doctype ? `${Layout.doctype}\n` : ''}${
     renderToStaticMarkup(
         <Layout {...props}>
             <div id={config.rootElementId}>
-                {children}
+                <div dangerouslySetInnerHTML={{ __html: appHTMLString }} />
             </div>
         </Layout>,
     )}`
@@ -32,17 +35,18 @@ export default (renderProps, store, mainEntry) => {
             }
             try {
                 return resolve(renderLayout({
-                    children: (
-                        <AppContainer
-                            initialState={store.getState()}
-                            mainEntry={mainEntry}
-                        >
-                            {renderToString(
-                                <App store={store} insertCss={insertCss}>
-                                    <AsyncProps {...renderProps} {...asyncProps} />
-                                </App>,
-                            )}
-                        </AppContainer>
+                    appHTMLString: renderToString(
+                        <App store={store} insertCss={insertCss}>
+                            <div>
+                                <AsyncProps {...renderProps} {...asyncProps} />
+                                <Helmet
+                                    script={[
+                                        { innerHTML: `window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(store.getState()))}"` },
+                                        { src: `${config.publicPath}/${mainEntry}`, async: true },
+                                    ]}
+                                />
+                            </div>
+                        </App>,
                     ),
                     style: css.join(''),
                     head: Helmet.rewind(),
