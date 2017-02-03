@@ -2,12 +2,11 @@ import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } f
 import autoprefixer from 'autoprefixer';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
-import appConfig, { moduleMap } from '../index';
 import babelrc from './babelrc';
 
 const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
 
-export const createBabelLoaderConfig = env => ({
+export const createBabelLoader = env => ({
     test: /\.js(x?)$/,
     loader: 'babel',
     include: path =>
@@ -16,12 +15,19 @@ export const createBabelLoaderConfig = env => ({
         path.indexOf('node_modules/vitaminjs/node_modules') === -1),
     query: babelrc(env),
 });
+
+export const createResolveConfigLoader = () => ({
+    // The following loader will resolve the config to its final value during the build
+    test: vitaminResolve('config/index'),
+    loader: vitaminResolve('config/build/resolveConfigLoader'),
+});
+
 export function config(options) {
     return {
         devtool: options.dev && 'source-map',
         output: {
             pathinfo: options.dev,
-            publicPath: `${appConfig.publicPath}/`,
+            publicPath: `${options.publicPath}/`,
         },
         module: {
             // Disable handling of unknown requires
@@ -53,7 +59,7 @@ export function config(options) {
                 ],
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
-                loader: `url-loader?limit=10000&name=${join(appConfig.filesPath, '[hash].[ext]')}`,
+                loader: `url-loader?limit=10000&name=${join(options.filesPath, '[hash].[ext]')}`,
             }, {
                 test: /\.json$/,
                 loader: 'json',
@@ -65,7 +71,7 @@ export function config(options) {
         },
         cache: options.hot,
         resolve: {
-            alias: moduleMap,
+            alias: options.moduleMap,
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
         },

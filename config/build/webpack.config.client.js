@@ -2,30 +2,26 @@ import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 
-import { createBabelLoaderConfig, config } from './webpack.config.common.js';
+import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
 import { concat, vitaminResolve, appResolve } from '../utils';
-import appConfig from '../index';
 
 function clientConfig(options) {
     const hotMiddlewareEntry =
-        `webpack-hot-middleware/client?path=${appConfig.publicPath}/__webpack_hmr`;
+        `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
         entry: [
             vitaminResolve('src', 'client', 'index.jsx'),
             ...(options.hot ? [hotMiddlewareEntry] : []),
         ],
         output: {
-            path: appConfig.client.buildPath,
-            filename: appConfig.client.filename,
+            path: options.client.buildPath,
+            filename: options.client.filename,
         },
         module: {
             rules: [
-                createBabelLoaderConfig('client'),
-                // The following loader will resolve the config to its final value during the build
-                {
-                    test: vitaminResolve('config/index'),
-                    loader: vitaminResolve('config/build/requireLoader'),
-                }],
+                createBabelLoader('client'),
+                createResolveConfigLoader(),
+            ],
         },
         plugins: [
             ...(options.hot ? [
@@ -38,9 +34,9 @@ function clientConfig(options) {
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
-            ...(appConfig.client.serviceWorker ? [
+            ...(options.client.serviceWorker ? [
                 new ServiceWorkerWebpackPlugin({
-                    entry: appResolve(appConfig.client.serviceWorker),
+                    entry: appResolve(options.client.serviceWorker),
                 }),
             ] : []),
         ],

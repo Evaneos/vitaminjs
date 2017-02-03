@@ -18,6 +18,7 @@ function hotReloadServer() {
     const clientBuildConfig = require('../../config/build/webpack.config.client')({
         hot: true,
         dev: true,
+        ...config,
     });
 
     const compiler = webpack(clientBuildConfig);
@@ -32,7 +33,7 @@ function hotReloadServer() {
                 return;
             }
             clientBuilt = true;
-            process.stdout.write(`\x1b[0G\t${chalk.green('\u2713')
+            process.stdout.write(`\x1b[0G${chalk.green('\u2713')
                 } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
             );
         },
@@ -77,13 +78,13 @@ mountedServer.use(config.basePath, appServer());
 mountedServer.listen(port, host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
-    process.stdout.write(`\x1b[0G\t${chalk.green('\u2713')} Server listening on: ${
+    process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
         chalk.bold.underline(`http://${host}:${port}${config.basePath}`)
     }\n`);
     if (module.hot) {
-        console.log(`\t${chalk.green('\u2713')} ${chalk.bold('Hot module reload')} activated`);
+        console.log(`${chalk.green('\u2713')} ${chalk.bold('Hot module reload')} activated`);
         process.stdout.write(`\x1b[0G${
-            chalk.blue('\t\uD83D\uDD50  Building client bundle [in memory]...')
+            chalk.blue('\uD83D\uDD50  Building client bundle [in memory]...')
         }`);
     }
 });

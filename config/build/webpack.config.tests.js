@@ -1,22 +1,21 @@
 import mergeWith from 'lodash.mergewith';
-import appConfig from '../index';
 import { vitaminResolve, concat } from '../utils';
-import { config, createBabelLoaderConfig } from './webpack.config.common';
+import { config, createBabelLoader } from './webpack.config.common';
 
 function testConfig(options) {
     return mergeWith({}, config(options), {
-        entry: `${appConfig.test}`,
+        entry: `${options.test}`,
         output: {
             filename: 'tests.js',
-            path: appConfig.server.buildPath,
+            path: options.server.buildPath,
         },
         module: {
             loaders: [
-                createBabelLoaderConfig('client'),
+                createBabelLoader('client'),
                 // The following loader will resolve the config to its final value during the build
                 {
                     test: vitaminResolve('config/index'),
-                    loader: vitaminResolve('config/build/requireLoader'),
+                    loader: vitaminResolve('config/build/resolveConfigLoader'),
                 }],
         },
         externals: {

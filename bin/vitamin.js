@@ -4,28 +4,31 @@ import program from 'commander';
 import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
-import { exec, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import fs from 'fs';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
+import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
 import readline from 'readline';
 
+import killProcess from '../config/utils/killProcess';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
-import config from '../config';
+import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 
 const DEV = process.env.NODE_ENV !== 'production';
 
 
-const clean = () => new Promise((resolve, reject) =>
-    rimraf(
+const clean = () => new Promise((resolve, reject) => {
+    const config = parseConfig();
+    return rimraf(
         path.join(config.server.buildPath, '*'),
         (err, data) => (!err ? resolve(data) : reject(err)),
-    ),
-);
+    );
+});
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
@@ -39,111 +42,123 @@ const checkHot = (hot) => {
     return hot;
 };
 
+const BUILD_FAILED = Symbol('BUILD_FAILED');
+
 const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
-        readline.clearLine(process.stdout);
-        readline.cursorTo(process.stdout, 0);
-        console.log(stats.toString({
-            hash: false,
-            timings: false,
-            chunks: false,
-            chunkModules: false,
-            modules: false,
-            children: true,
-            version: true,
-            cached: false,
-            cachedAssets: false,
-            reasons: false,
-            source: false,
-            errorDetails: false,
-            colors: true,
-        }));
-        return reject && reject(err);
+        return reject && reject(BUILD_FAILED);
     }
-    return resolve && resolve(stats);
+    return resolve(stats);
 };
 
-const commonBuild = (webpackConfig, message, options) => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
+const throttle = (callback, throttleTime = 400) => {
+    let t;
+    return () => {
+        if (t) clearTimeout(t);
+        t = setTimeout(callback, throttleTime);
+    };
+};
+
+const createCompiler = (webpackConfig, message, options) => {
+    const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue(message)} :percent [:bar]`,
+            `${chalk.blue(`\uD83D\uDD50  Building ${message}...`)} :percent [:bar]`,
             { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
         );
-        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
+        compiler.apply(new ProgressPlugin((percentage, msg) => {
+            if (percentage === 1) {
+                readline.clearLine(process.stdout);
+                readline.cursorTo(process.stdout, 0);
+            } else {
+                bar.update(percentage, { msg });
+            }
+        }));
+        compiler.apply(new FriendlyErrorsWebpackPlugin({
+            clearConsole: !!options.hot,
+        }));
     }
-    if (options.hot) {
-        compiler.watch({}, buildCallback(resolve, reject));
-    } else {
-        compiler.run(buildCallback(resolve, reject));
-    }
-});
 
-const build = options => (options.hot ?
+    return compiler;
+};
+
+const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
+    const createCompilerCommonBuild = () => {
+        const config = parseConfig();
+        const webpackConfig = createWebpackConfig({
+            ...options,
+            dev: DEV,
+            ...config,
+        });
+        const compiler = createCompiler(webpackConfig, message, options);
+        return { compiler, config };
+    };
+
+    if (!options.hot) {
+        const { compiler } = createCompilerCommonBuild();
+        return new Promise((resolve, reject) => (
+            compiler.run(buildCallback(resolve, reject))
+        ));
+    }
+
+    let webpackWatcher;
+
+    const watch = () => (
+        new Promise((resolve) => {
+            const { compiler, config } = createCompilerCommonBuild();
+            const callbackWatch = buildCallback(() => {
+                hotCallback(config);
+                resolve(config);
+            });
+            webpackWatcher = compiler.watch({}, callbackWatch);
+        })
+    );
+
+    fs.watchFile(configRcPath, throttle(() => {
+        webpackWatcher.close(() => watch().then(restartServer));
+    }));
+
+    return watch();
+};
+
+const build = (options, hotCallback, restartServer) => (options.hot ?
     commonBuild(
         webpackConfigServer,
-        `\t\uD83D\uDD50  Building server bundle ${chalk.bold('[hot]')}...`,
+        `server bundle ${chalk.bold('[hot]')}`,
         options,
-    ).then(() => {
-        readline.clearLine(process.stdout);
-        readline.cursorTo(process.stdout, 0);
-        console.log(`\t${chalk.green('\u2713')} Server bundle successfully ${chalk.bold('built')}!`);
-    })
+        hotCallback,
+        restartServer,
+    )
 :
-    commonBuild(webpackConfigClient, '\t\uD83D\uDD50  Building client bundle(s)...', options)
-        .then((stats) => {
-            readline.clearLine(process.stdout);
-            readline.cursorTo(process.stdout, 0);
-            console.log(`\t${chalk.green('\u2713')
-                } Client bundle(s) successfully ${chalk.bold('built')}!`);
-            return stats;
-        })
+    commonBuild(webpackConfigClient, 'client bundle(s)', options)
         .then(stats => commonBuild(
-            webpackConfigServer, '\t\uD83D\uDD50  Building server bundle...',
+            webpackConfigServer, 'server bundle...',
+            // Cannot build in parallel because server-side rendering
+            // needs client bundle name in the html layout for script path
             { ...options, assetsByChunkName: stats.toJson().assetsByChunkName },
         ))
-        .then(() => {
-            readline.clearLine(process.stdout);
-            readline.cursorTo(process.stdout, 0);
-            console.log(`\t${chalk.green('\u2713')
-                } Server bundle successfully ${chalk.bold('built')}!`);
-        })
 );
 
 
 const test = ({ hot, runner, runnerArgs }) => {
-    const launchTest = () => {
-        console.log(chalk.blue('\t\uD83D\uDD50  Launching tests...'));
+    const launchTest = (config) => {
+        if (!config.test) {
+            throw new Error('Please specify a test file path in .vitaminrc');
+        }
+
+        console.log(chalk.blue('\uD83D\uDD50  Launching tests...'));
         const serverFile = path.join(
             config.server.buildPath,
             'tests',
         );
-        const serverProcess = exec(`${runner} ${serverFile} ${runnerArgs}`);
-        serverProcess.stdout.pipe(process.stdout);
-        serverProcess.stderr.pipe(process.stderr);
+        spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
 
-    if (config.test === undefined) {
-        throw new Error('Please specify a test file path in .vitaminrc');
-    }
-
-    const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
-    if (process.stdout.isTTY) {
-        const bar = new ProgressBar(
-            `${chalk.blue('Building tests...')} :percent [:bar]`,
-            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
-        );
-        compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
-    }
-    if (hot) {
-        compiler.watch({}, buildCallback(launchTest));
-    } else {
-        compiler.run(buildCallback(launchTest));
-    }
+    commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
 };
 
-const serve = () => {
-    process.stdout.write(chalk.blue('\t\uD83D\uDD50  Launching server...'));
+const serve = (config) => {
+    process.stdout.write(chalk.blue('\uD83D\uDD50  Launching server...'));
     const serverFile = path.join(
         config.server.buildPath,
         config.server.filename,
@@ -160,18 +175,19 @@ the file is accessible by the current user`,
         ));
         process.exit(1);
     }
-    const serverProcess = spawn('node', [serverFile], { stdio: 'inherit' });
-    const killServer = signal => () => {
-        serverProcess.kill(signal);
-        process.exit();
-    };
-    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => process.on(signal, killServer(signal)));
+    const serverProcess = spawn(process.argv[0], [serverFile], { stdio: ['inherit', 'inherit', 'inherit', 'ipc'] });
+    const killServer = signal => killProcess(serverProcess, { signal }).then(() => process.exit());
+    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
+        const listener = () => killServer(signal);
+        process.on(signal, listener);
+        serverProcess.on('exit', () => process.removeListener(signal, listener));
+    });
     serverProcess.on('close', (code) => {
-        if (code === 0) {
+        if (!code) {
             return;
         }
         console.error(chalk.red(
-            `${chalk.bold(`\n\nServer process exited unexpectedly. \n`)}` +
+            `${chalk.bold('\n\nServer process exited unexpectedly. \n')}` +
             '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
             ' in your `.vitaminrc` file\n' +
             '- If it occurs during initialization, it is probably an error in your app. Check the' +
@@ -181,6 +197,37 @@ the file is accessible by the current user`,
         ));
         process.exit(1);
     });
+
+    return serverProcess;
+};
+
+const start = (options) => {
+    let serverProcess;
+
+    const sendSignal = () => {
+        if (!serverProcess) return;
+        serverProcess.kill('SIGUSR2');
+    };
+
+    function restartServer(config) {
+        if (serverProcess) {
+            // eslint-disable-next-line no-use-before-define
+            killProcess(serverProcess).then(() => startServer(config));
+            serverProcess = null;
+        }
+    }
+
+    function startServer(config) {
+        serverProcess = serve(config);
+        serverProcess.on('message', (message) => {
+            if (message === 'restart') {
+                restartServer(config);
+            }
+        });
+    }
+
+    return build(options, sendSignal, restartServer)
+        .then(startServer);
 };
 
 program
@@ -224,9 +271,11 @@ program
     .option('--no-hmr', 'Disable hot reload')
     .action(({ hmr }) =>
         clean()
-            .then(() => build({ hot: checkHot(hmr) }).then(serve))
+            .then(() => start({ hot: checkHot(hmr) }))
             .catch((err) => {
-                console.error(err);
+                if (err !== BUILD_FAILED) {
+                    console.log(err.stack || err);
+                }
                 process.exit(1);
             }),
     );
@@ -234,6 +283,6 @@ program
 program
     .command('serve')
     .description('Start application server')
-    .action(serve);
+    .action(() => serve(parseConfig()));
 
 program.parse(process.argv);
