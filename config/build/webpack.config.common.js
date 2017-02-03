@@ -4,15 +4,16 @@ import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import babelrc from './babelrc';
 
-const MODULES_DIRECTORIES = [appResolve('node_modules'), vitaminResolve('node_modules')];
+const VITAMIN_DIRECTORY = vitaminResolve();
+const VITAMIN_MODULES_DIRECTORY = vitaminResolve('node_modules');
+const MODULES_DIRECTORIES = [appResolve('node_modules'), VITAMIN_MODULES_DIRECTORY];
 
 export const createBabelLoader = env => ({
     test: /\.js(x?)$/,
-    loader: 'babel',
+    loader: 'babel-loader',
     include: path =>
-        path.indexOf('node_modules') === -1 ||
-        (path.indexOf('node_modules/vitaminjs') !== -1 &&
-        path.indexOf('node_modules/vitaminjs/node_modules') === -1),
+        !path.includes('node_modules') ||
+        (path.startsWith(VITAMIN_DIRECTORY) && !path.startsWith(VITAMIN_MODULES_DIRECTORY)),
     query: babelrc(env),
 });
 

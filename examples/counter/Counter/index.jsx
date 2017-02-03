@@ -1,7 +1,5 @@
 import { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { connect, compose, withStyles } from 'vitaminjs';
 import s from './style.css';
 
 const Counter = ({ value, onIncrement, onDecrement }) =>
