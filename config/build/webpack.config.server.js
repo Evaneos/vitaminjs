@@ -30,7 +30,7 @@ function externals(context, request, callback) {
 }
 
 
-module.exports = function serverConfig(options) {
+export default function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             ...(options.hot ? [hotPoll] : []),
@@ -70,4 +70,4 @@ module.exports = function serverConfig(options) {
             }),
         ],
     }, concat);
-};
+}
