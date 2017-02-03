@@ -44,7 +44,7 @@ vitamin will extend the object with the `react-router-redux` reducer under the k
 A path to a module that exports an array of redux middlewares.
 
 It should look like that:
-```bash
+```json
 {
     "routes": "./routes",
     "redux": {
@@ -53,18 +53,18 @@ It should look like that:
 }
 ```
 
-Create the `routes.js`file:
+Create the `routes.js` file:
 
-```bash
-import { Route } from 'react-router';
+```js
+import { Route } from 'vitaminjs';
 
 export default (
     <Route path="/">
 
 );
 ```
-Create the `reducers.js`file:
-```bash
+Create the `reducers.js` file:
+```js
 export default {};
 ```
 

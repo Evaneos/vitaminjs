@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "vitamin counter example",
   "scripts": {
-    "start": "vitamin start"
+    "start": "vitamin start",
+    "build": "vitamin build"
   },
   "author": "Johan Girod <johan@evaneos.com>",
   "repository": {
@@ -12,13 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "isomorphic-style-loader": "^1.0.0",
     "react": "^15.1.0",
-    "react-helmet": "^4.0.0",
-    "react-redux": "^5.0.2",
-    "react-router": "^2.5.1",
-    "react-router-redux": "^4.0.5",
-    "redux": "^3.3.1",
     "vitaminjs": "^1.0.0-rc4"
   }
 }

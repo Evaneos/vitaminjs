@@ -13,17 +13,17 @@ const safeReaddirSync = (path) => {
 };
 
 const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
-const appModules = externalModules(appResolve('node_modules'));
+const appModules = externalModules(appResolve('node_modules')).filter(m => m !== 'vitaminjs');
 const vitaminModules = externalModules(vitaminResolve('node_modules'));
 const hotPoll = vitaminResolve('config', 'utils', 'hot.js');
 
 function externals(context, request, callback) {
     const pathStart = request.split('/')[0];
 
-    if (appModules.indexOf(pathStart) !== -1) {
+    if (appModules.includes(pathStart)) {
         return callback(null, `commonjs2 ${request}`);
     }
-    if (vitaminModules.indexOf(pathStart) !== -1) {
+    if (vitaminModules.includes(pathStart)) {
         return callback(null, `commonjs2 vitaminjs/node_modules/${request}`);
     }
     return callback();
