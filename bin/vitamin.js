@@ -11,6 +11,7 @@ import ProgressBar from 'progress';
 import chalk from 'chalk';
 import readline from 'readline';
 
+import logger, { formatter } from '../config/utils/consoleLogger';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
@@ -29,10 +30,8 @@ const clean = () => new Promise((resolve, reject) =>
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
-        console.log(chalk.orange(
-            chalk.bold('Warning: Hot module reload option ignored in production environment.'),
-            '(based on your NODE_ENV variable)',
-        ));
+        logger.warning(chalk.bold('Warning: Hot module reload option ignored in production environment.'),
+            '(based on your NODE_ENV variable)');
         /* eslint no-param-reassign: 0 */
         return false;
     }
@@ -43,7 +42,7 @@ const buildCallback = (resolve, reject) => (err, stats) => {
     if (err || stats.hasErrors()) {
         readline.clearLine(process.stdout);
         readline.cursorTo(process.stdout, 0);
-        console.log(stats.toString({
+        logger.log(stats.toString({
             hash: false,
             timings: false,
             chunks: false,
@@ -67,7 +66,7 @@ const commonBuild = (webpackConfig, message, options) => new Promise((resolve, r
     const compiler = webpack(webpackConfig({ ...options, dev: DEV }));
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue(message)} :percent [:bar]`,
+            `${formatter(message, 'pending')} :percent [:bar]`,
             { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
@@ -87,15 +86,14 @@ const build = options => (options.hot ?
     ).then(() => {
         readline.clearLine(process.stdout);
         readline.cursorTo(process.stdout, 0);
-        console.log(`\t${chalk.green('\u2713')} Server bundle successfully ${chalk.bold('built')}!`);
+        logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
     })
 :
     commonBuild(webpackConfigClient, '\t\uD83D\uDD50  Building client bundle(s)...', options)
         .then((stats) => {
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0);
-            console.log(`\t${chalk.green('\u2713')
-                } Client bundle(s) successfully ${chalk.bold('built')}!`);
+            logger.success(`Client bundle(s) successfully ${chalk.bold('built')}!`);
             return stats;
         })
         .then(stats => commonBuild(
@@ -105,15 +103,14 @@ const build = options => (options.hot ?
         .then(() => {
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0);
-            console.log(`\t${chalk.green('\u2713')
-                } Server bundle successfully ${chalk.bold('built')}!`);
+            logger.success(`Server bundle successfully ${chalk.bold('built')}!`);
         })
 );
 
 
 const test = ({ hot, runner, runnerArgs }) => {
     const launchTest = () => {
-        console.log(chalk.blue('\t\uD83D\uDD50  Launching tests...'));
+        logger.pending('\uD83D\uDD50 Launching tests...');
         const serverFile = path.join(
             config.server.buildPath,
             'tests',
@@ -130,7 +127,7 @@ const test = ({ hot, runner, runnerArgs }) => {
     const compiler = webpack(webpackConfigTest({ hot, dev: DEV }));
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue('Building tests...')} :percent [:bar]`,
+            `${formatter('Building tests...')} :percent [:bar]`,
             { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => bar.update(percentage, { msg })));
@@ -143,7 +140,7 @@ const test = ({ hot, runner, runnerArgs }) => {
 };
 
 const serve = () => {
-    process.stdout.write(chalk.blue('\t\uD83D\uDD50  Launching server...'));
+    process.stdout.write(formatter('\t\uD83D\uDD50  Launching server...', 'pending'));
     const serverFile = path.join(
         config.server.buildPath,
         config.server.filename,
@@ -170,7 +167,7 @@ the file is accessible by the current user`,
         if (code === 0) {
             return;
         }
-        console.error(chalk.red(
+        logger.error(
             `${chalk.bold(`\n\nServer process exited unexpectedly. \n`)}` +
             '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
             ' in your `.vitaminrc` file\n' +
@@ -178,7 +175,7 @@ the file is accessible by the current user`,
             ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
             '- If your positive it\'s not any of that, it might be because of a problem with ' +
             'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
-        ));
+        );
         process.exit(1);
     });
 };
@@ -197,10 +194,10 @@ program
         test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
     })
     .on('--help', () => {
-        console.log('  Examples:');
-        console.log('');
-        console.log('    $ vitamin test -r mocha -- --color');
-        console.log('');
+        logger.log('  Examples:');
+        logger.log('');
+        logger.log('    $ vitamin test -r mocha -- --color');
+        logger.log('');
     });
 
 program
@@ -226,7 +223,7 @@ program
         clean()
             .then(() => build({ hot: checkHot(hmr) }).then(serve))
             .catch((err) => {
-                console.error(err);
+                logger.error(err);
                 process.exit(1);
             }),
     );
