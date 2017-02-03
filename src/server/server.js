@@ -8,7 +8,7 @@ import fetch from 'node-fetch';
 import readline from 'readline';
 
 import app from './app';
-import config, { moduleMap } from '../../config';
+import config from '../../config';
 
 global.fetch = fetch;
 
@@ -19,7 +19,6 @@ function hotReloadServer() {
         hot: true,
         dev: true,
         ...config,
-        moduleMap,
     });
 
     const compiler = webpack(clientBuildConfig);

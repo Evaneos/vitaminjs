@@ -12,10 +12,9 @@
 
 require('../utils/transpile');
 
-module.exports = function requireLoader() {
+module.exports = function resolveConfigLoader() {
     try {
-        return 'module.exports = ' +
-            JSON.stringify(require(this.resource).default);
+        return `module.exports = ${JSON.stringify(require(this.resource).default())}`;
     } catch (e) {
         this.emitError(e);
     }

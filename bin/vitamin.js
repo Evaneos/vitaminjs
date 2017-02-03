@@ -16,18 +16,19 @@ import killProcess from '../config/utils/killProcess';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
-import config, { moduleMap, rcPath as configRcPath } from '../config';
+import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 
 const DEV = process.env.NODE_ENV !== 'production';
 
 
-const clean = () => new Promise((resolve, reject) =>
-    rimraf(
+const clean = () => new Promise((resolve, reject) => {
+    const config = parseConfig();
+    return rimraf(
         path.join(config.server.buildPath, '*'),
         (err, data) => (!err ? resolve(data) : reject(err)),
-    ),
-);
+    );
+});
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
@@ -58,13 +59,8 @@ const throttle = (callback, throttleTime = 400) => {
     };
 };
 
-const createCompiler = (webpackConfig, options, message) => {
-    const compiler = webpack(webpackConfig({
-        ...options,
-        dev: DEV,
-        ...config,
-        moduleMap,
-    }));
+const createCompiler = (webpackConfig, message, options) => {
+    const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
             `${chalk.blue(`\uD83D\uDD50  Building ${message}...`)} :percent [:bar]`,
@@ -78,50 +74,60 @@ const createCompiler = (webpackConfig, options, message) => {
                 bar.update(percentage, { msg });
             }
         }));
-        compiler.apply(new FriendlyErrorsWebpackPlugin());
+        compiler.apply(new FriendlyErrorsWebpackPlugin({
+            clearConsole: !!options.hot,
+        }));
     }
 
     return compiler;
 };
 
-const commonBuild = (webpackConfig, message, options, callback) => {
-    const createCompilerCommonBuild = () => createCompiler(webpackConfig, options, message);
+const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
+    const createCompilerCommonBuild = () => {
+        const config = parseConfig();
+        const webpackConfig = createWebpackConfig({
+            ...options,
+            dev: DEV,
+            ...config,
+        });
+        const compiler = createCompiler(webpackConfig, message, options);
+        return { compiler, config };
+    };
 
     if (!options.hot) {
-        const compiler = createCompilerCommonBuild();
+        const { compiler } = createCompilerCommonBuild();
         return new Promise((resolve, reject) => (
             compiler.run(buildCallback(resolve, reject))
         ));
     }
 
-    return new Promise((resolve) => {
-        const callbackWatch = buildCallback(() => {
-            callback();
-            resolve();
-        });
+    let webpackWatcher;
 
-        let watcher;
-        const watch = () => {
-            watcher = createCompilerCommonBuild().watch({}, callbackWatch);
-        };
-
-        watch();
-
-        fs.watchFile(configRcPath, throttle(() => {
-            watcher.close(() => {
-                watch();
+    const watch = () => (
+        new Promise((resolve) => {
+            const { compiler, config } = createCompilerCommonBuild();
+            const callbackWatch = buildCallback(() => {
+                hotCallback(config);
+                resolve(config);
             });
+            webpackWatcher = compiler.watch({}, callbackWatch);
+        })
+    );
 
-        }));
-    });
+    fs.watchFile(configRcPath, throttle(() => {
+        webpackWatcher.close(() => watch().then(restartServer));
+    }));
+
+    return watch();
 };
 
-const build = (options, hotCallback) => (options.hot ?
+const build = (options, hotCallback, restartServer) => (options.hot ?
     commonBuild(
         webpackConfigServer,
         `server bundle ${chalk.bold('[hot]')}`,
         options,
         hotCallback,
+        restartServer,
     )
 :
     commonBuild(webpackConfigClient, 'client bundle(s)', options)
@@ -135,7 +141,11 @@ const build = (options, hotCallback) => (options.hot ?
 
 
 const test = ({ hot, runner, runnerArgs }) => {
-    const launchTest = () => {
+    const launchTest = (config) => {
+        if (!config.test) {
+            throw new Error('Please specify a test file path in .vitaminrc');
+        }
+
         console.log(chalk.blue('\uD83D\uDD50  Launching tests...'));
         const serverFile = path.join(
             config.server.buildPath,
@@ -144,14 +154,10 @@ const test = ({ hot, runner, runnerArgs }) => {
         spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
 
-    if (config.test === undefined) {
-        throw new Error('Please specify a test file path in .vitaminrc');
-    }
-
     commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
 };
 
-const serve = () => {
+const serve = (config) => {
     process.stdout.write(chalk.blue('\uD83D\uDD50  Launching server...'));
     const serverFile = path.join(
         config.server.buildPath,
@@ -203,18 +209,24 @@ const start = (options) => {
         serverProcess.kill('SIGUSR2');
     };
 
-    const startServer = () => {
-        serverProcess = serve();
+    function restartServer(config) {
+        if (serverProcess) {
+            // eslint-disable-next-line no-use-before-define
+            killProcess(serverProcess).then(() => startServer(config));
+            serverProcess = null;
+        }
+    }
+
+    function startServer(config) {
+        serverProcess = serve(config);
         serverProcess.on('message', (message) => {
             if (message === 'restart') {
-                killProcess(serverProcess)
-                    .then(startServer);
-                serverProcess = null;
+                restartServer(config);
             }
         });
-    };
+    }
 
-    return build(options, sendSignal)
+    return build(options, sendSignal, restartServer)
         .then(startServer);
 };
 
@@ -271,6 +283,6 @@ program
 program
     .command('serve')
     .description('Start application server')
-    .action(serve);
+    .action(() => serve(parseConfig()));
 
 program.parse(process.argv);

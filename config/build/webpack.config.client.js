@@ -2,7 +2,7 @@ import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 
-import { createBabelLoaderConfig, config } from './webpack.config.common.js';
+import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
 import { concat, vitaminResolve, appResolve } from '../utils';
 
 function clientConfig(options) {
@@ -19,12 +19,9 @@ function clientConfig(options) {
         },
         module: {
             rules: [
-                createBabelLoaderConfig('client'),
-                // The following loader will resolve the config to its final value during the build
-                {
-                    test: vitaminResolve('config/index'),
-                    loader: vitaminResolve('config/build/requireLoader'),
-                }],
+                createBabelLoader('client'),
+                createResolveConfigLoader(),
+            ],
         },
         plugins: [
             ...(options.hot ? [

@@ -1,7 +1,7 @@
 import { BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
-import { config, createBabelLoaderConfig } from './webpack.config.common';
+import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
 import { vitaminResolve, appResolve, concat } from '../utils';
 
 const safeReaddirSync = (path) => {
@@ -54,7 +54,10 @@ module.exports = function serverConfig(options) {
         },
 
         module: {
-            rules: [createBabelLoaderConfig('server')],
+            rules: [
+                createBabelLoader('server'),
+                createResolveConfigLoader(),
+            ],
         },
         plugins: [
             ...(options.dev ? [new BannerPlugin({

@@ -94,59 +94,64 @@ function loadExtendedConfig(config, configPath) {
 
 
 export const rcPath = appResolve('.vitaminrc');
-let config = loadConfigFile(rcPath);
 
-function getModuleMap(configPaths) {
-    const moduleMap = {};
-    configPaths.forEach((configPath) => {
-        moduleMap[pathToModuleName(configPath)] = resolveModulePath(lookupPath(configPath, config));
-    });
-    return moduleMap;
-}
+export default () => {
+    let config = loadConfigFile(rcPath);
 
-config = mergeConfig(defaults, config);
-config = loadExtendedConfig(config, rcPath);
+    const getModuleMap = (configPaths) => {
+        const moduleMap = {};
+        configPaths.forEach((configPath) => {
+            moduleMap[pathToModuleName(configPath)]
+                = resolveModulePath(lookupPath(configPath, config));
+        });
+        return moduleMap;
+    };
 
-
-const modulePaths = [
-    ['routes'],
-    ['server', 'middlewares'],
-    ['server', 'ErrorPage'],
-    ['server', 'onError'],
-    ['server', 'layout'],
-    ['server', 'actionDispatcher'],
-    ['redux', 'reducers'],
-    ['redux', 'middlewares'],
-    ['redux', 'enhancers'],
-    ['redux', 'stateSerializer'],
-];
-
-export const moduleMap = getModuleMap(modulePaths);
-
-// Cleanify config export by removing module paths
-modulePaths.forEach(path =>
-    deletePath(path, config),
-);
-
-// Resolve app path to absolute paths
-[
-    ['server', 'buildPath'],
-    ['client', 'buildPath'],
-].forEach(path =>
-    updatePath(path, appResolve, config),
-);
-
-// Prepend / to publicPath and basePath if necessary
-const prependSlash = path => (path.match(/^(http|\/|$)/) ? '' : '/') + path;
-[['publicPath'], ['basePath']].forEach(
-    path => updatePath(path, prependSlash, config),
-);
-
-// If public path is not absolute url, prepend basePath
-updatePath(['publicPath'], publicPath =>
-    (!publicPath.match(/^(http|\/\/)/) ? config.basePath : '') + config.publicPath,
-config);
+    config = mergeConfig(defaults, config);
+    config = loadExtendedConfig(config, rcPath);
 
 
-const exportedConfig = config;
-export default exportedConfig;
+    const modulePaths = [
+        ['routes'],
+        ['server', 'middlewares'],
+        ['server', 'ErrorPage'],
+        ['server', 'onError'],
+        ['server', 'layout'],
+        ['server', 'actionDispatcher'],
+        ['redux', 'reducers'],
+        ['redux', 'middlewares'],
+        ['redux', 'enhancers'],
+        ['redux', 'stateSerializer'],
+    ];
+
+    const moduleMap = getModuleMap(modulePaths);
+
+    // Cleanify config export by removing module paths
+    modulePaths.forEach(path =>
+        deletePath(path, config),
+    );
+
+    // Resolve app path to absolute paths
+    [
+        ['server', 'buildPath'],
+        ['client', 'buildPath'],
+    ].forEach(path =>
+        updatePath(path, appResolve, config),
+    );
+
+    // Prepend / to publicPath and basePath if necessary
+    const prependSlash = path => (path.match(/^(http|\/|$)/) ? '' : '/') + path;
+    [['publicPath'], ['basePath']].forEach(
+        path => updatePath(path, prependSlash, config),
+    );
+
+    // If public path is not absolute url, prepend basePath
+    updatePath(['publicPath'], publicPath =>
+        (!publicPath.match(/^(http|\/\/)/) ? config.basePath : '') + config.publicPath,
+    config);
+
+    return {
+        ...config,
+        moduleMap,
+    };
+};
