@@ -1,9 +1,8 @@
-import { buildPreset as buildPreset2015 } from 'babel-preset-es2015';
+import { buildPreset as preset2015 } from 'babel-preset-es2015';
 import presetReact from 'babel-preset-react';
 import preset2016 from 'babel-preset-es2016';
 import preset2017 from 'babel-preset-es2017';
 import presetStage1 from 'babel-preset-stage-1';
-import pluginNode6ArrowFunctions from 'babel-plugin-transform-es2015-arrow-functions';
 import pluginNode6FunctionName from 'babel-plugin-transform-es2015-function-name';
 import pluginReactRequire from 'babel-plugin-react-require';
 import pluginTransformRuntime from 'babel-plugin-transform-runtime';
@@ -17,15 +16,14 @@ import { vitaminResolve } from '../utils';
 
 export default env => ({
     presets: [
-        env === 'client' && [buildPreset2015, { modules: false }],
+        env === 'client' && [preset2015, { modules: false }],
         presetReact,
         preset2016,
         preset2017,
         presetStage1,
     ].filter(Boolean),
     plugins: [
-        // The only missing plugins for node 6
-        env === 'server' && pluginNode6ArrowFunctions,
+        // The only missing plugin for node 6
         env === 'server' && pluginNode6FunctionName,
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
