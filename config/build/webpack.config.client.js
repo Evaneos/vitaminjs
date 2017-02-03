@@ -5,7 +5,7 @@ import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
 import { concat, vitaminResolve, appResolve } from '../utils';
 
-function clientConfig(options) {
+export default function clientConfig(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
@@ -42,5 +42,3 @@ function clientConfig(options) {
         ],
     }, concat);
 }
-
-module.exports = clientConfig;

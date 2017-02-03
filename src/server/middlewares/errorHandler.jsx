@@ -27,14 +27,15 @@ const renderErrorPage = (props) => {
     const insertCss = styles => css.push(styles._getCss());
 
     return renderLayout({
-        children:
+        children: (
             <div
                 dangerouslySetInnerHTML={{ __html: renderToString(
                     <CSSProvider insertCss={insertCss}>
                         <ErrorPage {...props} />
                     </CSSProvider>,
                 ) }}
-            />,
+            />
+        ),
         style: css.join(''),
         head: Helmet.rewind(),
     });

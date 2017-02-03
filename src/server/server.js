@@ -9,46 +9,9 @@ import readline from 'readline';
 
 import app from './app';
 import config from '../../config';
+import webpackClientConfig from '../../config/build/webpack.config.client';
 
 global.fetch = fetch;
-
-function hotReloadServer() {
-    const server = express();
-    const webpack = require('webpack');
-    const clientBuildConfig = require('../../config/build/webpack.config.client')({
-        hot: true,
-        dev: true,
-        ...config,
-    });
-
-    const compiler = webpack(clientBuildConfig);
-    let clientBuilt = false;
-    const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
-    server.use(require('webpack-dev-middleware')(compiler, {
-        quiet: true,
-        noInfo: true,
-        publicPath: parsedPublicPath,
-        reporter: (stats) => {
-            if (stats.hasErrors || clientBuilt) {
-                return;
-            }
-            clientBuilt = true;
-            process.stdout.write(`\x1b[0G${chalk.green('\u2713')
-                } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
-            );
-        },
-        serverSideRender: true,
-    }));
-
-    const hmrPath = `${parsedPublicPath}/__webpack_hmr`;
-    server.use(require('webpack-hot-middleware')(compiler, {
-        log: () => {},
-        path: hmrPath,
-        reload: true,
-    }));
-
-    return server;
-}
 
 let currentApp = app;
 function appServer() {
@@ -61,7 +24,46 @@ function appServer() {
 }
 
 const mountedServer = express();
-if (module.hot) {
+
+if (process.env.NODE_ENV !== 'production' && module.hot) {
+    const hotReloadServer = () => {
+        const server = express();
+        const webpack = require('webpack');
+        const clientBuildConfig = webpackClientConfig({
+            hot: true,
+            dev: true,
+            ...config,
+        });
+
+        const compiler = webpack(clientBuildConfig);
+        let clientBuilt = false;
+        const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
+        server.use(require('webpack-dev-middleware')(compiler, {
+            quiet: true,
+            noInfo: true,
+            publicPath: parsedPublicPath,
+            reporter: (stats) => {
+                if (stats.hasErrors || clientBuilt) {
+                    return;
+                }
+                clientBuilt = true;
+                process.stdout.write(`\x1b[0G${chalk.green('\u2713')
+                    } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
+                );
+            },
+            serverSideRender: true,
+        }));
+
+        const hmrPath = `${parsedPublicPath}/__webpack_hmr`;
+        server.use(require('webpack-hot-middleware')(compiler, {
+            log: () => {},
+            path: hmrPath,
+            reload: true,
+        }));
+
+        return server;
+    };
+
     mountedServer.use(hotReloadServer());
     module.hot.accept('./app', () => {
         try {

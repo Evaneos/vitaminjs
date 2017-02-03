@@ -32,7 +32,7 @@ export default (renderProps, store, mainEntry) => {
             }
             try {
                 return resolve(renderLayout({
-                    children:
+                    children: (
                         <AppContainer
                             initialState={store.getState()}
                             mainEntry={mainEntry}
@@ -42,7 +42,8 @@ export default (renderProps, store, mainEntry) => {
                                     <AsyncProps {...renderProps} {...asyncProps} />
                                 </App>,
                             )}
-                        </AppContainer>,
+                        </AppContainer>
+                    ),
                     style: css.join(''),
                     head: Helmet.rewind(),
                 }));
