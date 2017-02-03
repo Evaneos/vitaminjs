@@ -74,26 +74,6 @@ vitamin start
 ```
 Open http://localhost:3000.
 
-
-## TODO
-* [ ] Prevent CSRF
-* [x] add webpack-hot-middleware instead of webpack-dev-server
-* [x] How to handle partial rendering vs the complete page ?
-* [ ] Support global install & use local vitamin binary when launched globally (like grunt-cli)
-* [ ] plugin authentication (?)
-* [x] Add a HTMLRootComponent
-* [x] Add a Error 500 component
-* [x] Add a Error 404 component
-* [ ] Add default app explaning how to get started
-* [ ] tests
-* [ ] Add more doc
-* [ ] ~~add eslint & flow static typecheck in webpack loaders (?)~~
-
-## TODO for PRODUCTION :
-* [ ] add logs handling
-* [ ] Set package.json node version to 5.1.0
-
-
 ### Change layout
 
 In your `vitaminrc`:
