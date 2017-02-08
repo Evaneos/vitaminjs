@@ -1,3 +1,14 @@
 machine:
   node:
-    version: 6.5.0
+    version: 6.9.4
+
+dependencies:
+  cache_directories:
+    - ~/.cache/yarn
+    - node_modules
+  override:
+    - yarn
+
+test:
+  override:
+    - yarn test
