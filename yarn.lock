@@ -466,9 +466,9 @@ babel-plugin-minify-guarded-expressions@0.0.4:
   dependencies:
     babel-helper-flip-expressions "^0.0.2"
 
-babel-plugin-minify-replace@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-minify-replace/-/babel-plugin-minify-replace-0.0.2.tgz#353d6a4aaee5eba3897d3ecd9e6ccb8fbecbaa15"
+babel-plugin-minify-replace@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/babel-plugin-minify-replace/-/babel-plugin-minify-replace-0.0.3.tgz#4a623336c0a3b4de4dedba0a80fdb6b5935f024f"
 
 babel-plugin-react-require@^3.0.0:
   version "3.0.0"
