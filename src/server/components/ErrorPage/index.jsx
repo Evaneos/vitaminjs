@@ -7,6 +7,7 @@ import Error500 from './Error500';
 
 const propTypes = {
     HTTPStatus: PropTypes.number.isRequired,
+    // eslint-disable-next-line react/require-default-props
     error: PropTypes.shape({
         name: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
