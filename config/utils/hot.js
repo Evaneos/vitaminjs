@@ -26,11 +26,6 @@ module.hot.check().then(function(updatedModules) {
 
   return module.hot.apply({
     ignoreUnaccepted: true,
-    onUnaccepted: function(data) {
-        console.log(`${chalk.red('\u2717')
-            } Hot module ignored an update to unaccepted module ${data.chain.join(" -> ")}`
-        );
-    },
   }).then(function(renewedModules) {
     const unacceptedModules = updatedModules.filter(moduleId => (
       renewedModules && !renewedModules.includes(moduleId)
