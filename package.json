@@ -47,7 +47,6 @@
     "babel-plugin-minify-guarded-expressions": "0.0.4",
     "babel-plugin-minify-replace": "0.0.3",
     "babel-plugin-react-require": "^3.0.0",
-    "babel-plugin-transform-es2015-function-name": "^6.22.0",
     "babel-plugin-transform-export-default-name-forked": "^1.2.2",
     "babel-plugin-transform-node-env-inline": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.22.0",
@@ -98,6 +97,6 @@
     "webpack-hot-middleware": "^2.16.1"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=6.5.0"
   }
 }

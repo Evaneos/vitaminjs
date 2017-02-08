@@ -3,7 +3,6 @@ import presetReact from 'babel-preset-react';
 import preset2016 from 'babel-preset-es2016';
 import preset2017 from 'babel-preset-es2017';
 import presetStage1 from 'babel-preset-stage-1';
-import pluginNode6FunctionName from 'babel-plugin-transform-es2015-function-name';
 import pluginReactRequire from 'babel-plugin-react-require';
 import pluginTransformRuntime from 'babel-plugin-transform-runtime';
 import pluginTransformExportDefaultName from 'babel-plugin-transform-export-default-name-forked';
@@ -23,8 +22,6 @@ export default env => ({
         presetStage1,
     ].filter(Boolean),
     plugins: [
-        // The only missing plugin for node 6
-        env === 'server' && pluginNode6FunctionName,
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
         // Add Object.entries, Object.values and other ES2017 functionalities
