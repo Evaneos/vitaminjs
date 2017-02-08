@@ -65,7 +65,7 @@ export function config(options) {
                 loader: `url-loader?limit=10000&name=${join(options.filesPath, '[hash].[ext]')}`,
             }, {
                 test: /\.json$/,
-                loader: 'json',
+                loader: 'json-loader',
             }],
         },
 
