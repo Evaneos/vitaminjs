@@ -10,7 +10,6 @@ import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
-import readline from 'readline';
 
 import killProcess from '../config/utils/killProcess';
 import webpackConfigServer from '../config/build/webpack.config.server';
@@ -59,20 +58,21 @@ const throttle = (callback, throttleTime = 400) => {
     };
 };
 
+const listenExitSignal = (callback) => {
+    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
+        process.on(signal, () => callback(signal));
+    });
+};
+
 const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue(`\uD83D\uDD50  Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, width: 50, clear: true, stream: process.stdout },
+            `${chalk.blue(`\uD83D\uDD50 Building ${message}...`)} :percent [:bar]`,
+            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
-            if (percentage === 1) {
-                readline.clearLine(process.stdout);
-                readline.cursorTo(process.stdout, 0);
-            } else {
-                bar.update(percentage, { msg });
-            }
+            bar.update(percentage, { msg });
         }));
         compiler.apply(new FriendlyErrorsWebpackPlugin({
             clearConsole: !!options.hot,
@@ -102,7 +102,6 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     }
 
     let webpackWatcher;
-
     const watch = () => (
         new Promise((resolve) => {
             const { compiler, config } = createCompilerCommonBuild();
@@ -157,6 +156,7 @@ const test = ({ hot, runner, runnerArgs }) => {
     commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
 };
 
+
 const serve = (config) => {
     process.stdout.write(chalk.blue('\uD83D\uDD50  Launching server...'));
     const serverFile = path.join(
@@ -175,59 +175,52 @@ the file is accessible by the current user`,
         ));
         process.exit(1);
     }
-    const serverProcess = spawn(process.argv[0], [serverFile], { stdio: ['inherit', 'inherit', 'inherit', 'ipc'] });
-    const killServer = signal => killProcess(serverProcess, { signal }).then(() => process.exit());
-    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
-        const listener = () => killServer(signal);
-        process.on(signal, listener);
-        serverProcess.on('exit', () => process.removeListener(signal, listener));
-    });
-    serverProcess.on('close', (code) => {
-        if (!code) {
-            return;
-        }
-        console.error(chalk.red(
-            `${chalk.bold('\n\nServer process exited unexpectedly. \n')}` +
-            '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
-            ' in your `.vitaminrc` file\n' +
-            '- If it occurs during initialization, it is probably an error in your app. Check the' +
-            ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
-            '- If your positive it\'s not any of that, it might be because of a problem with ' +
-            'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
-        ));
-        process.exit(1);
-    });
-
-    return serverProcess;
+    return spawn(process.argv[0], [serverFile], { stdio: ['inherit', 'inherit', 'inherit', 'ipc'] });
 };
 
 const start = (options) => {
     let serverProcess;
 
-    const sendSignal = () => {
-        if (!serverProcess) return;
-        serverProcess.kill('SIGUSR2');
-    };
+    let exiting = false;
+    listenExitSignal((signal) => {
+        exiting = true;
+        console.log(!!serverProcess);
+        if (!serverProcess) process.exit();
+        killProcess(serverProcess, { signal }).then(() => {
+            console.log('exiting'); process.exit();
+        });
+    });
 
-    function restartServer(config) {
-        if (serverProcess) {
-            // eslint-disable-next-line no-use-before-define
-            killProcess(serverProcess).then(() => startServer(config));
-            serverProcess = null;
-        }
-    }
 
     function startServer(config) {
+        if (exiting) return;
+        if (serverProcess) {
+            killProcess(serverProcess).then(() => startServer(config));
+            serverProcess = null;
+            return;
+        }
         serverProcess = serve(config);
         serverProcess.on('message', (message) => {
             if (message === 'restart') {
-                restartServer(config);
+                // eslint-disable-next-line no-use-before-define
+                startServer(config);
             }
+        });
+        serverProcess.on('close', () => {
+            serverProcess = null;
         });
     }
 
-    return build(options, sendSignal, restartServer)
-        .then(startServer);
+    const sendSignal = (config) => {
+        if (!serverProcess) {
+            startServer(config);
+            return;
+        }
+
+        serverProcess.kill('SIGUSR2');
+    };
+
+    return build(options, sendSignal, startServer);
 };
 
 program
@@ -283,6 +276,30 @@ program
 program
     .command('serve')
     .description('Start application server')
-    .action(() => serve(parseConfig()));
+    .action(() => {
+        const serverProcess = serve(parseConfig());
+
+        listenExitSignal((signal) => {
+            killProcess(serverProcess, { signal })
+                .then(() => process.exit());
+        });
+
+
+        serverProcess.on('close', (code) => {
+            if (!code) {
+                return;
+            }
+            console.error(chalk.red(
+                `${chalk.bold('\n\nServer process exited unexpectedly. \n')}` +
+                '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
+                ' in your `.vitaminrc` file\n' +
+                '- If it occurs during initialization, it is probably an error in your app. Check the' +
+                ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
+                '- If your positive it\'s not any of that, it might be because of a problem with ' +
+                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
+            ));
+            process.exit(1);
+        });
+    });
 
 program.parse(process.argv);

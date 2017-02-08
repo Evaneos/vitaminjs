@@ -8,7 +8,7 @@ export default (process, { signal = 'SIGTERM', timeout = 4000 } = {}) => {
     return new Promise((resolve) => {
         const killTimeout = setTimeout(() => {
             // eslint-disable-next-line no-console
-            console.warn('Timeout: sending SIGKILL...');
+            console.warn('[Vitamin] Server timeout: sending SIGKILL...');
             process.kill('SIGKILL');
         }, timeout);
 
