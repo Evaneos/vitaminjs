@@ -1,24 +1,26 @@
 import jsStringEscape from 'js-string-escape';
-import { RouterContext } from 'react-router';
+import { StaticRouter as Router } from 'react-router-dom';
 import { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 
-import SharedApp from '../../shared/components/App';
+import SharedApp from '../../shared/components/AppContainer';
 import config from '../../../config';
+import HTTPStatus from './HTTPStatus';
 
 const propTypes = {
     store: PropTypes.shape({
         getState: PropTypes.func.isRequired,
         dispatch: PropTypes.func.isRequired,
     }).isRequired,
+    location: PropTypes.string.isRequired,
     insertCss: PropTypes.func.isRequired,
-    renderProps: PropTypes.objectOf(PropTypes.any).isRequired,
+    context: PropTypes.objectOf(PropTypes.any).isRequired,
     mainEntry: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
 };
-
-const App = ({ store, insertCss, renderProps, mainEntry }) =>
+const AppContainer = ({ store, insertCss, location, mainEntry, context, children }) =>
     <SharedApp store={store} insertCss={insertCss}>
         <Helmet
             script={[
@@ -26,9 +28,12 @@ const App = ({ store, insertCss, renderProps, mainEntry }) =>
                 { src: `${config.publicPath}/${mainEntry}`, async: true },
             ]}
         />
-        <RouterContext {...renderProps} />
+        <HTTPStatus status={200} />
+        <Router location={location} context={context} basename={config.basePath} >
+            {children}
+        </Router>
     </SharedApp>
 ;
-App.propTypes = propTypes;
+AppContainer.propTypes = propTypes;
 
-export default App;
+export default AppContainer;

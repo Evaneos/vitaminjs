@@ -3,9 +3,11 @@ import Helmet from 'react-helmet';
 import { Resolver } from 'react-resolver';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import rootComponent from '__app_modules__routes__';
 
 import config from '../../config';
-import App from './components/App';
+import AppContainer from './components/AppContainer';
 
 /* eslint-disable react/no-danger */
 export const renderLayout = ({ appHTMLString, ...props }) =>
@@ -20,11 +22,16 @@ export const renderLayout = ({ appHTMLString, ...props }) =>
 ;
 
 // Return a promise that resolves to the HTML string
-export default (renderProps, store, mainEntry) => {
+export default (store, mainEntry, context, location) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
-    return Resolver
-        .resolve(() => <App {...{ renderProps, store, mainEntry, insertCss }} />)
+    return Promise.resolve(rootComponent)
+        .then(App => Resolver.resolve(
+            () =>
+                <AppContainer {...{ store, mainEntry, insertCss, context, location }} >
+                    {App}
+                </AppContainer>,
+        ))
         .then(({ Resolved, data }) => renderLayout({
             appHTMLString: renderToString(
                 <div>
