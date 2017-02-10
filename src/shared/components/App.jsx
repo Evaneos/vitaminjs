@@ -9,11 +9,13 @@ const propTypes = {
 };
 
 function App({ store, insertCss, children }) {
-    return (<CSSProvider insertCss={insertCss}>
-        <Provider store={store}>
-            {children}
-        </Provider>
-    </CSSProvider>);
+    return (
+        <CSSProvider insertCss={insertCss}>
+            <Provider store={store}>
+                {children}
+            </Provider>
+        </CSSProvider>
+    );
 }
 
 App.propTypes = propTypes;
