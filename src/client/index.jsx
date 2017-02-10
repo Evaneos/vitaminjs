@@ -1,9 +1,10 @@
-import { render as reactRender, unmountComponentAtNode } from 'react-dom';
-import { Router, useRouterHistory } from 'react-router';
-import AsyncProps from 'async-props';
+import { useRouterHistory, render as reactRender } from 'react-router';
+import { unmountComponentAtNode } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
 import RedBox from 'redbox-react';
+import { Resolver } from 'react-resolver';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
 import reducers from '__app_modules__redux_reducers__';
@@ -13,20 +14,12 @@ import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
-import App from '../shared/components/App';
+import App from './components/App';
 
-function render(history, store, rootRoute, element) {
+function render(history, store, appRoutes, element) {
     const insertCss = ({ _insertCss }) => _insertCss();
-
-    reactRender(
-        <App store={store} insertCss={insertCss}>
-            <Router
-                history={history}
-                render={props =>
-                    <AsyncProps {...props} loadContext={{ dispatch: store.dispatch }} />
-                }
-            >{rootRoute}</Router>
-        </App>,
+    Resolver.render(
+        () => <App {...{ history, store, routes: appRoutes, insertCss }} />,
         element,
     );
 }

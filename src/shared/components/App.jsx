@@ -8,15 +8,13 @@ const propTypes = {
     children: PropTypes.element.isRequired,
 };
 
-function App({ store, insertCss, children }) {
-    return (
-        <CSSProvider insertCss={insertCss}>
-            <Provider store={store}>
-                {children}
-            </Provider>
-        </CSSProvider>
-    );
-}
-
+const App = ({ store, insertCss, children }) =>
+    <CSSProvider insertCss={insertCss}>
+        <Provider store={store}>
+            <div> {children} </div>
+        </Provider>
+    </CSSProvider>
+;
 App.propTypes = propTypes;
+
 export default App;
