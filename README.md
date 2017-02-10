@@ -17,7 +17,7 @@ What's included in the menu
 - [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
 - [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
-- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No more `Ctrl+R`. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
+- **Extreme Hot Module Reload**. On server. On reducers. On react components. On CSS. No more `Ctrl+R`.
 - **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
 - **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/vitamin/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/vitamin/blob/master/.babelrc.node))
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
@@ -37,8 +37,6 @@ It is a path to the module containing the main [Route](https://github.com/reactj
 All the configuration specific to redux
 #### redux.reducers
 The path to the module that exports an **object** of you app reducers.
-
-vitamin will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
 
 #### redux.middlewares (optional)
 A path to a module that exports an array of redux middlewares.
