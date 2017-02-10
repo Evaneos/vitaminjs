@@ -11,6 +11,8 @@ import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
 import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
 import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressions';
 import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
+import pluginReactHotLoader from 'react-hot-loader/babel';
+
 import { vitaminResolve } from '../utils';
 
 export default env => ({
@@ -51,6 +53,7 @@ export default env => ({
         pluginDiscardModuleReferences,
         // easier debugging on export default arrow functions with the filename
         pluginTransformExportDefaultName,
+        pluginReactHotLoader,
     ].filter(Boolean),
     sourceRoot: vitaminResolve(),
 });

@@ -42,11 +42,16 @@ function bootstrapClient() {
             }
         });
 
-    if (module.hot && process.env.NODE_ENV !== 'production') {
+    if (module.hot) {
         module.hot.accept('__app_modules__redux_reducers__', () => {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies
             const newReducer = require('__app_modules__redux_reducers__').default;
             store.replaceReducer(createRootReducer(newReducer));
+        });
+        module.hot.accept('__app_modules__routes__', () => {
+            // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+            const newApp = require('__app_modules__routes__').default;
+            renderAsync(newApp);
         });
     }
 

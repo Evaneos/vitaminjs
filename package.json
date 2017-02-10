@@ -78,6 +78,7 @@
     "progress": "^1.1.8",
     "react-dom": "^15.4.2",
     "react-helmet": "^4.0.0",
+    "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.0",
     "react-resolver": "^3.1.0",
     "react-router-dom": "^4.0.0-beta.5",

@@ -1,5 +1,6 @@
 import { PropTypes } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AppContainer as HotReloadAppContainer } from 'react-hot-loader';
 import SharedApp from '../../shared/components/AppContainer';
 import config from '../../../config';
 
@@ -14,11 +15,13 @@ const propTypes = {
 
 const supportsHistory = 'pushState' in window.history;
 const AppContainer = ({ store, insertCss, children }) =>
-    <SharedApp store={store} insertCss={insertCss} >
-        <Router forceReload={!supportsHistory} basename={config.basePath}>
-            {children}
-        </Router>
-    </SharedApp>
+    <HotReloadAppContainer>
+        <SharedApp store={store} insertCss={insertCss} >
+            <Router forceReload={!supportsHistory} basename={config.basePath}>
+                {children}
+            </Router>
+        </SharedApp>
+    </HotReloadAppContainer>
 ;
 
 AppContainer.propTypes = propTypes;
