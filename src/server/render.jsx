@@ -1,14 +1,11 @@
-import AsyncProps, { loadPropsOnServer } from 'async-props';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
+import { Resolver } from 'react-resolver';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
-import jsStringEscape from 'js-string-escape';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 
 import config from '../../config';
-import App from '../shared/components/App';
+import App from './components/App';
 
 /* eslint-disable react/no-danger */
 export const renderLayout = ({ appHTMLString, ...props }) =>
@@ -26,34 +23,17 @@ export const renderLayout = ({ appHTMLString, ...props }) =>
 export default (renderProps, store, mainEntry) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
-    return new Promise((resolve, reject) => loadPropsOnServer(
-        renderProps,
-        { dispatch: store.dispatch },
-        (error, asyncProps) => {
-            if (error) {
-                return reject(error);
-            }
-            try {
-                return resolve(renderLayout({
-                    appHTMLString: renderToString(
-                        <App store={store} insertCss={insertCss}>
-                            <div>
-                                <AsyncProps {...renderProps} {...asyncProps} />
-                                <Helmet
-                                    script={[
-                                        { innerHTML: `window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(store.getState()))}"` },
-                                        { src: `${config.publicPath}/${mainEntry}`, defer: true },
-                                    ]}
-                                />
-                            </div>
-                        </App>,
-                    ),
-                    style: css.join(''),
-                    head: Helmet.rewind(),
-                }));
-            } catch (err) {
-                return reject(err);
-            }
-        },
-    ));
+    return Resolver
+        .resolve(() => <App {...{ renderProps, store, mainEntry, insertCss }} />)
+        .then(({ Resolved, data }) => renderLayout({
+            appHTMLString: renderToString(
+                <div>
+                    <Helmet
+                        script={[{ innerHTML: `window.__REACT_RESOLVER_PAYLOAD__ = ${JSON.stringify(data)};` }]}
+                    />
+                    <Resolved />
+                </div>),
+            style: css.join(''),
+            head: Helmet.rewind(),
+        }));
 };
