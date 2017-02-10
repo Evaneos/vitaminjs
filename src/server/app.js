@@ -11,9 +11,6 @@ import errorHandler from './middlewares/errorHandler';
 import appMiddlewares from '__app_modules__server_middlewares__';
 
 import renderer from './middlewares/renderer';
-import storeCreator from './middlewares/store';
-import router from './middlewares/router';
-import actionDispatcher from './middlewares/actionDispatcher';
 import staticAssetsServer from './middlewares/staticAssetsServer';
 
 export default compose([
@@ -25,8 +22,5 @@ export default compose([
     errorHandler(),
     ...appMiddlewares,
     staticAssetsServer(),
-    storeCreator(),
-    actionDispatcher(),
-    router(),
     renderer(),
 ].filter(Boolean));

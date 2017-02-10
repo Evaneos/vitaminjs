@@ -51,7 +51,7 @@ a simple reducer with combineReducer
 **`Path Array`**
 
 
-A path to a file exporting an array of [redux middleware](http://redux.js.org/docs/advanced/Middleware.html). By default, vitamin adds the [router](https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions) and
+A path to a file exporting an array of [redux middleware](http://redux.js.org/docs/advanced/Middleware.html). By default, vitamin adds the
 [redux-thunk](https://github.com/gaearon/redux-thunk) middleware.
 
 ### <a id='enhancers'></a>[`enhancers`](#enhancers)

@@ -8,10 +8,11 @@ import { concat, vitaminResolve, appResolve } from '../utils';
 export default function clientConfig(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
+    const reactHotLoaderEntry = 'react-hot-loader/patch';
     return mergeWith({}, config(options), {
         entry: [
             vitaminResolve('src', 'client', 'index.jsx'),
-            ...(options.hot ? [hotMiddlewareEntry] : []),
+            ...(options.hot ? [hotMiddlewareEntry, reactHotLoaderEntry] : []),
         ],
         output: {
             path: options.client.buildPath,

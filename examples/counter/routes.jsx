@@ -1,6 +1,9 @@
-import { Route } from 'react-router';
+import { Route, Switch, HTTPStatus } from 'vitaminjs';
 import Counter from './Counter/index.jsx';
 
 export default (
-    <Route component={Counter} path="/" />
+    <Switch>
+        <Route component={Counter} exact path="/" />
+        <Route component={() => <HTTPStatus status={404} />} />
+    </Switch>
 );
