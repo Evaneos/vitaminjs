@@ -6,7 +6,7 @@ import { createHistory } from 'history';
 import RedBox from 'redbox-react';
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
-import reducers from '__app_modules__redux_reducers__';
+import * as reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -44,7 +44,7 @@ function bootstrapClient() {
     });
     const store = createStore(
         history,
-        reducers,
+        reducers.default || reducers,
         middlewares,
         initialState,
     );
@@ -67,9 +67,9 @@ function bootstrapClient() {
     if (module.hot && process.env.NODE_ENV !== 'production') {
         module.hot.accept('__app_modules__redux_reducers__', () => {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-            const newReducer = require('__app_modules__redux_reducers__').default;
+            const newReducers = require('__app_modules__redux_reducers__');
 
-            store.replaceReducer(createRootReducer(newReducer));
+            store.replaceReducer(createRootReducer(newReducers.default || newReducers));
         });
         module.hot.accept('__app_modules__routes__', () => {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies

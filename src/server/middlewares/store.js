@@ -1,6 +1,6 @@
 import { createMemoryHistory, useBasename, useQueries } from 'history';
 /* eslint-disable import/no-extraneous-dependencies */
-import reducers from '__app_modules__redux_reducers__';
+import * as reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
 /* eslint-enable import/no-extraneous-dependencies */
 import { create as createStore } from '../../shared/store';
@@ -12,6 +12,6 @@ export default () => function* storeMiddleware(next) {
         entries: [this.req.url],
     });
     this.state.history = history;
-    this.state.store = createStore(history, reducers, middlewares);
+    this.state.store = createStore(history, reducers.default || reducers, middlewares);
     yield next;
 };
