@@ -1,5 +1,8 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
-import autoprefixer from 'autoprefixer';
+import postcssImport from 'postcss-import';
+import postcssUrl from 'postcss-url';
+import postcssCssNext from 'postcss-cssnext';
+import postcssReporter from 'postcss-reporter';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import babelrc from './babelrc';
@@ -82,7 +85,12 @@ export function config(options) {
             new LoaderOptionsPlugin({
                 options: {
                     context: __dirname,
-                    postcss: [autoprefixer()],
+                    postcss: [
+                        postcssImport(),
+                        postcssUrl(),
+                        postcssCssNext(),
+                        postcssReporter(),
+                    ],
                 },
                 test: /\.css$/,
                 debug: true,
