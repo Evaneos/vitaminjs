@@ -66,6 +66,9 @@ export function config(options) {
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
+            }, {
+                test: /\.ya?ml$/,
+                loader: 'yaml-loader',
             }],
         },
 
