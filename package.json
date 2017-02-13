@@ -1,6 +1,6 @@
 {
   "name": "vitaminjs",
-  "version": "1.0.0-rc6",
+  "version": "1.0.0-rc7",
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "./src/shared/index.js",
   "scripts": {
