@@ -86,12 +86,9 @@ export function config(options) {
                 },
                 test: /\.css$/,
                 debug: true,
-
             }),
-            ...(options.hot ? [
-                new HotModuleReplacementPlugin(),
-                new NamedModulesPlugin(),
-            ] : []),
-        ],
+            options.hot && new HotModuleReplacementPlugin(),
+            options.hot && new NamedModulesPlugin(),
+        ].filter(Boolean),
     };
 }

@@ -33,9 +33,9 @@ function externals(context, request, callback) {
 export default function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            ...(options.hot ? [hotPoll] : []),
+            options.hot && hotPoll,
             vitaminResolve('src', 'server', 'server.js'),
-        ],
+        ].filter(Boolean),
         output: {
             filename: options.server.filename,
             path: options.server.buildPath,
@@ -60,14 +60,14 @@ export default function serverConfig(options) {
             ],
         },
         plugins: [
-            ...(options.dev ? [new BannerPlugin({
-                banner: 'require("source-map-support").install();',
+            options.dev && new BannerPlugin({
+                banner: 'require("source-map-support").install({ environment: \'node\' });',
                 raw: true,
                 entryOnly: false,
-            })] : []),
+            }),
             new DefinePlugin({
                 ASSETS_BY_CHUNK_NAME: JSON.stringify(options.assetsByChunkName),
             }),
-        ],
+        ].filter(Boolean),
     }, concat);
 }
