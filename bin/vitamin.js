@@ -20,6 +20,9 @@ import { version } from '../package.json';
 
 const DEV = process.env.NODE_ENV !== 'production';
 
+const symbols = {
+    clock: '\uD83D\uDD50 '
+};
 
 const clean = () => new Promise((resolve, reject) => {
     const config = parseConfig();
@@ -68,7 +71,7 @@ const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue(`\uD83D\uDD50  Building ${message}...`)} :percent [:bar]`,
+            `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
             { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
@@ -146,7 +149,7 @@ const test = ({ hot, runner, runnerArgs }) => {
             throw new Error('Please specify a test file path in .vitaminrc');
         }
 
-        console.log(chalk.blue('\uD83D\uDD50  Launching tests...'));
+        console.log(chalk.blue(`${symbols.clock} Launching tests...`));
         const serverFile = path.join(
             config.server.buildPath,
             'tests',
@@ -159,7 +162,7 @@ const test = ({ hot, runner, runnerArgs }) => {
 
 
 const serve = (config) => {
-    process.stdout.write(chalk.blue('\uD83D\uDD50  Launching server...'));
+    process.stdout.write(chalk.blue(`${symbols.clock} Launching server...`));
     const serverFile = path.join(
         config.server.buildPath,
         config.server.filename,
