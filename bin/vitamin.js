@@ -21,7 +21,7 @@ import { version } from '../package.json';
 const DEV = process.env.NODE_ENV !== 'production';
 
 const symbols = {
-    clock: '\uD83D\uDD50 '
+    clock: '\uD83D\uDD50 ',
 };
 
 const clean = () => new Promise((resolve, reject) => {
