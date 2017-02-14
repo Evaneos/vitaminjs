@@ -16,6 +16,7 @@ What's included in the menu
 - [**React**](https://github.com/facebook/react). What else ?
 - [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
 - [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
+- [**CSSNext**](https://github.com/MoOx/postcss-cssnext) Use tomorrow CSS syntax right now
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
 - **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No more `Ctrl+R`. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
 - **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
