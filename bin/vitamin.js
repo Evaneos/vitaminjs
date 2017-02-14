@@ -31,9 +31,9 @@ const clean = () => new Promise((resolve, reject) => {
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
-        console.log(chalk.orange(
-            chalk.bold('Warning: Hot module reload option ignored in production environment.'),
-            '(based on your NODE_ENV variable)',
+        console.log(chalk.yellow(
+            '[WARNING]: Hot module reload option ignored in production environment.\n' +
+            '(based on your NODE_ENV variable)\n'
         ));
         /* eslint no-param-reassign: 0 */
         return false;
@@ -68,7 +68,7 @@ const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
-            `${chalk.blue(`\uD83D\uDD50 Building ${message}...`)} :percent [:bar]`,
+            `${chalk.blue(`\uD83D\uDD50  Building ${message}...`)} :percent [:bar]`,
             { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
@@ -95,9 +95,9 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     };
 
     if (!options.hot) {
-        const { compiler } = createCompilerCommonBuild();
+        const { compiler, config } = createCompilerCommonBuild();
         return new Promise((resolve, reject) => (
-            compiler.run(buildCallback(resolve, reject))
+            compiler.run(buildCallback(buildStats => resolve({config, buildStats}), reject))
         ));
     }
 
@@ -105,9 +105,9 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     const watch = () => (
         new Promise((resolve) => {
             const { compiler, config } = createCompilerCommonBuild();
-            const callbackWatch = buildCallback(() => {
+            const callbackWatch = buildCallback(buildStats => {
                 hotCallback(config);
-                resolve(config);
+                resolve({config, buildStats});
             });
             webpackWatcher = compiler.watch({}, callbackWatch);
         })
@@ -130,12 +130,13 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
     )
 :
     commonBuild(webpackConfigClient, 'client bundle(s)', options)
-        .then(stats => commonBuild(
+        .then(({buildStats}) => commonBuild(
             webpackConfigServer, 'server bundle...',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
-            { ...options, assetsByChunkName: stats.toJson().assetsByChunkName },
+            { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },
         ))
+        .then(({config}) => restartServer && restartServer(config))
 );
 
 
@@ -184,7 +185,6 @@ const start = (options) => {
     let exiting = false;
     listenExitSignal((signal) => {
         exiting = true;
-        console.log(!!serverProcess);
         if (!serverProcess) process.exit();
         killProcess(serverProcess, { signal }).then(() => {
             console.log('exiting'); process.exit();
@@ -248,7 +248,14 @@ program
     .alias('b')
     .description('Build server and client bundles')
     .option('-h, --hot', 'Activate hot module reload')
-    .action(({ hot }) => build({ hot: checkHot(hot) }));
+    .action(({ hot }) => build({ hot: checkHot(hot) })
+        .catch((err) => {
+            if (err !== BUILD_FAILED) {
+                console.log(err.stack || err);
+            }
+            process.exit(1);
+        })
+    );
 
 program
     .command('clean')
