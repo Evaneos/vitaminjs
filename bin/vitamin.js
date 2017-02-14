@@ -33,7 +33,7 @@ const checkHot = (hot) => {
     if (hot && !DEV) {
         console.log(chalk.yellow(
             '[WARNING]: Hot module reload option ignored in production environment.\n' +
-            '(based on your NODE_ENV variable)\n'
+            '(based on your NODE_ENV variable)\n',
         ));
         /* eslint no-param-reassign: 0 */
         return false;
@@ -97,7 +97,7 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     if (!options.hot) {
         const { compiler, config } = createCompilerCommonBuild();
         return new Promise((resolve, reject) => (
-            compiler.run(buildCallback(buildStats => resolve({config, buildStats}), reject))
+            compiler.run(buildCallback(buildStats => resolve({ config, buildStats }), reject))
         ));
     }
 
@@ -105,9 +105,9 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     const watch = () => (
         new Promise((resolve) => {
             const { compiler, config } = createCompilerCommonBuild();
-            const callbackWatch = buildCallback(buildStats => {
+            const callbackWatch = buildCallback((buildStats) => {
                 hotCallback(config);
-                resolve({config, buildStats});
+                resolve({ config, buildStats });
             });
             webpackWatcher = compiler.watch({}, callbackWatch);
         })
@@ -130,13 +130,13 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
     )
 :
     commonBuild(webpackConfigClient, 'client bundle(s)', options)
-        .then(({buildStats}) => commonBuild(
+        .then(({ buildStats }) => commonBuild(
             webpackConfigServer, 'server bundle...',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
             { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },
         ))
-        .then(({config}) => restartServer && restartServer(config))
+        .then(({ config }) => restartServer && restartServer(config))
 );
 
 
@@ -254,7 +254,7 @@ program
                 console.log(err.stack || err);
             }
             process.exit(1);
-        })
+        }),
     );
 
 program
