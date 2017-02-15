@@ -3,6 +3,7 @@ import { Router, useRouterHistory } from 'react-router';
 import AsyncProps from 'async-props';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHistory } from 'history';
+import { install as installSourceMapSupport } from 'source-map-support';
 import RedBox from 'redbox-react';
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
@@ -14,6 +15,10 @@ import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
 import App from '../shared/components/App';
+
+if (process.env.NODE_ENV !== 'production') {
+    installSourceMapSupport({ environment: 'browser' });
+}
 
 function render(history, store, rootRoute, element) {
     const insertCss = ({ _insertCss }) => _insertCss();
@@ -30,7 +35,6 @@ function render(history, store, rootRoute, element) {
         element,
     );
 }
-
 
 function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML

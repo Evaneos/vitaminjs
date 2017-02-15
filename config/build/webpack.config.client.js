@@ -11,8 +11,8 @@ export default function clientConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             vitaminResolve('src', 'client', 'index.jsx'),
-            ...(options.hot ? [hotMiddlewareEntry] : []),
-        ],
+            options.hot && hotMiddlewareEntry,
+        ].filter(Boolean),
         output: {
             path: options.client.buildPath,
             filename: options.client.filename,
@@ -24,21 +24,18 @@ export default function clientConfig(options) {
             ],
         },
         plugins: [
-            ...(options.hot ? [
-                new webpack.NoErrorsPlugin(),
-                new webpack.optimize.OccurrenceOrderPlugin(),
-            ] : []),
-            ...(!options.dev ? [
-                new webpack.optimize.UglifyJsPlugin({ minimize: true }),
-            ] : []),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
-            ...(options.client.serviceWorker ? [
-                new ServiceWorkerWebpackPlugin({
-                    entry: appResolve(options.client.serviceWorker),
-                }),
-            ] : []),
-        ],
+
+            options.hot && new webpack.NoErrorsPlugin(),
+            options.hot && new webpack.optimize.OccurrenceOrderPlugin(),
+
+            !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+
+            options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
+                entry: appResolve(options.client.serviceWorker),
+            }),
+        ].filter(Boolean),
     }, concat);
 }
