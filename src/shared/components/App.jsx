@@ -8,13 +8,13 @@ const propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const App = ({ store, insertCss, children }) =>
+const App = ({ store, insertCss, children }) => (
     <CSSProvider insertCss={insertCss}>
         <Provider store={store}>
             <div> {children} </div>
         </Provider>
     </CSSProvider>
-;
+);
 App.propTypes = propTypes;
 
 export default App;

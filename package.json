@@ -86,7 +86,7 @@
     "react-helmet": "^4.0.0",
     "react-redux": "^5.0.0",
     "react-resolver": "^3.1.0",
-    "react-router": "3",
+    "react-router": "^3.0.2",
     "react-router-redux": "^4.0.5",
     "redbox-react": "^1.2.9",
     "redux": "^3.5.2",

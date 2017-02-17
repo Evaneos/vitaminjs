@@ -12,11 +12,11 @@ const propTypes = {
     history: PropTypes.any.isRequired,
 };
 
-const App = ({ store, insertCss, routes, history }) =>
+const App = ({ store, insertCss, routes, history }) => (
     <SharedApp store={store} insertCss={insertCss}>
         <Router history={history}>{routes}</Router>
     </SharedApp>
-;
+);
 
 App.propTypes = propTypes;
 export default App;

@@ -18,7 +18,7 @@ const propTypes = {
     mainEntry: PropTypes.string.isRequired,
 };
 
-const App = ({ store, insertCss, renderProps, mainEntry }) =>
+const App = ({ store, insertCss, renderProps, mainEntry }) => (
     <SharedApp store={store} insertCss={insertCss}>
         <Helmet
             script={[
@@ -28,7 +28,7 @@ const App = ({ store, insertCss, renderProps, mainEntry }) =>
         />
         <RouterContext {...renderProps} />
     </SharedApp>
-;
+);
 App.propTypes = propTypes;
 
 export default App;
