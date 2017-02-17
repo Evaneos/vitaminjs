@@ -17,7 +17,7 @@ const propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const HTMLLayout = ({ head, style, children }) => (
+const HtmlLayout = ({ head, style, children }) => (
     // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...head.htmlAttributes.toComponent()} >
         <head>
@@ -25,15 +25,13 @@ const HTMLLayout = ({ head, style, children }) => (
             {head.meta.toComponent()}
             {head.link.toComponent()}
             {head.base.toComponent()}
+            {head.script.toComponent()}
             <style dangerouslySetInnerHTML={{ __html: style }} />
         </head>
-        <body>
-            {children}
-            {head.script.toComponent()}
-        </body>
+        <body>{children}</body>
     </html>
 );
 
-HTMLLayout.doctype = '<!doctype html>';
-HTMLLayout.propTypes = propTypes;
-export default HTMLLayout;
+HtmlLayout.doctype = '<!doctype html>';
+HtmlLayout.propTypes = propTypes;
+export default HtmlLayout;
