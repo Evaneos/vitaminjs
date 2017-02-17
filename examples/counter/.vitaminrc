@@ -1,5 +1,5 @@
 {
-    "basePath": "/piouaoaa",
+    "basePath": "/",
     "publicPath": "",
     "routes": "./routes",
     "redux": {
