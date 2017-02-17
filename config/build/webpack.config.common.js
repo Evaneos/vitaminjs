@@ -1,4 +1,5 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
+import postcssOmitImportTilde from 'postcss-omit-import-tilde';
 import postcssImport from 'postcss-import';
 import postcssUrl from 'postcss-url';
 import postcssCssNext from 'postcss-cssnext';
@@ -91,6 +92,7 @@ export function config(options) {
                 options: {
                     context: __dirname,
                     postcss: [
+                        postcssOmitImportTilde(),
                         postcssImport(),
                         postcssUrl(),
                         postcssCssNext(),
