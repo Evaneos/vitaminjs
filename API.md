@@ -17,7 +17,7 @@ file at the root of your project.
  - [host](#host)
  - [port](#port)
  - [middlewares](#serverMiddlewares)
- - [actionDispatcher](#actionDispatcher)
+ - [createInitAction](#createInitAction)
  - [layout](#layout)
  - [ErrorPage](#ErrorPage)
  - [onError](#onError)
@@ -96,12 +96,12 @@ specify its URL here (usually it means you want to use a CDN, or that you don't 
 Path to a file exporting an array of koa middlewares. Useful for additional logging, proxy request,
 authentication or other things on server.
 
-### <a id='actionDispatcher'></a>[`actionDispatcher`](#actionDispatcher)
+### <a id='createInitAction'></a>[`createInitAction`](#createInitAction)
 **`Path (`[`KoaRequest`](http://koajs.com/#request)`, `[`dispatch`](https://redux.js.org/docs/api/Store.html#getState)`, `[`getState`](http://redux.js.org/docs/api/Store.html#getState)`) -> yieldable`**
 
-Path to a file exporting an actionDispatcher. Useful for populating the store on the server before rendering.
-The actionDispatcher is passed the node http request object, the dispatch function, and getState
-as parameters. It's expected to return something that can be yield (Promise, Generator, etc..) or nothing. If it returns a yieldable, then the server will wait for its completion before continuing.
+Path to a file exporting an createInitAction. Useful for populating the store on the server before rendering.
+ `request` object is passed as a parameter to `createInitAction`. 
+It must return an action or nothing. The action can be a thunk.
 
 ### <a id='layout'></a>[`layout`](#layout)
 **`Path <ReactComponent>`**

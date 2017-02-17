@@ -13,7 +13,7 @@ import appMiddlewares from '__app_modules__server_middlewares__';
 import renderer from './middlewares/renderer';
 import storeCreator from './middlewares/store';
 import router from './middlewares/router';
-import actionDispatcher from './middlewares/actionDispatcher';
+import initActionDispatcher from './middlewares/initActionDispatcher';
 import staticAssetsServer from './middlewares/staticAssetsServer';
 
 export default compose([
@@ -30,7 +30,7 @@ export default compose([
     ...appMiddlewares,
     staticAssetsServer(),
     storeCreator(),
-    actionDispatcher(),
+    initActionDispatcher(),
     router(),
     renderer(),
 ].filter(Boolean));

@@ -61,7 +61,6 @@ import { Route } from 'vitaminjs';
 
 export default (
     <Route path="/">
-
 );
 ```
 Create the `reducers.js` file:

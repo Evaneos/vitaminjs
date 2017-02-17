@@ -117,7 +117,7 @@ export default () => {
         ['server', 'ErrorPage'],
         ['server', 'onError'],
         ['server', 'layout'],
-        ['server', 'actionDispatcher'],
+        ['server', 'createInitAction'],
         ['redux', 'reducers'],
         ['redux', 'middlewares'],
         ['redux', 'enhancers'],
