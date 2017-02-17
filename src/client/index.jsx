@@ -1,10 +1,11 @@
-import { render as reactRender, unmountComponentAtNode } from 'react-dom';
-import { Router, useRouterHistory } from 'react-router';
-import AsyncProps from 'async-props';
+import { unmountComponentAtNode, render as reactRender } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { createHistory } from 'history';
+import { browserHistory } from 'react-router';
+import { useBasename } from 'history';
 import { install as installSourceMapSupport } from 'source-map-support';
 import RedBox from 'redbox-react';
+import { Resolver } from 'react-resolver';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
 import * as reducers from '__app_modules__redux_reducers__';
@@ -14,24 +15,16 @@ import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
-import App from '../shared/components/App';
+import App from './components/App';
 
 if (process.env.NODE_ENV !== 'production') {
     installSourceMapSupport({ environment: 'browser' });
 }
 
-function render(history, store, rootRoute, element) {
+function render(history, store, appRoutes, element) {
     const insertCss = ({ _insertCss }) => _insertCss();
-
-    reactRender(
-        <App store={store} insertCss={insertCss}>
-            <Router
-                history={history}
-                render={props =>
-                    <AsyncProps {...props} loadContext={{ dispatch: store.dispatch }} />
-                }
-            >{rootRoute}</Router>
-        </App>,
+    Resolver.render(
+        () => <App {...{ history, store, routes: appRoutes, insertCss }} />,
         element,
     );
 }
@@ -42,10 +35,8 @@ function bootstrapClient() {
         stateParser(window.__INITIAL_STATE__) :
         {};
 
-    const history = useRouterHistory(createHistory)({
-        basename: config.basePath,
-        queryKey: false,
-    });
+    const history = useBasename(() => browserHistory)({ basename: config.basePath });
+
     const store = createStore(
         history,
         reducers.default || reducers,
@@ -54,7 +45,6 @@ function bootstrapClient() {
     );
 
     const syncedHistory = syncHistoryWithStore(history, store);
-    // Todo replace by vitamin-app-[hash] ?
     const appElement = window.document.getElementById(config.rootElementId);
 
     const renderWithRoutes = appRoutes => Promise.resolve()
