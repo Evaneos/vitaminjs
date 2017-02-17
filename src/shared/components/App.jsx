@@ -5,7 +5,7 @@ import CSSProvider from './CSSProvider';
 const propTypes = {
     store: PropTypes.object.isRequired,
     insertCss: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 const App = ({ store, insertCss, children }) =>

@@ -1,7 +1,7 @@
-import { useRouterHistory, render as reactRender } from 'react-router';
-import { unmountComponentAtNode } from 'react-dom';
+import { unmountComponentAtNode, render as reactRender } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { createHistory } from 'history';
+import { browserHistory } from 'react-router';
+import { useBasename } from 'history';
 import { install as installSourceMapSupport } from 'source-map-support';
 import RedBox from 'redbox-react';
 import { Resolver } from 'react-resolver';
@@ -35,10 +35,8 @@ function bootstrapClient() {
         stateParser(window.__INITIAL_STATE__) :
         {};
 
-    const history = useRouterHistory(createHistory)({
-        basename: config.basePath,
-        queryKey: false,
-    });
+    const history = useBasename(() => browserHistory)({ basename: config.basePath });
+
     const store = createStore(
         history,
         reducers.default || reducers,
@@ -47,7 +45,6 @@ function bootstrapClient() {
     );
 
     const syncedHistory = syncHistoryWithStore(history, store);
-    // Todo replace by vitamin-app-[hash] ?
     const appElement = window.document.getElementById(config.rootElementId);
 
     const renderWithRoutes = appRoutes => Promise.resolve()

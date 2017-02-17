@@ -1,4 +1,4 @@
-import { createMemoryHistory, useBasename, useQueries } from 'history';
+import { createMemoryHistory } from 'react-router';
 /* eslint-disable import/no-extraneous-dependencies */
 import * as reducers from '__app_modules__redux_reducers__';
 import middlewares from '__app_modules__redux_middlewares__';
@@ -7,7 +7,7 @@ import { create as createStore } from '../../shared/store';
 import config from '../../../config';
 
 export default () => (ctx, next) => {
-    const history = useQueries(useBasename(createMemoryHistory))({
+    const history = createMemoryHistory({
         basename: config.basePath,
         entries: [ctx.req.url],
     });
