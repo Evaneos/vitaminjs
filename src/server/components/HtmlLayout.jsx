@@ -25,11 +25,11 @@ const HTMLLayout = ({ head, style, children }) => (
             {head.meta.toComponent()}
             {head.link.toComponent()}
             {head.base.toComponent()}
+            {head.script.toComponent()}
             <style dangerouslySetInnerHTML={{ __html: style }} />
         </head>
         <body>
             {children}
-            {head.script.toComponent()}
         </body>
     </html>
 );
