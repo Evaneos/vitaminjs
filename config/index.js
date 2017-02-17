@@ -140,14 +140,16 @@ export default () => {
     );
 
     // Prepend / to publicPath and basePath if necessary
-    const prependSlash = path => (path.match(/^(http|\/|$)/) ? '' : '/') + path;
+    const prependSlash = path => (
+        ((path.startsWith('/') || path.match(/^(http|\/|$)/)) ? '' : '/') + path
+    );
     [['publicPath'], ['basePath']].forEach(
         path => updatePath(path, prependSlash, config),
     );
 
     // If public path is not absolute url, prepend basePath
     updatePath(['publicPath'], publicPath =>
-        (!publicPath.match(/^(http|\/\/)/) ? config.basePath : '') + config.publicPath,
+        (!publicPath.match(/^(http|\/\/)/) ? config.basePath.replace(/\/$/, '') : '') + config.publicPath,
     config);
 
     return {
