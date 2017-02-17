@@ -4,36 +4,36 @@ import routes from '__app_modules__routes__';
 
 const routesWithStore = typeof routes === 'function' ? store => routes(store) : () => routes;
 
-export default () => function* routerMiddleware(next) {
-    const url = this.req.url;
-    const history = this.state.history;
+export default () => async (ctx, next) => {
+    const url = ctx.req.url;
+    const history = ctx.state.history;
 
-    const appRoutes = yield Promise.resolve(routesWithStore(this.state.store));
+    const appRoutes = await routesWithStore(ctx.state.store);
 
-    yield new Promise((resolve) => {
+    await new Promise((resolve) => {
         match({ routes: appRoutes, location: url, history },
             (error, redirectLocation, renderProps) => {
                 if (error) {
-                    this.status = 500;
-                    this.body = error.message;
+                    ctx.status = 500;
+                    ctx.body = error.message;
                 } else if (redirectLocation) {
-                    this.redirect(
+                    ctx.redirect(
                         (redirectLocation.basename || '') +
                         redirectLocation.pathname + redirectLocation.search,
                     );
                 } else if (renderProps) {
-                    this.status = 200;
-                    this.state.renderProps = renderProps;
+                    ctx.status = 200;
+                    ctx.state.renderProps = renderProps;
                 } else {
-                    this.status = 404;
-                    this.body = 'Not found';
+                    ctx.status = 404;
+                    ctx.body = 'Not found';
                 }
                 resolve();
             },
         );
     });
 
-    if (this.status === 200) {
-        yield next;
+    if (ctx.status === 200) {
+        await next();
     }
 };
