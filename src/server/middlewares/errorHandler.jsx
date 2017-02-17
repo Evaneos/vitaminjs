@@ -37,66 +37,64 @@ const renderErrorPage = (props) => {
     });
 };
 
-const onError = (context) => {
+const onError = (errorContext) => {
     /* eslint-disable no-console */
     console.error(
-        chalk.red(`Error ${context.HTTPStatus}:`),
-        `${context.request.method} ${context.request.url}`,
+        chalk.red(`Error ${errorContext.HTTPStatus}:`),
+        `${errorContext.request.method} ${errorContext.request.url}`,
     );
-    if (context.HTTPStatus === 500) {
-        console.error(chalk.red.bold(context.error.message));
-        console.error(chalk.grey(context.error.stack));
+    if (errorContext.HTTPStatus === 500) {
+        console.error(chalk.red.bold(errorContext.error.message));
+        console.error(chalk.grey(errorContext.error.stack));
     }
     /* eslint-enable no-console */
     try {
-        userOnError(context);
+        userOnError(errorContext);
     } catch (err) {
         console.error(chalk.red('An error occured while calling the onError function'));
         console.error(err);
     }
 };
 
-function getContext(error) {
-    return {
-        ...(error ? { error } : {}),
-        ...(this.state.store ? { state: this.state.store.getState() } : {}),
-        HTTPStatus: this.status,
-        request: this.request,
-    };
-}
+const errorToErrorContext = (ctx, error) => ({
+    ...(error ? { error } : {}),
+    ...(ctx.state.store ? { state: ctx.state.store.getState() } : {}),
+    HTTPStatus: ctx.status,
+    request: ctx.request,
+});
 
-function renderError(error) {
+const renderError = (ctx, error) => {
     try {
-        const context = getContext.call(this, error);
-        this.body = renderErrorPage(context);
-        onError(context);
+        const errorContext = errorToErrorContext(ctx, error);
+        this.body = renderErrorPage(errorContext);
+        onError(errorContext);
     } catch (renderingError) {
-        this.body = renderRawError(this.status, renderingError);
-        onError(getContext.call(this, renderingError));
+        this.body = renderRawError(ctx.status, renderingError);
+        onError(errorToErrorContext(ctx, renderingError));
     }
     this.type = 'html';
-}
+};
 
-export default () => function* errorHandlerMiddleware(next) {
+export default () => async (ctx, next) => {
     try {
-        yield next;
+        await next();
     } catch (error) {
-        this.status = 500;
-        renderError.call(this, error);
+        ctx.status = 500;
+        renderError(ctx, error);
     }
-    if (this.status === 404) {
-        if (this.state.store) {
-            renderError.call(this);
+    if (ctx.status === 404) {
+        if (ctx.state.store) {
+            renderError(ctx);
         } else {
             // If there is no store, it means that it is a middleware that put a 404, we don't
             // print a vitaminjs 404
-            onError(getContext.call(this));
-            if (!process.env.NODE_ENV === 'production' && !this.body) {
+            onError(errorToErrorContext(ctx));
+            if (!process.env.NODE_ENV === 'production' && !ctx.body) {
                 // eslint-disable-next-line no-console
                 console.warn(chalk.yellow(`\
 It seems that one of your custom koa middleware returned a 404 with no response body.
 This might be intentional, or you might have forgot to yield next.
-(see https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware)`,
+(see https://github.com/koajs/koa/blob/v2.x/docs/guide.md#writing-middleware)`,
                 ));
             }
         }

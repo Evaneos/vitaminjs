@@ -13,7 +13,7 @@
     "globals": {
         "IS_CLIENT": false,
         "IS_SERVER": false,
-        "window": false,
+        "window": false
     },
 
     "rules": {
@@ -25,6 +25,8 @@
         "no-nested-ternary": 0,
         // We use underscore dangle to underline globals
         "no-underscore-dangle": 0,
+        // koa2 ctx needs to reassign properties
+        "no-param-reassign": 0,
         // We use the react-require loader which require automatically React when using jsx
         "react/react-in-jsx-scope": 0,
         // PropType.Shape seems buggy

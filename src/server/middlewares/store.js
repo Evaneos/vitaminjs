@@ -6,12 +6,12 @@ import middlewares from '__app_modules__redux_middlewares__';
 import { create as createStore } from '../../shared/store';
 import config from '../../../config';
 
-export default () => function* storeMiddleware(next) {
+export default () => (ctx, next) => {
     const history = useQueries(useBasename(createMemoryHistory))({
         basename: config.basePath,
-        entries: [this.req.url],
+        entries: [ctx.req.url],
     });
-    this.state.history = history;
-    this.state.store = createStore(history, reducers.default || reducers, middlewares);
-    yield next;
+    ctx.state.history = history;
+    ctx.state.store = createStore(history, reducers.default || reducers, middlewares);
+    return next();
 };

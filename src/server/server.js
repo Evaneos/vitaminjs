@@ -1,7 +1,7 @@
 /* eslint-disable global-require, no-console */
 
 import { parse as parseUrl } from 'url';
-import koa from 'koa';
+import Koa from 'koa';
 import express from 'express';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
@@ -15,11 +15,12 @@ global.fetch = fetch;
 
 let currentApp = app;
 function appServer() {
-    const server = koa();
-    const appWrapper = function* appWrapper(next) {
-        yield currentApp.call(this, next);
-    };
-    server.use(appWrapper);
+    const server = new Koa();
+    server.use(
+        process.env.NODE_ENV === 'production' ? currentApp
+            // ecapsulate app for hot reload
+            : (ctx, next) => currentApp(ctx, next),
+    );
     return server.callback();
 }
 
