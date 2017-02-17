@@ -1,6 +1,6 @@
 export withStyles from 'isomorphic-style-loader/lib/withStyles';
 export Helmet from 'react-helmet';
-export { client, context, resolve } from 'react-resolver'
+export { client, context, resolve } from 'react-resolver';
 export { combineReducers, bindActionCreators, applyMiddleware, compose } from 'redux';
 export { Provider, connectAdvanced, connect } from 'react-redux';
 export * from 'react-router';
