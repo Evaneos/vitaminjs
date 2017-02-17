@@ -7,7 +7,7 @@ export default {
         middlewares: '__vitamin__/config/utils/emptyArray',
         ErrorPage: '__vitamin__/src/server/components/ErrorPage',
         onError: '__vitamin__/config/utils/defaultFunction',
-        layout: '__vitamin__/src/server/components/HtmlLayout',
+        layout: '__vitamin__/src/server/components/HTMLLayout',
         actionDispatcher: '__vitamin__/config/utils/defaultFunction',
     },
     routes: '__vitamin__/config/utils/emptyArray',

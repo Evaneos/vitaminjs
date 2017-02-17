@@ -17,7 +17,7 @@ const propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const HtmlLayout = ({ head, style, children }) => (
+const HTMLLayout = ({ head, style, children }) => (
     // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...head.htmlAttributes.toComponent()} >
         <head>
@@ -32,6 +32,6 @@ const HtmlLayout = ({ head, style, children }) => (
     </html>
 );
 
-HtmlLayout.doctype = '<!doctype html>';
-HtmlLayout.propTypes = propTypes;
-export default HtmlLayout;
+HTMLLayout.doctype = '<!doctype html>';
+HTMLLayout.propTypes = propTypes;
+export default HTMLLayout;
