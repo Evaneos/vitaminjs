@@ -81,7 +81,7 @@
     "postcss-browser-reporter": "^0.5.0",
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.1.0",
-    "postcss-loader": "^1.1.1",
+    "postcss-loader": "^1.3.1",
     "postcss-omit-import-tilde": "^1.0.1",
     "postcss-reporter": "^3.0.0",
     "postcss-url": "^5.1.2",
