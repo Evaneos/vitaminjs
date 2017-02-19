@@ -1,0 +1,17 @@
+{
+  "name": "vitamin-real-world",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "humps": "^1.1.0",
+    "lodash": "^4.16.1",
+    "normalizr": "3.0.0",
+    "react": "^15.4.2",
+    "vitaminjs": "../.."
+  },
+  "scripts": {
+    "start": "vitaminjs start",
+    "build": "vitaminjs build",
+    "test": "vitaminjs --env=jsdom"
+  }
+}

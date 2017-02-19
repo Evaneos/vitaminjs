@@ -1,0 +1,7 @@
+{
+    "routes": "./src/routes.js",
+    "redux": {
+        "reducers": "./src/reducers",
+        "middlewares": "./src/middleware"
+    }
+}
