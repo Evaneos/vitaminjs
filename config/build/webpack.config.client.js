@@ -28,7 +28,7 @@ export default function clientConfig(options) {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
 
-            options.hot && new webpack.NoErrorsPlugin(),
+            options.hot && new webpack.NoEmitOnErrorsPlugin(),
             options.hot && new webpack.optimize.OccurrenceOrderPlugin(),
 
             !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
