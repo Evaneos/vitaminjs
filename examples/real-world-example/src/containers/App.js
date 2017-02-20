@@ -33,7 +33,7 @@ class App extends Component {
         }
 
         return (
-      <p className="error-message">
+      <p className={s['error-message']}>
         <b>{errorMessage}</b>
         {' '}
         (<a href="#"
@@ -60,7 +60,7 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
     errorMessage: state.errorMessage,
-    inputValue: ownProps.location.pathname.substring(1),
+    inputValue: ownProps.location.pathname,
 });
 
 export default compose(

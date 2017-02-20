@@ -8,10 +8,17 @@ import Repo from '../components/Repo';
 import List from '../components/List';
 import zip from 'lodash/zip';
 
-const loadData = ({ login, loadUser, loadStarred }) => Promise.all([
-    loadUser(login, ['name']),
-    loadStarred(login),
-]);
+let currentLogin;
+const loadData = ({ login, loadUser, loadStarred }) => {
+    if (login === currentLogin) {
+        return;
+    }
+    currentLogin = login;
+    return Promise.all([
+        loadUser(login, ['name']),
+        loadStarred(login),
+    ]);
+};
 
 class UserPage extends Component {
     static propTypes = {

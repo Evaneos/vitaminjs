@@ -7,8 +7,13 @@ import Repo from '../components/Repo';
 import User from '../components/User';
 import List from '../components/List';
 
+let currentFullName;
 const loadData = props => {
     const { fullName } = props;
+    if (fullName === currentFullName) {
+        return;
+    }
+    currentFullName = fullName;
     return Promise.all([
         props.loadRepo(fullName, ['description']),
         props.loadStargazers(fullName),

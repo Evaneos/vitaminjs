@@ -11,7 +11,6 @@
   },
   "scripts": {
     "start": "vitaminjs start",
-    "build": "vitaminjs build",
-    "test": "vitaminjs --env=jsdom"
+    "build": "vitaminjs build"
   }
 }
