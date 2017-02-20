@@ -5,14 +5,13 @@ import { useBasename } from 'history';
 import RedBox from 'redbox-react';
 import { Resolver } from 'react-resolver';
 
-/* eslint-disable import/no-extraneous-dependencies, import/newline-after-import */
+/* eslint-disable import/no-extraneous-dependencies,import/newline-after-import,import/first */
 const reducers = require('__app_modules__redux_reducers__');
 import routes from '__app_modules__routes__';
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 /* eslint-enable import/no-extraneous-dependencies, import/newline-after-import */
 
-/* eslint-disable import/first */
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
 import App from './components/App';
