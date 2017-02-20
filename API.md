@@ -97,7 +97,7 @@ Path to a file exporting an array of koa middlewares. Useful for additional logg
 authentication or other things on server.
 
 ### <a id='createInitAction'></a>[`createInitAction`](#createInitAction)
-**`Path (`[`KoaRequest`](http://koajs.com/#request)`) -> ?Object`**
+**`Path (`[`KoaRequest`](http://koajs.com/#request)`) -> ?Action`**
 
 Path to a file exporting an createInitAction. Useful for populating the store on the server before rendering.
  `request` object is passed as a parameter to `createInitAction`. 
