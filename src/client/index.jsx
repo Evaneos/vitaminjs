@@ -36,7 +36,7 @@ function bootstrapClient() {
 
     const store = createStore(
         history,
-        reducers.default || reducers,
+        reducers,
         middlewares,
         initialState,
     );
@@ -60,7 +60,7 @@ function bootstrapClient() {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies
             const newReducers = require('__app_modules__redux_reducers__');
 
-            store.replaceReducer(createRootReducer(newReducers.default || newReducers));
+            store.replaceReducer(createRootReducer(newReducers));
         });
         module.hot.accept('__app_modules__routes__', () => {
             // eslint-disable-next-line global-require, import/no-extraneous-dependencies

@@ -18,6 +18,6 @@ export default () => (ctx, next) => {
         entries: [ctx.req.url],
     });
     ctx.state.history = history;
-    ctx.state.store = createStore(history, reducers.default || reducers, middlewares);
+    ctx.state.store = createStore(history, reducers, middlewares);
     return next();
 };
