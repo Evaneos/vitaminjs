@@ -1,4 +1,5 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import postcssOmitImportTilde from 'postcss-omit-import-tilde';
 import postcssImport from 'postcss-import';
 import postcssUrl from 'postcss-url';
@@ -106,6 +107,11 @@ export function config(options) {
             }),
             options.hot && new HotModuleReplacementPlugin(),
             options.hot && new NamedModulesPlugin(),
+
+            // enforces the entire path of all required modules match the exact case
+            // of the actual path on disk. Using this plugin helps alleviate cases
+            // for developers working on case insensitive systems like OSX.
+            options.dev && new CaseSensitivePathsPlugin(),
         ].filter(Boolean),
     };
 }
