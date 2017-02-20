@@ -1,6 +1,4 @@
 {
-    "basePath": "/",
-    "publicPath": "",
     "routes": "./routes",
     "redux": {
         "reducers": "./reducers"
