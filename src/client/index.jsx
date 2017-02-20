@@ -2,13 +2,12 @@ import { unmountComponentAtNode, render as reactRender } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import { useBasename } from 'history';
-import { install as installSourceMapSupport } from 'source-map-support';
 import RedBox from 'redbox-react';
 import { Resolver } from 'react-resolver';
 
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
-import * as reducers from '__app_modules__redux_reducers__';
+const reducers = require('__app_modules__redux_reducers__');
 import middlewares from '__app_modules__redux_middlewares__';
 import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -16,10 +15,6 @@ import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 import { create as createStore, createRootReducer } from '../shared/store';
 import config from '../../config';
 import App from './components/App';
-
-if (process.env.NODE_ENV !== 'production') {
-    installSourceMapSupport({ environment: 'browser' });
-}
 
 function render(history, store, appRoutes, element) {
     const insertCss = ({ _insertCss }) => _insertCss();

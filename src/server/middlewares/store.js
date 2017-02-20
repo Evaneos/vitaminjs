@@ -1,6 +1,6 @@
 import { createMemoryHistory } from 'react-router';
 /* eslint-disable import/no-extraneous-dependencies */
-import * as reducers from '__app_modules__redux_reducers__';
+const reducers = require('__app_modules__redux_reducers__');
 import middlewares from '__app_modules__redux_middlewares__';
 /* eslint-enable import/no-extraneous-dependencies */
 import { create as createStore } from '../../shared/store';
