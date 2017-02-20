@@ -11,9 +11,11 @@ import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
 import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
 import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressions';
 import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
+import pluginReactJsxSource from 'babel-plugin-transform-react-jsx-source';
+import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
 import { vitaminResolve } from '../utils';
 
-export default env => ({
+export default (env, dev) => ({
     presets: [
         env === 'client' && [preset2015, { modules: false }],
         presetReact,
@@ -24,10 +26,14 @@ export default env => ({
     plugins: [
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
-        // Add Object.entries, Object.values and other ES2017 functionalities
-        // in the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
+        // Add Object.entries, Object.values and other ES2017 functionalities.
+        // In the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
         // bundle size the smallest possible.
         env === 'server' && pluginTransformRuntime,
+        // Adds component stack to warning messages
+        dev && pluginReactJsxSource,
+        // Adds __self attribute to JSX which React will use for some warnings
+        dev && pluginReactJsxSelf,
         // replace process.env.NODE_ENV by its current value
         pluginNodeEnvInline,
         // replace IS_CLIENT and IS_SERVER

@@ -19,7 +19,7 @@ export default function clientConfig(options) {
         },
         module: {
             rules: [
-                createBabelLoader('client'),
+                createBabelLoader('client', options.dev),
                 createResolveConfigLoader(),
             ],
         },

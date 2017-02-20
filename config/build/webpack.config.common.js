@@ -16,14 +16,14 @@ const VITAMIN_MODULES_DIRECTORY = vitaminResolve('node_modules');
 const VITAMIN_MODULES_EXAMPLES_DIRECTORY = vitaminResolve('examples');
 const MODULES_DIRECTORIES = [appResolve('node_modules'), VITAMIN_MODULES_DIRECTORY];
 
-export const createBabelLoader = env => ({
+export const createBabelLoader = (env, dev) => ({
     test: /\.js(x?)$/,
     loader: 'babel-loader',
     include: path => !path.includes('node_modules') ||
         (path.startsWith(VITAMIN_DIRECTORY)
          && !path.startsWith(VITAMIN_MODULES_DIRECTORY)
          && !path.startsWith(VITAMIN_MODULES_EXAMPLES_DIRECTORY)),
-    query: babelrc(env),
+    query: babelrc(env, dev),
 });
 
 export const createResolveConfigLoader = () => ({

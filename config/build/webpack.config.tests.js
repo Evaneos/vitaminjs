@@ -11,7 +11,7 @@ export default function testConfig(options) {
         },
         module: {
             loaders: [
-                createBabelLoader('client'),
+                createBabelLoader('client', true),
                 // The following loader will resolve the config to its final value during the build
                 {
                     test: vitaminResolve('config/index'),
