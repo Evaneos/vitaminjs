@@ -6,20 +6,18 @@ const Repo = ({ repo, owner }) => {
     const { name, description } = repo;
 
     return (
-    <div className="Repo">
-      <h3>
-        <Link to={`/${login}/${name}`}>
-          {name}
-        </Link>
-        {' by '}
-        <Link to={`/${login}`}>
-          {login}
-        </Link>
-      </h3>
-      {description &&
-        <p>{description}</p>
-      }
-    </div>
+        <div className="Repo">
+            <h3>
+                <Link to={`/${login}/${name}`}>
+                    {name}
+                </Link>
+                {' by '}
+                <Link to={`/${login}`}>
+                    {login}
+                </Link>
+            </h3>
+            {description && <p>{description}</p>}
+        </div>
     );
 };
 

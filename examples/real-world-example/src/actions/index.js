@@ -16,7 +16,10 @@ const fetchUser = login => ({
 
 // Fetches a single user from Github API unless it is cached.
 // Relies on Redux Thunk middleware.
-export const loadUser = (login, requiredFields = []) => (dispatch, getState) => {
+export const loadUser = (login, requiredFields = []) => (
+    dispatch,
+    getState,
+) => {
     const user = getState().entities.users[login];
     if (user && requiredFields.every(key => user.hasOwnProperty(key))) {
         return null;
@@ -41,7 +44,10 @@ const fetchRepo = fullName => ({
 
 // Fetches a single repository from Github API unless it is cached.
 // Relies on Redux Thunk middleware.
-export const loadRepo = (fullName, requiredFields = []) => (dispatch, getState) => {
+export const loadRepo = (fullName, requiredFields = []) => (
+    dispatch,
+    getState,
+) => {
     const repo = getState().entities.repos[fullName];
     if (repo && requiredFields.every(key => repo.hasOwnProperty(key))) {
         return null;
@@ -70,9 +76,9 @@ const fetchStarred = (login, nextPageUrl) => ({
 // Relies on Redux Thunk middleware.
 export const loadStarred = (login, nextPage) => (dispatch, getState) => {
     const {
-    nextPageUrl = `users/${login}/starred`,
-    pageCount = 0,
-  } = getState().pagination.starredByUser[login] || {};
+        nextPageUrl = `users/${login}/starred`,
+        pageCount = 0,
+    } = getState().pagination.starredByUser[login] || {};
 
     if (pageCount > 0 && !nextPage) {
         return null;
@@ -101,9 +107,9 @@ const fetchStargazers = (fullName, nextPageUrl) => ({
 // Relies on Redux Thunk middleware.
 export const loadStargazers = (fullName, nextPage) => (dispatch, getState) => {
     const {
-    nextPageUrl = `repos/${fullName}/stargazers`,
-    pageCount = 0,
-  } = getState().pagination.stargazersByRepo[fullName] || {};
+        nextPageUrl = `repos/${fullName}/stargazers`,
+        pageCount = 0,
+    } = getState().pagination.stargazersByRepo[fullName] || {};
 
     if (pageCount > 0 && !nextPage) {
         return null;

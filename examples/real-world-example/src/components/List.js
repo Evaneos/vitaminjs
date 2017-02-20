@@ -9,29 +9,34 @@ export default class List extends Component {
         isFetching: PropTypes.bool.isRequired,
         onLoadMoreClick: PropTypes.func.isRequired,
         nextPageUrl: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         isFetching: true,
         loadingLabel: 'Loading...',
-    }
+    };
 
     renderLoadMore() {
         const { isFetching, onLoadMoreClick } = this.props;
         return (
-      <button style={{ fontSize: '150%' }}
-              onClick={onLoadMoreClick}
-              disabled={isFetching}>
-        {isFetching ? 'Loading...' : 'Load More'}
-      </button>
+            <button
+                style={{ fontSize: '150%' }}
+                onClick={onLoadMoreClick}
+                disabled={isFetching}>
+                {isFetching ? 'Loading...' : 'Load More'}
+            </button>
         );
     }
 
     render() {
         const {
-      isFetching, nextPageUrl, pageCount,
-      items, renderItem, loadingLabel,
-    } = this.props;
+            isFetching,
+            nextPageUrl,
+            pageCount,
+            items,
+            renderItem,
+            loadingLabel,
+        } = this.props;
 
         const isEmpty = items.length === 0;
         if (isEmpty && isFetching) {
@@ -44,10 +49,10 @@ export default class List extends Component {
         }
 
         return (
-      <div>
-        {items.map(renderItem)}
-        {pageCount > 0 && !isLastPage && this.renderLoadMore()}
-      </div>
+            <div>
+                {items.map(renderItem)}
+                {pageCount > 0 && !isLastPage && this.renderLoadMore()}
+            </div>
         );
     }
 }

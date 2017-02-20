@@ -30,7 +30,7 @@ class RepoPage extends Component {
         stargazersPagination: PropTypes.object,
         loadRepo: PropTypes.func.isRequired,
         loadStargazers: PropTypes.func.isRequired,
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.fullName !== this.props.fullName) {
@@ -40,7 +40,7 @@ class RepoPage extends Component {
 
     handleLoadMoreClick = () => {
         this.props.loadStargazers(this.props.fullName, true);
-    }
+    };
 
     renderUser(user) {
         return <User user={user} key={user.login} />;
@@ -54,30 +54,31 @@ class RepoPage extends Component {
 
         const { stargazers, stargazersPagination } = this.props;
         return (
-      <div>
-        <Repo repo={repo}
-              owner={owner} />
-        <hr />
-        <List renderItem={this.renderUser}
-              items={stargazers}
-              onLoadMoreClick={this.handleLoadMoreClick}
-              loadingLabel={`Loading stargazers of ${name}...`}
-              {...stargazersPagination} />
-      </div>
+            <div>
+                <Repo repo={repo} owner={owner} />
+                <hr />
+                <List
+                    renderItem={this.renderUser}
+                    items={stargazers}
+                    onLoadMoreClick={this.handleLoadMoreClick}
+                    loadingLabel={`Loading stargazers of ${name}...`}
+                    {...stargazersPagination}
+                />
+            </div>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // We need to lower case the login/name due to the way GitHub's API behaves.
-  // Have a look at ../middleware/api.js for more details.
+    // We need to lower case the login/name due to the way GitHub's API behaves.
+    // Have a look at ../middleware/api.js for more details.
     const login = ownProps.params.login.toLowerCase();
     const name = ownProps.params.name.toLowerCase();
 
     const {
-    pagination: { stargazersByRepo },
-    entities: { users, repos },
-  } = state;
+        pagination: { stargazersByRepo },
+        entities: { users, repos },
+    } = state;
 
     const fullName = `${login}/${name}`;
     const stargazersPagination = stargazersByRepo[fullName] || { ids: [] };
@@ -94,7 +95,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default compose(
-  connect(mapStateToProps, { loadRepo, loadStargazers }),
-  resolve('__resolvedData', loadData),
+    connect(mapStateToProps, { loadRepo, loadStargazers }),
+    resolve('__resolvedData', loadData),
 )(RepoPage);
-
