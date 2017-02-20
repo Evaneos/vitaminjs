@@ -6,6 +6,7 @@ import RedBox from 'redbox-react';
 import { Resolver } from 'react-resolver';
 
 /* eslint-disable import/no-extraneous-dependencies,import/newline-after-import,import/first */
+// used require instead of import, because optional default with import cause warnings
 const reducers = require('__app_modules__redux_reducers__');
 import routes from '__app_modules__routes__';
 import middlewares from '__app_modules__redux_middlewares__';
