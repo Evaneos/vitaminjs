@@ -37,5 +37,12 @@ export default function clientConfig(options) {
                 entry: appResolve(options.client.serviceWorker),
             }),
         ].filter(Boolean),
+        // Some libraries import Node modules but don't use them in the browser.
+        // Tell Webpack to provide empty mocks for them so importing them works.
+        // fs and module are used by source-map-support
+        node: {
+            fs: 'empty',
+            module: 'empty',
+        },
     }, concat);
 }

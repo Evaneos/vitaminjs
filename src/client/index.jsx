@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import { useBasename } from 'history';
 import RedBox from 'redbox-react';
 import { Resolver } from 'react-resolver';
+import { install as installSourceMapSupport } from 'source-map-support';
 
 /* eslint-disable import/no-extraneous-dependencies */
 import routes from '__app_modules__routes__';
@@ -18,6 +19,10 @@ import App from './components/App';
 // used require instead of import, because optional default with import cause warnings
 // eslint-disable-next-line import/no-extraneous-dependencies
 const reducers = require('__app_modules__redux_reducers__');
+
+if (process.env.NODE_ENV !== 'production') {
+    installSourceMapSupport({ environment: 'browser' });
+}
 
 function render(history, store, appRoutes, element) {
     const insertCss = ({ _insertCss }) => _insertCss();
