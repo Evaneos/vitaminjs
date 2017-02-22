@@ -28,6 +28,7 @@ file at the root of your project.
  - [filename](#clientFilename)
  - [buildPath](#clientBuildPath)
  - [serviceWorker](#serviceWorker)
+- [extends](#extends)
 - [rootElementId](#rootElementId)
 
 ## <a id='routes'></a>[`routes`](#routes)
@@ -200,3 +201,8 @@ You can access the service worker under `/`[`<basePath>`](#basePath)`/`[`<public
 **`String`**
 
 If you want to run your application without headers, you can define here the element ID where the app will append itself. By default, it's `vitamin-app`
+
+## <a id='extends'></a>[`extends`](#extends)
+**`Path`**
+
+Make your .vitaminrc extends another vitamin config. It is useful in case you want to have a base configuration for multiple environments.
