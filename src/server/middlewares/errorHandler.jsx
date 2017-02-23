@@ -66,13 +66,13 @@ const errorToErrorContext = (ctx, error) => ({
 const renderError = (ctx, error) => {
     try {
         const errorContext = errorToErrorContext(ctx, error);
-        this.body = renderErrorPage(errorContext);
+        ctx.body = renderErrorPage(errorContext);
         onError(errorContext);
     } catch (renderingError) {
-        this.body = renderRawError(ctx.status, renderingError);
+        ctx.body = renderRawError(ctx.status, renderingError);
         onError(errorToErrorContext(ctx, renderingError));
     }
-    this.type = 'html';
+    ctx.type = 'html';
 };
 
 export default () => async (ctx, next) => {
@@ -82,6 +82,7 @@ export default () => async (ctx, next) => {
         ctx.status = 500;
         renderError(ctx, error);
     }
+
     if (ctx.status === 404) {
         if (ctx.state.store) {
             renderError(ctx);
