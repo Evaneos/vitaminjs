@@ -1,10 +1,8 @@
-import { buildPreset as preset2015 } from 'babel-preset-es2015';
+import presetLatest from 'babel-preset-latest';
+import presetEnv from 'babel-preset-env';
 import presetReact from 'babel-preset-react';
-import preset2016 from 'babel-preset-es2016';
-import preset2017 from 'babel-preset-es2017';
 import presetStage1 from 'babel-preset-stage-1';
 import pluginReactRequire from 'babel-plugin-react-require';
-import pluginTransformRuntime from 'babel-plugin-transform-runtime';
 import pluginTransformExportDefaultName from 'babel-plugin-transform-export-default-name-forked';
 import pluginMinifyReplace from 'babel-plugin-minify-replace';
 import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
@@ -16,20 +14,17 @@ import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
 import { vitaminResolve } from '../utils';
 
 export default (env, dev) => ({
+    // order is: last to first
     presets: [
-        env === 'client' && [preset2015, { modules: false }],
+        env === 'client' ? [presetLatest, { es2015: { modules: false } }]
+            : [presetEnv, { modules: false, targets: { node: 'current' }, useBuiltIns: true }],
         presetReact,
-        preset2016,
-        preset2017,
         presetStage1,
     ].filter(Boolean),
+    // order is: first to last
     plugins: [
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
-        // Add Object.entries, Object.values and other ES2017 functionalities.
-        // In the client, we prefer solution like https://polyfill.io/v2/docs/, to keep the
-        // bundle size the smallest possible.
-        env === 'server' && pluginTransformRuntime,
         // Adds component stack to warning messages
         dev && pluginReactJsxSource,
         // Adds __self attribute to JSX which React will use for some warnings
