@@ -78,7 +78,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 const { port, host } = config.server;
 mountedServer.use(config.basePath, appServer());
 
-mountedServer.listen(port, host, () => {
+mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
     process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
