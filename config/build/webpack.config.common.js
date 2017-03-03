@@ -1,13 +1,10 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
-import postcssOmitImportTilde from 'postcss-omit-import-tilde';
-import postcssImport from 'postcss-import';
-import postcssUrl from 'postcss-url';
 import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
-import postcssCssNano from 'cssnano';
+import postcssModulesValues from 'postcss-modules-values';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import babelrc from './babelrc';
@@ -25,7 +22,7 @@ export const createBabelLoader = (env, options) => ({
         (path.startsWith(VITAMIN_DIRECTORY)
          && !path.startsWith(VITAMIN_MODULES_DIRECTORY)
          && !path.startsWith(VITAMIN_MODULES_EXAMPLES_DIRECTORY)),
-    query: babelrc(env, options),
+    options: babelrc(env, options),
 });
 
 export const createResolveConfigLoader = () => ({
@@ -34,7 +31,32 @@ export const createResolveConfigLoader = () => ({
     loader: vitaminResolve('config/build/resolveConfigLoader'),
 });
 
+
 export function config(options) {
+    const CSSLoaders = ({ modules }) => [
+        {
+            loader: 'isomorphic-style-loader',
+            options: {
+                debug: true,
+            },
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                minimize: !options.dev && { autoprefixer: false },
+                discardComments: {
+                    removeAll: !options.dev,
+                },
+                importLoaders: 1,
+                ...(modules ? {
+                    localIdentName: options.dev ?
+                        '[name]__[local]___[hash:base64:5]' : '[hash:base64]',
+                    modules: true,
+                } : {}),
+            },
+        },
+        'postcss-loader',
+    ];
     return {
         devtool: options.dev && 'source-map',
         output: {
@@ -55,23 +77,18 @@ export function config(options) {
             rules: [{
                 // only files with .global will go through this loader
                 test: /\.global\.css$/,
-                loaders: [
-                    'isomorphic-style-loader',
-                    'css-loader?sourceMap&importLoaders=1!postcss-loader',
-                    'postcss-loader',
-                ],
+                loaders: CSSLoaders({ modules: false }),
             }, {
                 // anything with .global will not go through css modules loader
                 test: /^((?!\.global).)*\.css$/,
-                loaders: [
-                    'isomorphic-style-loader',
-                    'css-loader?modules&sourceMap&importLoaders=1' +
-                        '&localIdentName=[name]__[local]___[hash:base64:3]!postcss-loader',
-                    'postcss-loader',
-                ],
+                loaders: CSSLoaders({ modules: true }),
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|eot|ttf)$/,
-                loader: `url-loader?limit=10000&name=${join(options.filesPath, '[hash].[ext]')}`,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: join(options.filesPath, '[hash].[ext]'),
+                },
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
@@ -92,20 +109,15 @@ export function config(options) {
         },
         plugins: [
             new LoaderOptionsPlugin({
+                debug: options.dev,
                 options: {
-                    context: __dirname,
-                    postcss: [
-                        postcssOmitImportTilde(),
-                        postcssImport(),
-                        postcssUrl(),
-                        postcssCssNext({ browsers: options.client.targetBrowsers }),
-                        !options.dev && postcssCssNano({ autoprefixer: false }),
-                        options.dev && postcssBrowserReporter(),
-                        postcssReporter(),
-                    ].filter(Boolean),
+                    postcss: () => [
+                        postcssModulesValues,
+                        postcssCssNext,
+                        options.dev && postcssBrowserReporter,
+                        postcssReporter,
+                    ],
                 },
-                test: /\.css$/,
-                debug: true,
             }),
             options.hot && new HotModuleReplacementPlugin(),
             options.hot && new NamedModulesPlugin(),
@@ -114,8 +126,7 @@ export function config(options) {
             // makes the discovery automatic so you don't have to restart.
             // See https://github.com/facebookincubator/create-react-app/issues/186
             options.dev && new WatchMissingNodeModulesPlugin(APP_MODULES),
-
-          // enforces the entire path of all required modules match the exact case
+            // enforces the entire path of all required modules match the exact case
             // of the actual path on disk. Using this plugin helps alleviate cases
             // for developers working on case insensitive systems like OSX.
             options.dev && new CaseSensitivePathsPlugin(),
