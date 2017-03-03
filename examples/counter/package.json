@@ -14,6 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "react": "^15.1.0",
-    "vitaminjs": "../.."
+    "vitaminjs": "file:../.."
   }
 }
