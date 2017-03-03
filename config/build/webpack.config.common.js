@@ -2,6 +2,7 @@ import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } f
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import postcssOmitImportTilde from 'postcss-omit-import-tilde';
 import postcssImport from 'postcss-import';
+import postcssModulesValues from 'postcss-modules-values';
 import postcssUrl from 'postcss-url';
 import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
@@ -95,6 +96,7 @@ export function config(options) {
                     postcss: [
                         postcssOmitImportTilde(),
                         postcssImport(),
+                        postcssModulesValues,
                         postcssUrl(),
                         postcssCssNext(),
                         !options.dev && postcssCssNano({ autoprefixer: false }),
