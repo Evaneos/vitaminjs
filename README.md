@@ -1,87 +1,105 @@
-<big><h1 align="center">vitamin</h1></big>
-<p><big>
- Build toolchain as a dependency for react/redux application, with a strong emphasis put on DX (Developer eXperience)
+<p align="center">
+	<img width="125" src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Emojione_1F34D.svg" />
+</p>
+
+<big><h1 align="center">VitaminJS</h1></big>
+<p><big>Build framework to start a server-rendered React/Redux application with a strong focus on developer experience
 </big></p>
 
-## Why ?
-Actual state of development for react apps leads to a tremendous amount of boilerplate code for initializing the tooling. Usually, we proceed by finding (or creating) a boilerplate project with approximatly the stack we need, fork it, and start working on it.
+[![npm version](https://badge.fury.io/js/vitaminjs.png)](https://badge.fury.io/js/vitaminjs)
 
-However, boilerplate have a major drawback. They can't be updated easily. So instead of a boilerplate, we choose to externalize all the toolchain and building config of a project as an npm dependency.
+VitaminJS helps you start your React / Redux application right away.  
+It takes care of all the tremendous amount of boilerplate code used to initialize a project and help you focus and what matters : your application.  
 
-
-Inspiration : https://github.com/bdefore/universal-redux & https://github.com/kriasoft/react-starter-kit
+VitaminJS comes as a dependency in your application allowing you to always be up to date with the latest practices in the React community.
 
 ## Behind the hood
 What's included in the menu
-- [**React**](https://github.com/facebook/react). What else ?
-- [**Redux**](https://github.com/rackt/redux). The community consensus for managing application state
+- [**React**](https://github.com/facebook/react) What else ?
+- [**Redux**](https://github.com/rackt/redux) The community consensus for managing application state
+- [**React-Router v3**](https://github.com/ReactTraining/react-router) Routing comes easily
 - [**CSS modules**](https://github.com/css-modules/css-modules) Namespace your css
 - [**CSSNext**](https://github.com/MoOx/postcss-cssnext) Use tomorrow CSS syntax right now
-- **Server Side Rendering**. SEO and mobile friendly, zero config needed.
-- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. No more `Ctrl+R`. (But without using [react-HMR](https://github.com/reactjs/redux/pull/1455))
-- **Error message on the browser**. No need to switch to console anymore. Using [redbox-react](https://www.npmjs.com/package/redbox-react) and [webpack-hot-middleware](https://github.com/glenjamin/webpack-hot-middleware)
-- **ES-next**. ES2015, stage-1 proposals and react. Look at our babelrc presets ([browser](https://github.com/Evaneos/vitamin/blob/master/.babelrc.browser) and [node](https://github.com/Evaneos/vitamin/blob/master/.babelrc.node))
+- [**React-Resolver**](https://github.com/ericclemmons/react-resolver) Async rendering. Render your components when data has been fetched
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
+- **Server Side Rendering**. SEO and mobile friendly, zero config needed.
+- **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. On configuration. No more `Ctrl+R`.
+- **Error message on the browser**. No need to switch to console anymore. 
+- **ES-next**. ES2017, [preset-latest](https://github.com/babel/babel/tree/7.0/packages/babel-preset-latest) on browser and [present-env](https://github.com/babel/babel-preset-env) on node. 
 
-## How to get started ?
-First, initialize your project and install the peer dependencies with
+## Get started
+### Installation
+To start a vitamin powered application, simply install globally our command-line interface.
+
+```bash
+yarn global add vitaminjs-cli
+```
+Or if you are not using [yarn](https://yarnpkg.com/)
+
 ```bash
 npm install -g vitaminjs-cli
+```
+Then create your project directory and start a new project with our CLI.
+```bash
+mkdir my-directory
+cd my-directory
 vitaminjs new
 ```
+### Set up the dev environment
 
-## vitaminrc
+To start the dev environment, simply run :
 
-### routes
-It is a path to the module containing the main [Route](https://github.com/reactjs/react-router/blob/master/docs/API.md#route) of your react app.
-### redux
-All the configuration specific to redux
-#### redux.reducers
-The path to the module that exports an **object** of you app reducers.
-
-vitamin will extend the object with the `react-router-redux` reducer under the key `routing`.That's why it can't be a function created with `combineReducer`.
-
-#### redux.middlewares (optional)
-A path to a module that exports an array of redux middlewares.
-
-It should look like that:
-```json
-{
-    "routes": "./routes",
-    "redux": {
-        "reducers": "./reducers"
-    }
-}
-```
-
-Create the `routes.js` file:
-
-```js
-import { Route } from 'vitaminjs';
-
-export default (
-    <Route path="/">
-);
-```
-Create the `reducers.js` file:
-```js
-export default {};
-```
-
-And finally you can launch your app with
 ```bash
-vitamin start
+yarn start
 ```
-Open http://localhost:3000.
-
-### Change layout
-
-In your `vitaminrc`:
-
-```json
-{
-    "server": {
-        "layout": "__vitamin__/src/server/components/DivLayout"
-    }
-}
+or if you are not using [yarn](https://yarnpkg.com/)
+```bash
+npm start
 ```
+By default, your app will be running on [http://localhost:3000](http://localhost:3000)  
+Build errors will be displayed in your terminal. Everything will be hot reloaded.  
+You can start working on your app immediately !
+
+### Configuration
+VitaminJS contains all of its configuration in a *`.vitaminrc`* file.  
+When you create a new project, it has the minimal configuration to make it work.
+
+If you want to go further in your development, you can customize your configuration. You can learn more about it in [API Guide](https://github.com/Evaneos/vitaminjs/blob/master/API.md)
+
+### Build for production
+
+To build your application in production mode, run :
+```bash
+yarn build
+```
+or if you are not using [yarn](https://yarnpkg.com/)
+```bash
+npm run build
+```
+
+It bundles your application and optimizes its performances. The bundle is also minified.
+
+## Frequently Asked Questions
+We have started to answer some frequently asked questions. You can find all of them here: [FAQ](https://github.com/Evaneos/vitaminjs/blob/master/FAQ.md)  
+If you have any questions you think are worth be displayed, please raise an issue in the project.  
+We will try to update these questions as often as possible. 
+
+## Contributing
+
+Are you interested in contributing to the project ? Great ! To do so, follow this simple steps:
+ 1. Fork the repository
+ 2. Do the changes you think are necessary. We are following [Angular Commit Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit).
+ 3. Submit a pull request in the project
+
+## Release History
+
+You can find all the changes in the [Changelog](https://github.com/Evaneos/vitaminjs/blob/master/CHANGELOG.md)
+
+## Inspiration
+
+[Universal Redux](https://github.com/bdefore/universal-redux)  
+[React-Starter-Kit](https://github.com/kriasoft/react-starter-kit)  
+[Create-React-App](https://github.com/facebookincubator/create-react-app)
+
+## License
+MIT © [Evaneos](https://www.evaneos.com)
