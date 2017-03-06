@@ -14,8 +14,7 @@ export default () => async (ctx, next) => {
         match({ routes: appRoutes, location: url, history },
             (error, redirectLocation, renderProps) => {
                 if (error) {
-                    ctx.status = 500;
-                    ctx.body = error.message;
+                    throw error;
                 } else if (redirectLocation) {
                     ctx.redirect(
                         (redirectLocation.basename || '') +
