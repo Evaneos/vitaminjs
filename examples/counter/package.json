@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "vitamin counter example",
   "scripts": {
+    "build": "vitamin build",
     "start": "vitamin start",
-    "build": "vitamin build"
+    "serve": "vitamin serve"
   },
   "author": "Johan Girod <johan@evaneos.com>",
   "repository": {

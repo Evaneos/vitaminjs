@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/vitaminjs
+    docker:
+      - image: kkarczmarczyk/node-yarn:6.9
+    steps:
+      - checkout
+      - run:
+          name: Dependencies
+          command: yarn install --no-progress && yarn link
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Build examples
+          command: ls -1 examples | picard tests split | xargs -n 1 ./.circleci/test.sh
+
