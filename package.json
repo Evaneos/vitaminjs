@@ -4,7 +4,7 @@
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "./src/shared/index.js",
   "scripts": {
-    "test": "npm run lint",
+    "test": "yarn run lint",
     "lint": "eslint --ext .js,.jsx src bin config"
   },
   "bin": {
