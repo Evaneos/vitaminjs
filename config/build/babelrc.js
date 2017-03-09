@@ -1,4 +1,3 @@
-import presetLatest from 'babel-preset-latest';
 import presetEnv from 'babel-preset-env';
 import presetReact from 'babel-preset-react';
 import presetStage1 from 'babel-preset-stage-1';
@@ -16,8 +15,12 @@ import { vitaminResolve } from '../utils';
 export default (env, dev) => ({
     // order is: last to first
     presets: [
-        env === 'client' ? [presetLatest, { es2015: { modules: false } }]
-            : [presetEnv, { modules: false, targets: { node: 'current' }, useBuiltIns: true }],
+        [presetEnv, {
+            modules: false,
+            useBuiltIns: true,
+            targets: env !== 'client' ? { node: 'current' }
+                : { uglify: !dev, browsers: ['not ie < 9'] },
+        }],
         presetReact,
         presetStage1,
     ].filter(Boolean),
