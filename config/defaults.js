@@ -28,6 +28,12 @@ export default {
         buildPath: 'public',
         filename: 'client_bundle.[hash].js',
         serviceWorker: false,
+        targetBrowsers: [
+            '>1%',
+            'last 4 versions',
+            'Firefox ESR',
+            'not ie < 9', // react doesn't support ie < 9
+        ],
     },
     filesPath: 'files',
     rootElementId: 'vitamin-app',

@@ -12,14 +12,14 @@ import pluginReactJsxSource from 'babel-plugin-transform-react-jsx-source';
 import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
 import { vitaminResolve } from '../utils';
 
-export default (env, dev) => ({
+export default (env, options) => ({
     // order is: last to first
     presets: [
         [presetEnv, {
             modules: false,
             useBuiltIns: true,
             targets: env !== 'client' ? { node: 'current' }
-                : { uglify: !dev, browsers: ['not ie < 9'] },
+                : { browsers: options.client.targetBrowsers },
         }],
         presetReact,
         presetStage1,
@@ -29,9 +29,9 @@ export default (env, dev) => ({
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
         // Adds component stack to warning messages
-        dev && pluginReactJsxSource,
+        options.dev && pluginReactJsxSource,
         // Adds __self attribute to JSX which React will use for some warnings
-        dev && pluginReactJsxSelf,
+        options.dev && pluginReactJsxSelf,
         // replace process.env.NODE_ENV by its current value
         pluginNodeEnvInline,
         // replace IS_CLIENT and IS_SERVER

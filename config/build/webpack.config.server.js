@@ -55,7 +55,7 @@ export default function serverConfig(options) {
 
         module: {
             rules: [
-                createBabelLoader('server', options.dev),
+                createBabelLoader('server', options),
                 createResolveConfigLoader(),
             ],
         },

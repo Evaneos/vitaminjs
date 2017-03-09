@@ -28,6 +28,7 @@ file at the root of your project.
  - [filename](#clientFilename)
  - [buildPath](#clientBuildPath)
  - [serviceWorker](#serviceWorker)
+ - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
 - [rootElementId](#rootElementId)
 
@@ -195,7 +196,12 @@ Path to the service worker, if you have one. Vitaminjs will prepend a constant n
 all the assets names generated during compilation. You'll have to cache them
 manually, register the service manually etc... This is juste a little helper.
 You can access the service worker under `/`[`<basePath>`](#basePath)`/`[`<publicPath>`](#publicPath)`/sw.js`. Default to `false
+     
+### <a id='targetBrowsers'></a>[`targetBrowsers`](#targetBrowsers)
+**`Array<String>`**
 
+Use [browserslist](https://github.com/ai/browserslist) to declare supported environments by performing queries like `> 1%, last 2 versions`.
+Default is [`>1%, last 4 versions, Firefox ESR, not ie < 9`](http://browserl.ist/?q=%3E+1%25%2C+last+4+versions%2C+Firefox+ESR%2C+not+ie+%3C+9).
 
 ## <a id='rootElementId'></a>[`rootElementId`](#rootElementId)
 **`String`**
