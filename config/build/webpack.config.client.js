@@ -9,13 +9,17 @@ export default function clientConfig(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
-        entry: [
-            vitaminResolve('src', 'client', 'index.jsx'),
-            options.hot && hotMiddlewareEntry,
-        ].filter(Boolean),
+        entry: {
+            [options.client.name]: [
+                vitaminResolve('src', 'client', 'index.jsx'),
+                options.hot && hotMiddlewareEntry,
+            ].filter(Boolean),
+            ...options.client.entries,
+        },
         output: {
             path: options.client.buildPath,
             filename: options.client.filename,
+            chunkFilename: options.client.chunkFilename,
         },
         module: {
             rules: [
@@ -24,6 +28,22 @@ export default function clientConfig(options) {
             ],
         },
         plugins: [
+            // user-defined chunks
+            ...(Object.keys(options.client.commonChunks).map(chunkKey => (
+                new webpack.optimize.CommonsChunkPlugin({
+                    name: chunkKey,
+                    chunks: options.client.chunks[chunkKey],
+                    children: true,
+                    minChunks: Infinity,
+                    // async: options.http2,
+                })
+            ))),
+            // vendor chunk
+            new webpack.optimize.CommonsChunkPlugin({
+                name: 'vendor',
+                // this assumes your vendor imports exist in the node_modules directory
+                minChunks: module => console.log(module.context) || module.context && module.context.includes('node_modules'),
+            }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),

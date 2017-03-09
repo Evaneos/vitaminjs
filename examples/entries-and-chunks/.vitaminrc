@@ -1,0 +1,16 @@
+{
+    "routes": "./routes",
+    "client": {
+        "name": "app",
+        "filename": "[name]_[hash].js",
+        "entries": {
+            "home": "./modules/home.jsx",
+            "module1": "./modules/module1.jsx",
+            "module2": "./modules/module2.jsx"
+        },
+        "commonChunks": {
+            "home": ["home"],
+            "module1and2": ["module1","module2"]
+        }
+    }
+}

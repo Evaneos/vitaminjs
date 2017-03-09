@@ -1,0 +1,19 @@
+{
+  "name": "vitamin-entries-and-chunks-example",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vitamin build",
+    "start": "vitamin start",
+    "serve": "vitamin serve"
+  },
+  "author": "Christophe Hurpeau <christophe@evaneos.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evaneos/vitamin.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.1.0",
+    "vitaminjs": "file:../.."
+  }
+}

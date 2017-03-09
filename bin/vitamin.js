@@ -78,7 +78,7 @@ const createCompiler = (webpackConfig, message, options) => {
             bar.update(percentage, { msg });
         }));
         compiler.apply(new FriendlyErrorsWebpackPlugin({
-            clearConsole: !!options.hot,
+            clearConsole: false && !!options.hot,
         }));
     }
 
