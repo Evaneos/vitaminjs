@@ -106,6 +106,7 @@ export function config(options) {
             alias: options.moduleMap,
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
+            mainFields: ['browser', 'module', 'main', 'style'],
         },
         plugins: [
             new LoaderOptionsPlugin({
