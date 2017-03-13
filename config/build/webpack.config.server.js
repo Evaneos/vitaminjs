@@ -1,4 +1,4 @@
-import { BannerPlugin, DefinePlugin } from 'webpack';
+import { optimize, BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import fs from 'fs';
 import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
@@ -60,6 +60,7 @@ export default function serverConfig(options) {
             ],
         },
         plugins: [
+            new optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
             options.dev && new BannerPlugin({
                 banner: 'require("source-map-support").install({ environment: \'node\' });',
                 raw: true,
