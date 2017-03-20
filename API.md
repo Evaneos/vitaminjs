@@ -3,7 +3,7 @@
 All the configuration needed to customize vitamin is done through a `.vitaminrc`
 file at the root of your project.
 
-##Table of content
+## Table of content
 
 - [routes](#routes)
 - [redux](#redux)
@@ -37,7 +37,7 @@ file at the root of your project.
 
 Root route of your application. This is the only mandatory element for running vitaminjs.`
 You can export a function. If you do so, the function will be call with the redux store. Useful
-for registering listener before the application starts. You might want to do that only on client side[TODO link to IS_CLIENT].
+for registering listener before the application starts. You might want to do that only on client side (you can use the global [`IS_CLIENT`](#isclient-isserver) for that).
 
 ## <a id='redux'></a>[`redux`](#redux)
 Config option for redux, specified in the `redux` key of the config object.
@@ -206,3 +206,7 @@ If you want to run your application without headers, you can define here the ele
 **`Path`**
 
 Make your .vitaminrc extends another vitamin config. It is useful in case you want to have a base configuration for multiple environments.
+
+# Globals
+## <a id='isclient-isserver'></a>[`IS_CLIENT` / `IS_SERVER`](#isclient-isserver)
+Two globals are available everywhere in your application : `IS_SERVER` and `IS_CLIENT`. When bundling your application  `vitaminjs` will replace them with `true`/`false` depending on the environment.
