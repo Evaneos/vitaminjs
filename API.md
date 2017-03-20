@@ -35,7 +35,7 @@ file at the root of your project.
 **`Path (`[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)` | `[`store`](http://redux.js.org/docs/api/Store.html#store)` => `[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)`)`**
 
 
-Root route of your application. This is the only mandatory element for running vitaminjs.`
+Root route of your application. This is the only mandatory element for running vitaminjs. 
 You can export a function. If you do so, the function will be call with the redux store. Useful
 for registering listener before the application starts. You might want to do that only on client side (you can use the global [`IS_CLIENT`](#isclient-isserver) for that).
 
