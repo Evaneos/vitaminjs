@@ -23,4 +23,7 @@ export default myRoutes
 
 ### Can I customize webpack config ?
 No. For now, you don't have the possibility to extends vitaminJS build config.
-You can refer to [#205](https://github.com/Evaneos/vitaminjs/issues/205) on the why we didn't ship with a plugin system in the first place. However, we are currently slowly evolving on this mentality and that's something we might consider for next major. Any suggestion is welcome!
+
+You can refer to [#205](https://github.com/Evaneos/vitaminjs/issues/205) on the why we didn't ship with a plugin system in the first place. However, we are currently slowly evolving on this mentality and that's something we might consider for next major. 
+
+In the meantime, if you find a use case that is not covered by our webpack config, don't hesitate to propose a PR.
