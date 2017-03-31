@@ -28,7 +28,7 @@ const mountedServer = express();
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
     const hotReloadServer = () => {
-        const server = express();
+        const app = express();
         const webpack = require('webpack');
         const clientBuildConfig = webpackClientConfig({
             hot: true,
@@ -39,7 +39,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         const compiler = webpack(clientBuildConfig);
         let clientBuilt = false;
         const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
-        server.use(require('webpack-dev-middleware')(compiler, {
+        app.use(require('webpack-dev-middleware')(compiler, {
             quiet: true,
             noInfo: true,
             publicPath: parsedPublicPath,
@@ -56,17 +56,17 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         }));
 
         const hmrPath = `${parsedPublicPath}/__webpack_hmr`;
-        server.use(require('webpack-hot-middleware')(compiler, {
+        app.use(require('webpack-hot-middleware')(compiler, {
             log: () => {},
             path: hmrPath,
             reload: true,
         }));
 
-        return server;
+        return app;
     };
 
     mountedServer.use(hotReloadServer());
-    module.hot.accept('./app', () => {
+    module.hot.accept('./appMiddleware', () => {
         try {
             currentApp = require('./appMiddleware').default;
         } catch (e) {
