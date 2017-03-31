@@ -40,7 +40,7 @@
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "babel-core": "^6.24.0",
-    "babel-loader": "^6.3.2",
+    "babel-loader": "^6.4.1",
     "babel-plugin-discard-module-references": "^1.1.2",
     "babel-plugin-minify-dead-code-elimination": "0.1.4",
     "babel-plugin-minify-guarded-expressions": "0.0.4",
