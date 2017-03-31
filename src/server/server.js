@@ -7,21 +7,21 @@ import chalk from 'chalk';
 import fetch from 'node-fetch';
 import readline from 'readline';
 
-import app from './app';
+import appMiddleware from './appMiddleware';
 import config from '../../config';
 import webpackClientConfig from '../../config/build/webpack.config.client';
 
 global.fetch = fetch;
 
-let currentApp = app;
+let currentApp = appMiddleware;
 function appServer() {
-    const server = new Koa();
-    server.use(
+    const app = new Koa();
+    app.use(
         process.env.NODE_ENV === 'production' ? currentApp
             // ecapsulate app for hot reload
             : (ctx, next) => currentApp(ctx, next),
     );
-    return server.callback();
+    return app.callback();
 }
 
 const mountedServer = express();
@@ -68,7 +68,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
     mountedServer.use(hotReloadServer());
     module.hot.accept('./app', () => {
         try {
-            currentApp = require('./app').default;
+            currentApp = require('./appMiddleware').default;
         } catch (e) {
             console.error(e);
         }
@@ -78,7 +78,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 const { port, host } = config.server;
 mountedServer.use(config.basePath, appServer());
 
-mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
+const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
     process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
@@ -92,3 +92,6 @@ mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     }
 });
 
+['SIGTERM', 'SIGINT', 'SIGQUIT'].forEach(
+    signal => process.on(signal, () => server.close(() => process.exit(0)))
+);
