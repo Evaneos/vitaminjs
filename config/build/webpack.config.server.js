@@ -1,20 +1,8 @@
 import { optimize, BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
-import fs from 'fs';
 import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
-import { vitaminResolve, appResolve, concat } from '../utils';
+import { vitaminResolve, concat, appModules, vitaminModules } from '../utils';
 
-const safeReaddirSync = (path) => {
-    try {
-        return fs.readdirSync(path);
-    } catch (e) {
-        return [];
-    }
-};
-
-const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
-const appModules = externalModules(appResolve('node_modules')).filter(m => m !== 'vitaminjs');
-const vitaminModules = externalModules(vitaminResolve('node_modules'));
 const hotPoll = vitaminResolve('config', 'utils', 'hot.js');
 
 function externals(context, request, callback) {
@@ -41,7 +29,6 @@ export default function serverConfig(options) {
             path: options.server.buildPath,
             libraryTarget: 'commonjs2',
         },
-
         target: 'node',
         externals,
         node: {
