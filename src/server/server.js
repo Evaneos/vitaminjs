@@ -98,6 +98,6 @@ httpGracefulShutdown(server, {
     timeout: 30000,
     development: process.env.NODE_ENV !== 'production',
     callback: () => {
-        process.stdout.write(`Server with PID ${process.pid} gracefully terminated.`)
+        process.stdout.write(`Server with PID ${process.pid} gracefully terminated.`);
     },
 });
