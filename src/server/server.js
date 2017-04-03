@@ -6,6 +6,7 @@ import express from 'express';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import readline from 'readline';
+import httpGracefulShutdown from 'http-graceful-shutdown';
 
 import appMiddleware from './appMiddleware';
 import config from '../../config';
@@ -81,7 +82,7 @@ mountedServer.use(config.basePath, appServer());
 const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
-    process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
+    process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server with PID ${process.pid} listening on: ${
         chalk.bold.underline(`http://${host}:${port}${config.basePath}`)
     }\n`);
     if (module.hot) {
@@ -92,6 +93,11 @@ const server = mountedServer.listen(process.env.PORT || port, process.env.HOST |
     }
 });
 
-['SIGTERM', 'SIGINT', 'SIGQUIT'].forEach(
-    signal => process.on(signal, () => server.close(() => process.exit(0)))
-);
+httpGracefulShutdown(server, {
+    signals: 'SIGINT SIGTERM SIGQUIT',
+    timeout: 30000,
+    development: process.env.NODE_ENV !== 'production',
+    callback: () => {
+        process.stdout.write(`Server with PID ${process.pid} gracefully terminated.`)
+    },
+});
