@@ -6,15 +6,19 @@ import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 import fs from 'fs';
+import { spawn as npmRunSpawn } from 'npm-run';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
 
 import killProcess from '../config/utils/killProcess';
+import { appResolve, vitaminResolve } from '../config/utils';
+import jestConfig from '../config/jest/jestrc';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
+import webpackConfigVendor from '../config/build/webpack.config.vendor';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 
@@ -143,21 +147,20 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
 );
 
 
-const test = ({ hot, runner, runnerArgs }) => {
-    const launchTest = (config) => {
-        if (!config.test) {
-            throw new Error('Please specify a test file path in .vitaminrc');
-        }
-
-        console.log(chalk.blue(`${symbols.clock} Launching tests...`));
-        const serverFile = path.join(
-            config.server.buildPath,
-            'tests',
-        );
-        spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
-    };
-
-    commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
+const test = (args) => {
+    npmRunSpawn(
+        'jest',
+        [
+            '-c', jestConfig,
+            '--no-cache',
+            '--verbose',
+            ...(typeof args === 'string' ? args.split(' ') : ''),
+        ],
+        {
+            stdio: 'inherit',
+            cwd: vitaminResolve(),
+        },
+    );
 };
 
 
@@ -231,20 +234,10 @@ program
     .version(version);
 
 program
-    .command('test [runnerArgs...]')
+    .command('test')
     .alias('t')
     .description('Build test suite')
-    .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
-    .option('--no-hmr', 'Disable hot reload')
-    .action((runnerArgs, { runner, hmr }) => {
-        test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
-    })
-    .on('--help', () => {
-        console.log('  Examples:');
-        console.log('');
-        console.log('    $ vitamin test -r mocha -- --color');
-        console.log('');
-    });
+    .action(test);
 
 program
     .command('build')

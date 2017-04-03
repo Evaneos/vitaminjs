@@ -9,7 +9,7 @@ import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
-import babelrc from './babelrc';
+import babelrc from '../babelrc';
 
 const VITAMIN_DIRECTORY = vitaminResolve();
 const VITAMIN_MODULES_DIRECTORY = vitaminResolve('node_modules');
