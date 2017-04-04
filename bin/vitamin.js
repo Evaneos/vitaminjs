@@ -13,7 +13,7 @@ import ProgressBar from 'progress';
 import chalk from 'chalk';
 
 import killProcess from '../config/utils/killProcess';
-import { appResolve, vitaminResolve } from '../config/utils';
+import { vitaminResolve } from '../config/utils';
 import jestConfig from '../config/jest/jestrc';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';

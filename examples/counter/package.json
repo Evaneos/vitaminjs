@@ -5,7 +5,8 @@
   "scripts": {
     "build": "vitamin build",
     "start": "vitamin start",
-    "serve": "vitamin serve"
+    "serve": "vitamin serve",
+    "test": "vitamin test"
   },
   "author": "Johan Girod <johan@evaneos.com>",
   "repository": {
