@@ -1,6 +1,6 @@
 const ALLOWED_SIGNALS = ['SIGTERM', 'SIGINT', 'SIGQUIT'];
 
-export default (process, { signal = 'SIGTERM', timeout = 30000 } = {}) => {
+export default (process, { signal = 'SIGTERM', timeout = 15000 } = {}) => {
     if (!ALLOWED_SIGNALS.includes(signal)) {
         throw new Error(`Invalid signal: "${signal}", expecting one of ${ALLOWED_SIGNALS.join()}`);
     }
