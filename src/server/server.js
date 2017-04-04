@@ -82,7 +82,7 @@ mountedServer.use(config.basePath, appServer());
 const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
-    process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server with PID ${process.pid} listening on: ${
+    process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
         chalk.bold.underline(`http://${host}:${port}${config.basePath}`)
     }\n`);
     if (module.hot) {
@@ -98,6 +98,6 @@ httpGracefulShutdown(server, {
     timeout: 30000,
     development: process.env.NODE_ENV !== 'production',
     callback: () => {
-        process.stdout.write(`Server with PID ${process.pid} gracefully terminated.`);
+        process.stdout.write(`Server gracefully terminated.`);
     },
 });
