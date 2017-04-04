@@ -81,7 +81,7 @@
     "postcss-omit-import-tilde": "^1.0.1",
     "postcss-reporter": "^3.0.0",
     "postcss-url": "^6.0.1",
-    "progress": "^1.1.8",
+    "progress": "^2.0.0",
     "react-dom": "^15.4.2",
     "react-helmet": "^5.0.2",
     "react-redux": "^5.0.2",
