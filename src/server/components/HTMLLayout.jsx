@@ -1,3 +1,5 @@
+/* eslint react/no-danger: 0 */
+
 import { PropTypes } from 'react';
 
 const HelmetHeadPropTypes = PropTypes.shape({

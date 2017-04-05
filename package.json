@@ -68,6 +68,7 @@
     "file-loader": "^0.11.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "history": "^3.2.1",
+    "http-graceful-shutdown": "^1.0.6",
     "isomorphic-style-loader": "^1.1.0",
     "js-string-escape": "^1.0.1",
     "json-loader": "^0.5.4",

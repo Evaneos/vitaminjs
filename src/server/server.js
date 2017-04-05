@@ -6,29 +6,30 @@ import express from 'express';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import readline from 'readline';
+import httpGracefulShutdown from 'http-graceful-shutdown';
 
-import app from './app';
+import appMiddleware from './appMiddleware';
 import config from '../../config';
 import webpackClientConfig from '../../config/build/webpack.config.client';
 
 global.fetch = fetch;
 
-let currentApp = app;
+let currentApp = appMiddleware;
 function appServer() {
-    const server = new Koa();
-    server.use(
+    const app = new Koa();
+    app.use(
         process.env.NODE_ENV === 'production' ? currentApp
             // ecapsulate app for hot reload
             : (ctx, next) => currentApp(ctx, next),
     );
-    return server.callback();
+    return app.callback();
 }
 
 const mountedServer = express();
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
     const hotReloadServer = () => {
-        const server = express();
+        const app = express();
         const webpack = require('webpack');
         const clientBuildConfig = webpackClientConfig({
             hot: true,
@@ -39,7 +40,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         const compiler = webpack(clientBuildConfig);
         let clientBuilt = false;
         const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
-        server.use(require('webpack-dev-middleware')(compiler, {
+        app.use(require('webpack-dev-middleware')(compiler, {
             quiet: true,
             noInfo: true,
             publicPath: parsedPublicPath,
@@ -56,19 +57,19 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         }));
 
         const hmrPath = `${parsedPublicPath}/__webpack_hmr`;
-        server.use(require('webpack-hot-middleware')(compiler, {
+        app.use(require('webpack-hot-middleware')(compiler, {
             log: () => {},
             path: hmrPath,
             reload: true,
         }));
 
-        return server;
+        return app;
     };
 
     mountedServer.use(hotReloadServer());
-    module.hot.accept('./app', () => {
+    module.hot.accept('./appMiddleware', () => {
         try {
-            currentApp = require('./app').default;
+            currentApp = require('./appMiddleware').default;
         } catch (e) {
             console.error(e);
         }
@@ -78,7 +79,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
 const { port, host } = config.server;
 mountedServer.use(config.basePath, appServer());
 
-mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
+const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
     process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
@@ -92,3 +93,11 @@ mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
     }
 });
 
+httpGracefulShutdown(server, {
+    signals: 'SIGINT SIGTERM SIGQUIT',
+    timeout: 15000,
+    development: process.env.NODE_ENV !== 'production',
+    callback: () => {
+        process.stdout.write('Server gracefully terminated.');
+    },
+});
