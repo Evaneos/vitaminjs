@@ -1,5 +1,7 @@
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
+import path from 'path';
+import { readFileSync } from 'fs';
 import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 
 import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
@@ -27,15 +29,19 @@ export default function clientConfig(options) {
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
-
             options.hot && new webpack.NoEmitOnErrorsPlugin(),
-            options.hot && new webpack.optimize.OccurrenceOrderPlugin(),
-
             !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
-
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
                 entry: appResolve(options.client.serviceWorker),
             }),
+            options.hot && new webpack.DllReferencePlugin({
+                context: appResolve(),
+                manifest: JSON.parse(readFileSync(path.join(
+                    options.client.buildPath,
+                    'vendor-dll-manifest.json',
+                ), 'utf8')),
+            }),
+
         ].filter(Boolean),
         // Some libraries import Node modules but don't use them in the browser.
         // Tell Webpack to provide empty mocks for them so importing them works.
