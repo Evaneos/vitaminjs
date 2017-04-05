@@ -1,7 +1,10 @@
+@value red from './constants';
 
 .value {
     color: red;
     font-weight: bold;
+    font-size: 20px;
+    composes: withPineapple from './Pineapple/style.css';
 }
 
 .button {
