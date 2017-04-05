@@ -24,6 +24,11 @@
     "redux"
   ],
   "author": "Johan Girod <johan@evaneos.com>",
+  "contributors": [
+    "Christophe Hurpeau <christophe.hurpeau@gmail.com>",
+    "Lucas Personnaz <lucas@evaneos.com>",
+    "Antoine Lépée <antoine@evanoes.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^7.2.1",
