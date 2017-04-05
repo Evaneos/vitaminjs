@@ -4,7 +4,6 @@
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "./src/shared/index.js",
   "scripts": {
-    "test": "yarn run jest",
     "lint": "eslint --ext .js,.jsx src bin config"
   },
   "bin": {
@@ -94,7 +93,6 @@
     "koa-static": "^3.0.0",
     "lodash.mergewith": "^4.6.0",
     "node-fetch": "^1.6.3",
-    "npm-run": "^4.1.2",
     "postcss-browser-reporter": "^0.5.0",
     "postcss-cssnext": "^2.10.0",
     "postcss-import": "^9.1.0",

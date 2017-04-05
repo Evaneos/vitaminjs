@@ -6,7 +6,6 @@ import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 import fs from 'fs';
-import { spawn as npmRunSpawn } from 'npm-run';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
@@ -148,8 +147,8 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
 
 
 const test = (args) => {
-    npmRunSpawn(
-        'jest',
+    spawn(
+        vitaminResolve('node_modules', '.bin', 'jest'),
         [
             '-c', jestConfig,
             '--no-cache',

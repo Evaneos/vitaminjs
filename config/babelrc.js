@@ -2,7 +2,6 @@ import presetEnv from 'babel-preset-env';
 import presetReact from 'babel-preset-react';
 import presetStage1 from 'babel-preset-stage-1';
 import pluginReactRequire from 'babel-plugin-react-require';
-import pluginTransformRuntime from 'babel-plugin-transform-runtime';
 import pluginTransformExportDefaultName from 'babel-plugin-transform-export-default-name-forked';
 import pluginMinifyReplace from 'babel-plugin-minify-replace';
 import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
@@ -29,7 +28,6 @@ export default (env, options) => ({
     plugins: [
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
-        pluginTransformRuntime,
         // Adds component stack to warning messages
         options.dev && pluginReactJsxSource,
         // Adds __self attribute to JSX which React will use for some warnings
