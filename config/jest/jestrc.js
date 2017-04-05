@@ -1,4 +1,4 @@
-import { appResolve, vitaminResolve } from '../utils/index';
+import { appResolve, fileRegex, vitaminResolve } from '../utils';
 
 export default JSON.stringify({
     roots: [appResolve()],
@@ -9,7 +9,7 @@ export default JSON.stringify({
     },
     transformIgnorePatterns: ['/node_modules/(?!vitaminjs).*'],
     moduleNameMapper: {
-        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
-        '\\.(css|less)$': 'identity-obj-proxy',
+        [`\\${fileRegex}`]: '<rootDir>/__mocks__/fileMock.js',
+        '\\.(css)$': 'identity-obj-proxy',
     },
 });

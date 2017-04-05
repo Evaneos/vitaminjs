@@ -8,7 +8,7 @@ import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
 import { join } from 'path';
-import { vitaminResolve, appResolve } from '../utils';
+import { vitaminResolve, appResolve, fileRegex } from '../utils';
 import babelrc from '../babelrc';
 
 const VITAMIN_DIRECTORY = vitaminResolve();
@@ -84,7 +84,7 @@ export function config(options) {
                 test: /^((?!\.global).)*\.css$/,
                 loaders: CSSLoaders({ modules: true }),
             }, {
-                test: /\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|eot|ttf)$/,
+                test: new RegExp(fileRegex),
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
