@@ -14,6 +14,7 @@ import chalk from 'chalk';
 import killProcess from '../config/utils/killProcess';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
+import webpackConfigVendor from '../config/build/webpack.config.vendor';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
@@ -125,8 +126,8 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
 
 const build = (options, hotCallback, restartServer) => (options.hot ?
     commonBuild(
-        webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
+        (...args) => [webpackConfigServer(...args), webpackConfigVendor(...args)],
+        `server and client vendor bundles ${chalk.bold('[hot]')}`,
         options,
         hotCallback,
         restartServer,
