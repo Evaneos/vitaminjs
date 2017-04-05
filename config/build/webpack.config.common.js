@@ -1,5 +1,6 @@
 import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import postcssOmitImportTilde from 'postcss-omit-import-tilde';
 import postcssImport from 'postcss-import';
 import postcssUrl from 'postcss-url';
@@ -14,7 +15,8 @@ import babelrc from './babelrc';
 const VITAMIN_DIRECTORY = vitaminResolve();
 const VITAMIN_MODULES_DIRECTORY = vitaminResolve('node_modules');
 const VITAMIN_MODULES_EXAMPLES_DIRECTORY = vitaminResolve('examples');
-const MODULES_DIRECTORIES = [appResolve('node_modules'), VITAMIN_MODULES_DIRECTORY];
+const APP_MODULES = appResolve('node_modules');
+const MODULES_DIRECTORIES = [APP_MODULES, VITAMIN_MODULES_DIRECTORY];
 
 export const createBabelLoader = (env, options) => ({
     test: /\.js(x?)$/,
@@ -107,7 +109,13 @@ export function config(options) {
             }),
             options.hot && new HotModuleReplacementPlugin(),
             options.hot && new NamedModulesPlugin(),
-            // enforces the entire path of all required modules match the exact case
+            // If you require a missing module and then `npm install` it, you still have
+            // to restart the development server for Webpack to discover it. This plugin
+            // makes the discovery automatic so you don't have to restart.
+            // See https://github.com/facebookincubator/create-react-app/issues/186
+            options.dev && new WatchMissingNodeModulesPlugin(APP_MODULES),
+
+          // enforces the entire path of all required modules match the exact case
             // of the actual path on disk. Using this plugin helps alleviate cases
             // for developers working on case insensitive systems like OSX.
             options.dev && new CaseSensitivePathsPlugin(),
