@@ -10,11 +10,11 @@ export default () => async (ctx, next) => {
 
     const appRoutes = await routesWithStore(ctx.state.store);
 
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
         match({ routes: appRoutes, location: url, history },
             (error, redirectLocation, renderProps) => {
                 if (error) {
-                    throw error;
+                    reject(error);
                 } else if (redirectLocation) {
                     ctx.redirect(
                         (redirectLocation.basename || '') +
