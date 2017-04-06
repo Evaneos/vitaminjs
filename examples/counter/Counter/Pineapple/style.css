@@ -1,9 +1,0 @@
-
-.withPineapple:after {
-    position: absolute;
-    content: '';
-    width: 20px;
-    height: 20px;
-    background-image: url('./pineapple.svg');
-    background-size: contain;
-}
