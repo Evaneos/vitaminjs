@@ -54,6 +54,10 @@ export default function vendorConfig(options) {
                 createBabelLoader('client', options),
             ],
         },
+        resolve: {
+            extensions: ['.js', '.jsx', '.json', '.css'],
+            mainFields: ['browser', 'module', 'main', 'style'],
+        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
