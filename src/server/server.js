@@ -97,7 +97,5 @@ httpGracefulShutdown(server, {
     signals: 'SIGINT SIGTERM SIGQUIT',
     timeout: 15000,
     development: process.env.NODE_ENV !== 'production',
-    callback: () => {
-        process.stdout.write('Server gracefully terminated.');
-    },
+    callback: () => {},
 });
