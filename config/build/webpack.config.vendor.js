@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import path from 'path';
 import { createBabelLoader, config } from './webpack.config.common.js';
 import { concat, appResolve } from '../utils';
+import StripNodePlugin from '../../webpack_sandbox/StripNodePlugin';
 
 // eslint-disable-next-line
 const appDependencies = require(appResolve('package.json')).dependencies;
@@ -59,6 +60,7 @@ export default function vendorConfig(options) {
             mainFields: ['browser', 'module', 'main', 'style'],
         },
         plugins: [
+            new StripNodePlugin(),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
