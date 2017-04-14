@@ -7,7 +7,6 @@ import postcssUrl from 'postcss-url';
 import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
-import postcssCssNano from 'cssnano';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import babelrc from './babelrc';
@@ -119,7 +118,6 @@ export function config(options) {
                         postcssImport(),
                         postcssUrl(),
                         postcssCssNext({ browsers: options.client.targetBrowsers }),
-                        !options.dev && postcssCssNano({ autoprefixer: false }),
                         options.dev && postcssBrowserReporter(),
                         postcssReporter(),
                     ].filter(Boolean),
