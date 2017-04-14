@@ -20,11 +20,11 @@ export const renderLayout = ({ appHTMLString, ...props }) =>
 ;
 
 // Return a promise that resolves to the HTML string
-export default (renderProps, store, entries) => {
+export default (renderProps, store, mainEntry) => {
     const css = [];
     const insertCss = styles => css.push(styles._getCss());
     return Resolver
-        .resolve(() => <App {...{ renderProps, store, entries, insertCss }} />)
+        .resolve(() => <App {...{ renderProps, store, mainEntry, insertCss }} />)
         .then(({ Resolved, data }) => renderLayout({
             appHTMLString: renderToString(
                 <div>

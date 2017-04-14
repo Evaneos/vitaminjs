@@ -110,13 +110,14 @@ export function config(options) {
             }),
             options.hot && new HotModuleReplacementPlugin(),
             options.hot && new NamedModulesPlugin(),
+
             // If you require a missing module and then `npm install` it, you still have
             // to restart the development server for Webpack to discover it. This plugin
             // makes the discovery automatic so you don't have to restart.
             // See https://github.com/facebookincubator/create-react-app/issues/186
             options.dev && new WatchMissingNodeModulesPlugin(APP_MODULES),
 
-          // enforces the entire path of all required modules match the exact case
+            // enforces the entire path of all required modules match the exact case
             // of the actual path on disk. Using this plugin helps alleviate cases
             // for developers working on case insensitive systems like OSX.
             options.dev && new CaseSensitivePathsPlugin(),
