@@ -1,3 +1,10 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/evaneos/vitaminjs/compare/v1.2.0...v1.2.1) (2017-04-14)
+### Bug Fixes
+* **build** Revert optimize built time, which was causing some bugs [#356](https://github.com/evaneos/vitaminjs/issues/356)
+* **build** Remove css nano and use minify option in css-loader. It was causing some
+bugs with the z-index rebasing [#358](https://github.com/evaneos/vitaminjs/issues/358)
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/evaneos/vitaminjs/compare/v1.1.0...v1.2.0) (2017-04-07)
 
