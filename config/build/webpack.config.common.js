@@ -7,7 +7,6 @@ import postcssUrl from 'postcss-url';
 import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
-import postcssCssNano from 'cssnano';
 import { join } from 'path';
 import { vitaminResolve, appResolve } from '../utils';
 import babelrc from './babelrc';
@@ -35,6 +34,30 @@ export const createResolveConfigLoader = () => ({
 });
 
 export function config(options) {
+    const CSSLoaders = ({ modules }) => [
+        {
+            loader: 'isomorphic-style-loader',
+            options: {
+                debug: true,
+            },
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                minimize: !options.dev && { autoprefixer: false },
+                discardComments: {
+                    removeAll: !options.dev,
+                },
+                importLoaders: 1,
+                ...(modules ? {
+                    localIdentName: options.dev ?
+                        '[name]__[local]___[hash:base64:5]' : '[hash:base64]',
+                    modules: true,
+                } : {}),
+            },
+        },
+        'postcss-loader',
+    ];
     return {
         devtool: options.dev && 'source-map',
         output: {
@@ -55,23 +78,18 @@ export function config(options) {
             rules: [{
                 // only files with .global will go through this loader
                 test: /\.global\.css$/,
-                loaders: [
-                    'isomorphic-style-loader',
-                    'css-loader?sourceMap&importLoaders=1!postcss-loader',
-                    'postcss-loader',
-                ],
+                loaders: CSSLoaders({ modules: false }),
             }, {
                 // anything with .global will not go through css modules loader
                 test: /^((?!\.global).)*\.css$/,
-                loaders: [
-                    'isomorphic-style-loader',
-                    'css-loader?modules&sourceMap&importLoaders=1' +
-                        '&localIdentName=[name]__[local]___[hash:base64:3]!postcss-loader',
-                    'postcss-loader',
-                ],
+                loaders: CSSLoaders({ modules: true }),
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|eot|ttf)$/,
-                loader: `url-loader?limit=10000&name=${join(options.filesPath, '[hash].[ext]')}`,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: join(options.filesPath, '[hash].[ext]'),
+                },
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
@@ -100,7 +118,6 @@ export function config(options) {
                         postcssImport(),
                         postcssUrl(),
                         postcssCssNext({ browsers: options.client.targetBrowsers }),
-                        !options.dev && postcssCssNano({ autoprefixer: false }),
                         options.dev && postcssBrowserReporter(),
                         postcssReporter(),
                     ].filter(Boolean),
