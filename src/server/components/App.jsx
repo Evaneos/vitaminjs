@@ -6,6 +6,7 @@ import Helmet from 'react-helmet';
 import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 
 import SharedApp from '../../shared/components/App';
+import config from '../../../config';
 
 const propTypes = {
     store: PropTypes.shape({
@@ -14,18 +15,15 @@ const propTypes = {
     }).isRequired,
     insertCss: PropTypes.func.isRequired,
     renderProps: PropTypes.objectOf(PropTypes.any).isRequired,
-    entries: PropTypes.arrayOf(PropTypes.shape({
-        src: PropTypes.string.isRequired,
-        async: PropTypes.bool, // false by default
-    }).isRequired).isRequired,
+    mainEntry: PropTypes.string.isRequired,
 };
 
-const App = ({ store, insertCss, renderProps, entries }) => (
+const App = ({ store, insertCss, renderProps, mainEntry }) => (
     <SharedApp store={store} insertCss={insertCss}>
         <Helmet
             script={[
                 { innerHTML: `window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(store.getState()))}"` },
-                ...entries,
+                { src: `${config.publicPath}/${mainEntry}`, async: true },
             ]}
         />
         <RouterContext {...renderProps} />
