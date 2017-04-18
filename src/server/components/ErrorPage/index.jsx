@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { PropTypes } from 'react';
 import s from './style.css';
 import Error404 from './Error404';
 import Error500 from './Error500';

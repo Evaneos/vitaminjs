@@ -1,9 +1,10 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { Router } from 'react-router';
 import SharedApp from '../../shared/components/App';
 
 const propTypes = {
     store: PropTypes.shape({
+
         getState: PropTypes.func.isRequired,
         dispatch: PropTypes.func.isRequired,
     }).isRequired,
