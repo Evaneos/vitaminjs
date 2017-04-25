@@ -1,5 +1,3 @@
-/* eslint no-console: 0 */
-
 import program from 'commander';
 import webpack from 'webpack';
 import path from 'path';
@@ -12,6 +10,7 @@ import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import ProgressBar from 'progress';
 import chalk from 'chalk';
 
+import logger from '../config/utils/logger';
 import killProcess from '../config/utils/killProcess';
 import { vitaminResolve } from '../config/utils';
 import jestConfig from '../config/jest/jestrc';
@@ -37,10 +36,10 @@ const clean = () => new Promise((resolve, reject) => {
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
-        console.log(chalk.yellow(
-            '[WARNING]: Hot module reload option ignored in production environment.\n' +
+        logger.warning(
+            'Hot module reload option ignored in production environment. ' +
             '(based on your NODE_ENV variable)\n',
-        ));
+        );
         /* eslint no-param-reassign: 0 */
         return false;
     }
@@ -168,7 +167,8 @@ const test = (args, { hmr, runner }) => {
         if (!currentConfig.test) {
             throw new Error('Please specify a test file path in .vitaminrc');
         }
-        console.log(chalk.blue(`${symbols.clock} Launching tests...`));
+        logger.info(`${symbols.clock} Launching tests...`);
+
         const serverFile = path.join(
             currentConfig.server.buildPath,
             'tests',
@@ -187,13 +187,12 @@ const serve = (config) => {
     try {
         fs.accessSync(serverFile, fs.F_OK);
     } catch (e) {
-        console.log('\n');
-        console.error(e);
-        console.error(chalk.red(
-            `\n\nCannot access the server bundle file. Make sure you built
-the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`,
-        ));
+        logger.error(e);
+        logger.error('Cannot access the server bundle file.');
+        logger.info(
+            'Make sure you built the app with `vitamin build` before calling `vitamin serve`,\n ' +
+            'and that the file is accessible by the current user',
+        );
         process.exit(1);
     }
     return spawn(process.argv[0], [serverFile], { stdio: ['inherit', 'inherit', 'inherit', 'ipc'] });
@@ -207,7 +206,7 @@ const start = (options) => {
         exiting = true;
         if (!serverProcess) process.exit();
         killProcess(serverProcess, { signal }).then(() => {
-            console.log('exiting'); process.exit();
+            logger.log('Exiting...'); process.exit();
         });
     });
 
@@ -254,12 +253,12 @@ program
     .option('--no-hmr', 'Disable hot reload')
     .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jasmine...)')
     .on('--help', () => {
-        console.log('  Example:');
-        console.log('    $ vitamin test -r mocha -- --color');
-        console.log('');
-        console.log('  Or if you use vitaminjs-plugin-jest');
-        console.log('    $ vitamin test');
-        console.log('');
+        logger.log('  Example:');
+        logger.log('    $ vitamin test -r mocha -- --color');
+        logger.blankLines();
+        logger.log('  Or if you use vitaminjs-plugin-jest');
+        logger.log('    $ vitamin test');
+        logger.blankLines();
     })
     .action(test);
 
@@ -270,7 +269,7 @@ program
     .action(() => build({ hot: false })
         .catch((err) => {
             if (err !== BUILD_FAILED) {
-                console.log(err.stack || err);
+                logger.error(err.stack || err);
             }
             process.exit(1);
         }),
@@ -293,7 +292,7 @@ program
             .then(() => start({ hot: checkHot(hmr) }))
             .catch((err) => {
                 if (err !== BUILD_FAILED) {
-                    console.log(err.stack || err);
+                    logger.error(err.stack || err);
                 }
                 process.exit(1);
             }),
@@ -315,15 +314,15 @@ program
             if (!code) {
                 return;
             }
-            console.error(chalk.red(
-                `${chalk.bold('\n\nServer process exited unexpectedly. \n')}` +
-                '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +
+            logger.error('Server process exited unexpectedly');
+            logger.info(
+                '- If it is an `EADDRINUSE` error, you might want to change the `server.port` key' +
                 ' in your `.vitaminrc` file\n' +
-                '- If it occurs during initialization, it is probably an error in your app. Check the' +
-                ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
-                '- If your positive it\'s not any of that, it might be because of a problem with ' +
-                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
-            ));
+                '- If it occurs during initialization, it is probably an error in your app. ' +
+                'Check the stacktrace for more info (`ReferenceError` are pretty common)\n' +
+                `- If your positive ${chalk.bold.underline('it\'s not any of that')}, ` +
+                'please fill an issue at https://github.com/evaneos/vitaminjs/issues\n',
+            );
             process.exit(1);
         });
     });
