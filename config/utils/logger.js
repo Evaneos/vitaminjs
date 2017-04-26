@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 
 const stripNewline = str => (
-    str.constructor === String
+    (![null, undefined].includes(str) && str.constructor === String)
         ? str.replace(/^\n+/, '')
         : str
 );
