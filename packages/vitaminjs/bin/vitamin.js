@@ -38,9 +38,9 @@ const checkHot = (hot) => {
     if (hot && !DEV) {
         logger.warning(
             'Hot module reload option ignored in production environment. ' +
-            '(based on your NODE_ENV variable)\n',
+            '(based on your NODE_ENV variable)',
         );
-        /* eslint no-param-reassign: 0 */
+        logger.blankLines(1);
         return false;
     }
     return hot;
@@ -206,7 +206,7 @@ const start = (options) => {
         exiting = true;
         if (!serverProcess) process.exit();
         killProcess(serverProcess, { signal }).then(() => {
-            logger.log('Exiting...'); process.exit();
+            logger.log('Exiting'); process.exit();
         });
     });
 
@@ -309,17 +309,15 @@ program
                 .then(() => process.exit());
         });
 
-
         serverProcess.on('close', (code) => {
-            if (!code) {
-                return;
-            }
+            if (!code) return;
+
             logger.error('Server process exited unexpectedly');
             logger.info(
                 '- If it is an `EADDRINUSE` error, you might want to change the `server.port` key' +
                 ' in your `.vitaminrc` file\n' +
-                '- If it occurs during initialization, it is probably an error in your app. ' +
-                'Check the stacktrace for more info (`ReferenceError` are pretty common)\n' +
+                '- If it occurs during initialization, it is probably an error in your app.\n' +
+                '  Check the stacktrace for more info (`ReferenceError` are pretty common)\n' +
                 `- If your positive ${chalk.bold.underline('it\'s not any of that')}, ` +
                 'please fill an issue at https://github.com/evaneos/vitaminjs/issues\n',
             );
