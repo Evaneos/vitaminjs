@@ -10,7 +10,6 @@ else
 
     cd "./examples/$example"
     yarn install --no-progress
-    yarn link vitaminjs
     yarn run clean
     yarn run build
     test -e build/server_bundle.js

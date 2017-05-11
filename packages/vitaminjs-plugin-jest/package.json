@@ -1,0 +1,19 @@
+{
+  "name": "vitaminjs-plugin-jest",
+  "version": "1.0.0",
+  "description": "Plugin for vitamin that enable testing with jest",
+  "repository": "https://github.com/Evaneos/vitaminjs/tree/master/packages/vitaminjs-plugin-jest",
+  "keywords": [
+    "vitamin",
+    "jest"
+  ],
+  "author": "Johan Girod <johangirod@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-jest": "^20.0.0",
+    "jest": "^19.0.2",
+    "jest-enzyme": "^3.0.0",
+    "enzyme": "^2.8.0",
+    "identity-obj-proxy": "^3.0.0"
+  }
+}
