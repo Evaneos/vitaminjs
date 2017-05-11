@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { connect } from 'vitaminjs/react-redux';
-import { compose } from 'vitaminjs/redux';
-import { browserHistory } from 'vitaminjs/react-router';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { browserHistory } from 'react-router';
 import { withStyles } from 'vitaminjs';
 import Explore from '../components/Explore';
 import { resetErrorMessage } from '../actions';

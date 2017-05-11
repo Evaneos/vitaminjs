@@ -38,7 +38,12 @@
                 "__app_modules__",
                 // Peer dependancies
                 "react",
-                "react-dom"
+                "react-helmet",
+                "react-redux",
+                "react-resolver",
+                "react-router",
+                "react-router-redux",
+                "redux"
             ]
         } ]
     }
