@@ -18,5 +18,8 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "vitaminjs": "file:../../packages/vitaminjs"
+  },
+  "devDependencies": {
+    "vitaminjs-plugin-jest": "file:../../packages/vitaminjs-plugin-jest"
   }
 }

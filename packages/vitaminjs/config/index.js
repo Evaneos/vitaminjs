@@ -122,7 +122,6 @@ export default () => {
         ['redux', 'middlewares'],
         ['redux', 'enhancers'],
         ['redux', 'stateSerializer'],
-        ['tests', 'config'],
     ];
 
     const moduleMap = getModuleMap(modulePaths);

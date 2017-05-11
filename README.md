@@ -5,11 +5,11 @@
 <big><h1 align="center">VitaminJS</h1></big>
 <p><big>Build framework to start a server-rendered React/Redux application with a strong focus on developer experience
 </big></p>
-
+<!--
 [![npm version](https://badge.fury.io/js/vitaminjs.png)](https://badge.fury.io/js/vitaminjs)
-
-VitaminJS helps you start your React / Redux application right away.  
-It takes care of all the tremendous amount of boilerplate code used to initialize a project and help you focus and what matters : your application.  
+ -->
+VitaminJS helps you start your React / Redux application right away.
+It takes care of all the tremendous amount of boilerplate code used to initialize a project and help you focus and what matters : your application.
 
 VitaminJS comes as a dependency in your application allowing you to always be up to date with the latest practices in the React community.
 
@@ -24,8 +24,9 @@ What's included in the menu
 - [**Webpack**](https://webpack.github.io) with a bunch of useful loaders preconfigured
 - **Server Side Rendering**. SEO and mobile friendly, zero config needed.
 - **Hot Module Reload Everywhere**. On server. On reducers. On CSS. On react app. On configuration. No more `Ctrl+R`.
-- **Error message on the browser**. No need to switch to console anymore. 
-- **ES-next**. ES2017, [preset-latest](https://github.com/babel/babel/tree/7.0/packages/babel-preset-latest) on browser and [present-env](https://github.com/babel/babel-preset-env) on node. 
+- **Error message on the browser**. No need to switch to console anymore.
+- **ES-next**. ES2017, [preset-latest](https://github.com/babel/babel/tree/7.0/packages/babel-preset-latest) on browser and [present-env](https://github.com/babel/babel-preset-env) on node.
+- **Testing** with you preferred test runner (jest, mocha, jasmine)
 
 ## Get started
 ### Installation
@@ -56,12 +57,12 @@ or if you are not using [yarn](https://yarnpkg.com/)
 ```bash
 npm start
 ```
-By default, your app will be running on [http://localhost:3000](http://localhost:3000)  
-Build errors will be displayed in your terminal. Everything will be hot reloaded.  
+By default, your app will be running on [http://localhost:3000](http://localhost:3000)
+Build errors will be displayed in your terminal. Everything will be hot reloaded.
 You can start working on your app immediately !
 
 ### Configuration
-VitaminJS contains all of its configuration in a *`.vitaminrc`* file.  
+VitaminJS contains all of its configuration in a *`.vitaminrc`* file.
 When you create a new project, it has the minimal configuration to make it work.
 
 If you want to go further in your development, you can customize your configuration. You can learn more about it in [API Guide](https://github.com/Evaneos/vitaminjs/blob/master/API.md)
@@ -80,9 +81,9 @@ npm run build
 It bundles your application and optimizes its performances. The bundle is also minified.
 
 ## Frequently Asked Questions
-We have started to answer some frequently asked questions. You can find all of them here: [FAQ](https://github.com/Evaneos/vitaminjs/blob/master/FAQ.md)  
-If you have any questions you think are worth be displayed, please raise an issue in the project.  
-We will try to update these questions as often as possible. 
+We have started to answer some frequently asked questions. You can find all of them here: [FAQ](https://github.com/Evaneos/vitaminjs/blob/master/FAQ.md)
+If you have any questions you think are worth be displayed, please raise an issue in the project.
+We will try to update these questions as often as possible.
 
 ## Contributing
 
@@ -97,9 +98,15 @@ You can find all the changes in the [Changelog](https://github.com/Evaneos/vitam
 
 ## Inspiration
 
-[Universal Redux](https://github.com/bdefore/universal-redux)  
-[React-Starter-Kit](https://github.com/kriasoft/react-starter-kit)  
+[Universal Redux](https://github.com/bdefore/universal-redux)
+[React-Starter-Kit](https://github.com/kriasoft/react-starter-kit)
 [Create-React-App](https://github.com/facebookincubator/create-react-app)
+
+## Plugins
+You can extend vitamin behaviour with plugins. Below is a list of useful plugins that we currently support.
+
+### [Jest](https://github.com/Evaneoss/vitaminjs/tree/master/packages/vitaminjs-plugin-jest)
+Make jest works out of the box with vitaminJS.
 
 ## License
 MIT © [Evaneos](https://www.evaneos.com)

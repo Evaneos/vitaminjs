@@ -35,9 +35,7 @@ export default {
             'not ie < 9', // react doesn't support ie < 9
         ],
     },
-    tests: {
-        config: '__vitamin__/config/build/jestrc.json',
-    },
     filesPath: 'files',
+    plugins: [],
     rootElementId: 'vitamin-app',
 };

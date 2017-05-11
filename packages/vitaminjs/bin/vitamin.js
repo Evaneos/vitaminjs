@@ -17,6 +17,7 @@ import { vitaminResolve } from '../config/utils';
 import jestConfig from '../config/jest/jestrc';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
+import webpackConfigTest from '../config/build/webpack.config.test';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 
@@ -144,23 +145,38 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
         .then(({ config }) => restartServer && restartServer(config))
 );
 
-
-const test = (args) => {
-    npmRunSpawn(
-        'jest',
-        [
-            '-c', jestConfig,
-            '--no-cache',
-            '--verbose',
-            ...(typeof args === 'string' ? args.split(' ') : ''),
-        ],
-        {
-            stdio: 'inherit',
-            cwd: vitaminResolve(),
-        },
-    );
+const test = (args, { hmr, runner }) => {
+    const config = parseConfig();
+    if (config.plugins.includes('jest')) {
+        npmRunSpawn(
+            'jest',
+            [
+                '-c', jestConfig,
+                '--no-cache',
+                '--verbose',
+                hmr && '--watch',
+                ...(typeof args === 'string' ? args.split(' ') : ''),
+            ].filter(Boolean),
+            {
+                stdio: 'inherit',
+                cwd: vitaminResolve(),
+            },
+        );
+        return;
+    }
+    const launchTest = (currentConfig) => {
+        if (!currentConfig.test) {
+            throw new Error('Please specify a test file path in .vitaminrc');
+        }
+        console.log(chalk.blue(`${symbols.clock} Launching tests...`));
+        const serverFile = path.join(
+            currentConfig.server.buildPath,
+            'tests',
+        );
+        spawn(`${runner} ${serverFile} ${args}`, { stdio: 'pipe' });
+    };
+    commonBuild(webpackConfigTest, 'tests', { hot: hmr, dev: DEV }, launchTest);
 };
-
 
 const serve = (config) => {
     process.stdout.write(chalk.blue(`${symbols.clock} Launching server...`));
@@ -232,17 +248,26 @@ program
     .version(version);
 
 program
-    .command('test')
+    .command('test [runnerArgs...]')
     .alias('t')
-    .description('Build test suite')
+    .description('Launch test suite')
+    .option('--no-hmr', 'Disable hot reload')
+    .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jasmine...)')
+    .on('--help', () => {
+        console.log('  Example:');
+        console.log('    $ vitamin test -r mocha -- --color');
+        console.log('');
+        console.log('  Or if you use vitaminjs-plugin-jest');
+        console.log('    $ vitamin test');
+        console.log('');
+    })
     .action(test);
 
 program
     .command('build')
     .alias('b')
     .description('Build server and client bundles')
-    .option('-h, --hot', 'Activate hot module reload')
-    .action(({ hot }) => build({ hot: checkHot(hot) })
+    .action(() => build({ hot: false })
         .catch((err) => {
             if (err !== BUILD_FAILED) {
                 console.log(err.stack || err);
