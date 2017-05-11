@@ -1,4 +1,4 @@
-import { Route } from 'vitaminjs/react-router';
+import { Route } from 'react-router';
 
 const getComponent = getModule => (nextState, cb) => getModule().then(module => cb(null, module.default));
 

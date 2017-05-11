@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link } from 'vitaminjs/react-router';
+import { Link } from 'react-router';
 
 const Repo = ({ repo, owner }) => {
     const { login } = owner;
