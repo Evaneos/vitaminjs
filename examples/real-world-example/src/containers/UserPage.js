@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { connect } from 'vitaminjs/react-redux';
-import { compose } from 'vitaminjs/redux';
-import { resolve } from 'vitaminjs/react-resolver';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { resolve } from 'react-resolver';
 import { loadUser, loadStarred } from '../actions';
 import User from '../components/User';
 import Repo from '../components/Repo';

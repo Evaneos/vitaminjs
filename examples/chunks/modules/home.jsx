@@ -1,4 +1,4 @@
-import { Link } from 'vitaminjs/react-router';
+import { Link } from 'react-router';
 
 export default () => (
     <div>
