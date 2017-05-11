@@ -1,116 +1,17 @@
 {
-  "name": "vitaminjs",
-  "version": "1.2.1",
-  "description": "The build toolchain against JavaScript Fatigue",
-  "main": "./src/shared/index.js",
-  "scripts": {
-    "test": "yarn run lint",
-    "lint": "eslint --ext .js,.jsx src bin config"
-  },
-  "bin": {
-    "vitamin": "./bin/vitamin.es5.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/evaneos/vitaminjs.git"
-  },
-  "keywords": [
-    "toolchain",
-    "build",
-    "server-side rendering",
-    "hot module reload",
-    "webpack",
-    "react",
-    "redux"
-  ],
-  "author": "Johan Girod <johan@evaneos.com>",
-  "contributors": [
-    "Christophe Hurpeau <christophe.hurpeau@gmail.com>",
-    "Lucas Personnaz <lucas@evaneos.com>",
-    "Antoine Lépée <antoine@evanoes.com>"
-  ],
+  "name": "vitamin",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
-    "babel-eslint": "^7.2.2",
+    "babel-eslint": "^7.2.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
-    "react": "^15.5.4"
+    "lerna": "^2.0.0-rc.4"
   },
-  "peerDependencies": {
-    "react": "^15.5.4"
-  },
-  "dependencies": {
-    "assets-webpack-plugin": "^3.5.1",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-discard-module-references": "^1.1.2",
-    "babel-plugin-minify-dead-code-elimination": "0.1.4",
-    "babel-plugin-minify-guarded-expressions": "0.0.4",
-    "babel-plugin-minify-replace": "0.0.4",
-    "babel-plugin-react-require": "^3.0.0",
-    "babel-plugin-transform-export-default-name-forked": "^1.2.2",
-    "babel-plugin-transform-node-env-inline": "^6.8.0",
-    "babel-plugin-transform-react-jsx-self": "^6.22.0",
-    "babel-plugin-transform-react-jsx-source": "^6.22.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1",
-    "babel-register": "^6.24.1",
-    "case-sensitive-paths-webpack-plugin": "^2.0.0",
-    "chalk": "^1.1.3",
-    "commander": "^2.9.0",
-    "css-loader": "^0.28.0",
-    "cssnano": "^3.10.0",
-    "express": "^4.15.2",
-    "file-loader": "^0.11.1",
-    "friendly-errors-webpack-plugin": "^1.6.1",
-    "history": "^3.2.1",
-    "http-graceful-shutdown": "^1.0.6",
-    "isomorphic-style-loader": "^1.1.0",
-    "js-string-escape": "^1.0.1",
-    "json-loader": "^0.5.4",
-    "koa": "2.2.0",
-    "koa-compose": "^4.0.0",
-    "koa-conditional-get": "^2.0.0",
-    "koa-etag": "^3.0.0",
-    "koa-mount": "^2.0.0",
-    "koa-static": "^3.0.0",
-    "lodash.mergewith": "^4.6.0",
-    "node-fetch": "^1.6.3",
-    "postcss-browser-reporter": "^0.5.0",
-    "postcss-cssnext": "^2.10.0",
-    "postcss-import": "^9.1.0",
-    "postcss-loader": "^1.3.3",
-    "postcss-omit-import-tilde": "^1.0.1",
-    "postcss-reporter": "^3.0.0",
-    "postcss-url": "^6.0.4",
-    "progress": "^2.0.0",
-    "prop-types": "^15.5.8",
-    "react-dev-utils": "^0.5.2",
-    "react-dom": "^15.5.4",
-    "react-helmet": "^5.0.3",
-    "react-redux": "^5.0.4",
-    "react-resolver": "^3.1.0",
-    "react-router": "^3.0.2",
-    "react-router-redux": "^4.0.8",
-    "redbox-react": "^1.3.6",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
-    "rimraf": "^2.6.0",
-    "serviceworker-webpack-plugin": "^0.2.1",
-    "source-map-support": "^0.4.13",
-    "strip-json-comments": "^2.0.1",
-    "strip-json-comments-loader": "0.0.2",
-    "url-loader": "^0.5.7",
-    "webpack": "^2.4.1",
-    "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.18.0",
-    "yaml-loader": "^0.4.0"
-  },
-  "engines": {
-    "node": ">=6.5.0"
+  "scripts": {
+    "lint": "lerna bootstrap && eslint --ext .js,.jsx packages/"
   }
 }

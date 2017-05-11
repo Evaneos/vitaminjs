@@ -36,5 +36,6 @@ export default {
         ],
     },
     filesPath: 'files',
+    plugins: [],
     rootElementId: 'vitamin-app',
 };

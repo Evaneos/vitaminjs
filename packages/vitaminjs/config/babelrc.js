@@ -10,13 +10,13 @@ import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressi
 import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
 import pluginReactJsxSource from 'babel-plugin-transform-react-jsx-source';
 import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
-import { vitaminResolve } from '../utils';
+import { vitaminResolve } from './utils/index';
 
 export default (env, options) => ({
     // order is: last to first
     presets: [
         [presetEnv, {
-            modules: false,
+            modules: env === 'test' ? 'commonjs' : false,
             useBuiltIns: true,
             targets: env !== 'client' ? { node: 'current' }
                 : { browsers: options.client.targetBrowsers },

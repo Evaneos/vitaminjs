@@ -31,12 +31,14 @@ file at the root of your project.
  - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
 - [rootElementId](#rootElementId)
+- [plugins](#plugins)
+
 
 ## <a id='routes'></a>[`routes`](#routes)
 **`Path (`[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)` | `[`store`](http://redux.js.org/docs/api/Store.html#store)` => `[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)`)`**
 
 
-Root route of your application. This is the only mandatory element for running vitaminjs. 
+Root route of your application. This is the only mandatory element for running vitaminjs.
 You can export a function. If you do so, the function will be call with the redux store. Useful
 for registering listener before the application starts. You might want to do that only on client side (you can use the global [`IS_CLIENT`](#isclient-isserver) for that).
 
@@ -102,7 +104,7 @@ authentication or other things on server.
 **`Path (`[`KoaRequest`](http://koajs.com/#request)`) -> ?Action`**
 
 Path to a file exporting an createInitAction. Useful for populating the store on the server before rendering.
- `request` object is passed as a parameter to `createInitAction`. 
+ `request` object is passed as a parameter to `createInitAction`.
 It must return an action or nothing. The action can be a thunk.
 
 ### <a id='layout'></a>[`layout`](#layout)
@@ -196,7 +198,7 @@ Path to the service worker, if you have one. Vitaminjs will prepend a constant n
 all the assets names generated during compilation. You'll have to cache them
 manually, register the service manually etc... This is juste a little helper.
 You can access the service worker under `/`[`<basePath>`](#basePath)`/`[`<publicPath>`](#publicPath)`/sw.js`. Default to `false
-     
+
 ### <a id='targetBrowsers'></a>[`targetBrowsers`](#targetBrowsers)
 **`Array<String>`**
 
@@ -213,6 +215,12 @@ If you want to run your application without headers, you can define here the ele
 
 Make your .vitaminrc extends another vitamin config. It is useful in case you want to have a base configuration for multiple environments.
 
+## <a id='extends'></a>[`plugins`](#plugins)
+**`[String]`**
+
+You can add new behaviour to vitaminjs thanks to plugins. See the plugin section in the README.
+
 # Globals
 ## <a id='isclient-isserver'></a>[`IS_CLIENT` / `IS_SERVER`](#isclient-isserver)
 Two globals are available everywhere in your application : `IS_SERVER` and `IS_CLIENT`. When bundling your application  `vitaminjs` will replace them with `true`/`false` depending on the environment.
+

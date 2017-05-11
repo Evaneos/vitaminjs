@@ -8,7 +8,8 @@ jobs:
       - checkout
       - run:
           name: Dependencies
-          command: (yarn install --no-progress --frozen-lockfile || yarn install --no-progress --frozen-lockfile) && yarn link
+          # Sometimes yarn unexpectedly fails, we hack it by running it twice
+          command: (yarn install --no-progress --frozen-lockfile || yarn install --no-progress --frozen-lockfile)
       - run:
           name: Lint
           command: yarn lint
