@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { connect } from 'vitaminjs/react-redux';
-import { compose } from 'vitaminjs/redux';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { withStyles } from 'vitaminjs';
 import s from './style.css';
 

@@ -1,4 +1,4 @@
-import { Route } from 'vitaminjs/react-router';
+import { Route } from 'react-router';
 import Counter from './Counter/index.jsx';
 
 export default (

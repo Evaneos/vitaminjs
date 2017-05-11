@@ -1348,6 +1348,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2:
     create-hash "^1.1.0"
     inherits "^2.0.1"
 
+create-react-class@^15.5.1:
+  version "15.5.3"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.5.3.tgz#fb0f7cae79339e9a179e194ef466efa3923820fe"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -1485,17 +1493,17 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
-debug@*, debug@2.6.1, debug@^2.1.1, debug@^2.2.0, debug@^2.6.0:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
-  dependencies:
-    ms "0.7.2"
-
-debug@^2.1.0, debug@^2.6.4:
+debug@*, debug@^2.1.0, debug@^2.2.0, debug@^2.6.0, debug@^2.6.4:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.6.tgz#a9fa6fbe9ca43cf1e79f73b75c0189cbb7d6db5a"
   dependencies:
     ms "0.7.3"
+
+debug@2.6.1, debug@^2.1.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
+  dependencies:
+    ms "0.7.2"
 
 debug@~0.7.4:
   version "0.7.4"
@@ -1751,19 +1759,7 @@ faye-websocket@~0.7.3:
   dependencies:
     websocket-driver ">=0.3.6"
 
-fbjs@^0.8.1, fbjs@^0.8.4:
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.5.tgz#f69ba8a876096cb1b9bffe4d7c1e71c19d39d008"
-  dependencies:
-    core-js "^1.0.0"
-    immutable "^3.7.6"
-    isomorphic-fetch "^2.1.1"
-    loose-envify "^1.0.0"
-    object-assign "^4.1.0"
-    promise "^7.1.1"
-    ua-parser-js "^0.7.9"
-
-fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
@@ -2135,10 +2131,6 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
-immutable@^3.7.6:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
-
 indexes-of@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
@@ -2347,10 +2339,6 @@ js-base64@^2.1.9:
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
-
-js-tokens@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-1.0.3.tgz#14e56eb68c8f1a92c43d59f5014ec29dc20f2ae1"
 
 js-tokens@^3.0.0:
   version "3.0.1"
@@ -2720,13 +2708,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.2.0.tgz#69a65aad3de542cf4ee0f4fe74e8e33c709ccb0f"
-  dependencies:
-    js-tokens "^1.0.1"
-
-loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
@@ -3718,7 +3700,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.7, prop-types@^15.5.8:
+prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9:
   version "15.5.9"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.9.tgz#d478eef0e761396942f70c78e772f76e8be747c9"
   dependencies:
@@ -3851,23 +3833,26 @@ react-dom@^15.4.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
 
-react-helmet@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.0.2.tgz#2905f9e174650b74c26983d75dc45f3ebf561890"
+react-helmet@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.0.3.tgz#c6da63ee96e83aa7c8fe6d041f28dd288b1b006d"
   dependencies:
     deep-equal "^1.0.1"
     object-assign "^4.1.1"
+    prop-types "^15.5.4"
     react-side-effect "^1.1.0"
 
-react-redux@^5.0.2:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.3.tgz#86c3b68d56e74294a42e2a740ab66117ef6c019f"
+react-redux@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.4.tgz#1563babadcfb2672f57f9ceaa439fb16bf85d55b"
   dependencies:
+    create-react-class "^15.5.1"
     hoist-non-react-statics "^1.0.3"
     invariant "^2.0.0"
     lodash "^4.2.0"
     lodash-es "^4.2.0"
     loose-envify "^1.1.0"
+    prop-types "^15.0.0"
 
 react-resolver@^3.1.0:
   version "3.1.0"
@@ -3877,14 +3862,16 @@ react-router-redux@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-4.0.8.tgz#227403596b5151e182377dab835b5d45f0f8054e"
 
-react-router@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-3.0.2.tgz#5a19156678810e01d81901f9c0fef63284b8a514"
+react-router@3:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-3.0.5.tgz#c3b7873758045a8bbc9562aef4ff4bc8cce7c136"
   dependencies:
+    create-react-class "^15.5.1"
     history "^3.0.0"
     hoist-non-react-statics "^1.2.0"
     invariant "^2.2.1"
     loose-envify "^1.2.0"
+    prop-types "^15.5.6"
     warning "^3.0.0"
 
 react-side-effect@^1.1.0:
@@ -4618,8 +4605,7 @@ viewport-dimensions@^0.2.0:
   dependencies:
     assets-webpack-plugin "^3.5.1"
     babel-core "^6.24.0"
-    babel-jest "^19.0.0"
-    babel-loader "^6.4.1"
+    babel-loader "^6.3.2"
     babel-plugin-discard-module-references "^1.1.2"
     babel-plugin-minify-dead-code-elimination "0.1.4"
     babel-plugin-minify-guarded-expressions "0.0.4"
@@ -4629,25 +4615,20 @@ viewport-dimensions@^0.2.0:
     babel-plugin-transform-node-env-inline "^6.8.0"
     babel-plugin-transform-react-jsx-self "^6.22.0"
     babel-plugin-transform-react-jsx-source "^6.22.0"
-    babel-plugin-transform-runtime "^6.23.0"
-    babel-preset-env "^1.3.2"
+    babel-preset-env "^1.2.1"
     babel-preset-react "^6.23.0"
     babel-preset-stage-1 "^6.22.0"
     babel-register "^6.23.0"
-    case-sensitive-paths-webpack-plugin "^2.0.0"
+    case-sensitive-paths-webpack-plugin "^1.1.4"
     chalk "^1.1.3"
     commander "^2.9.0"
-    css-loader "^0.28.0"
+    css-loader "^0.26.1"
     cssnano "^3.10.0"
-    enzyme "^2.8.0"
     express "^4.14.1"
-    file-loader "^0.11.1"
+    file-loader "^0.10.1"
     friendly-errors-webpack-plugin "^1.6.1"
     history "^3.2.1"
-    identity-obj-proxy "^3.0.0"
     isomorphic-style-loader "^1.1.0"
-    jest "^19.0.2"
-    jest-enzyme "^3.0.0"
     js-string-escape "^1.0.1"
     json-loader "^0.5.4"
     koa "2.2.0"
@@ -4658,18 +4639,16 @@ viewport-dimensions@^0.2.0:
     koa-static "^3.0.0"
     lodash.mergewith "^4.6.0"
     node-fetch "^1.6.3"
-    npm-run "^4.1.2"
     postcss-browser-reporter "^0.5.0"
-    postcss-cssnext "^2.10.0"
+    postcss-cssnext "^2.9.0"
     postcss-import "^9.1.0"
     postcss-loader "^1.3.3"
     postcss-omit-import-tilde "^1.0.1"
     postcss-reporter "^3.0.0"
-    postcss-url "^6.0.1"
-    progress "^2.0.0"
-    react-addons-test-utils "^15.4.2"
+    postcss-url "^5.1.2"
+    progress "^1.1.8"
     react-dom "^15.4.2"
-    react-helmet "^5.0.2"
+    react-helmet "^4.0.0"
     react-redux "^5.0.2"
     react-resolver "^3.1.0"
     react-router "^3.0.2"
@@ -4678,14 +4657,14 @@ viewport-dimensions@^0.2.0:
     redux "^3.6.0"
     redux-thunk "^2.2.0"
     rimraf "^2.6.0"
-    serviceworker-webpack-plugin "^0.2.1"
-    source-map-support "^0.4.13"
+    serviceworker-webpack-plugin "^0.2.0"
+    source-map-support "^0.4.11"
     strip-json-comments "^2.0.1"
     strip-json-comments-loader "0.0.2"
     url-loader "^0.5.7"
-    webpack "^2.3.3"
+    webpack "^2.2.1"
     webpack-dev-middleware "^1.10.1"
-    webpack-hot-middleware "^2.18.0"
+    webpack-hot-middleware "^2.17.0"
     yaml-loader "^0.4.0"
 
 vm-browserify@0.0.4:
