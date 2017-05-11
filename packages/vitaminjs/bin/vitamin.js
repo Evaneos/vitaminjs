@@ -17,8 +17,6 @@ import { vitaminResolve } from '../config/utils';
 import jestConfig from '../config/jest/jestrc';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
-import webpackConfigTest from '../config/build/webpack.config.tests';
-import webpackConfigVendor from '../config/build/webpack.config.vendor';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 

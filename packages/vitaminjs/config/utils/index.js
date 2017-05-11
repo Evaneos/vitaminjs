@@ -1,5 +1,5 @@
-
 const path = require('path');
+const fs = require('fs');
 
 export function vitaminResolve(...args) {
     return path.resolve(process.env.VITAMIN_PATH, ...args);
