@@ -1,6 +1,7 @@
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
 import path from 'path';
+import StripNodePlugin from './StripNodePlugin';
 import { createBabelLoader, config } from './webpack.config.common.js';
 import { concat, appResolve } from '../utils';
 
@@ -37,8 +38,6 @@ export default function vendorConfig(options) {
             filename: 'vendorDLL[HMR].js',
             library: '__vitamin__vendor_dll',
         },
-        // We don't want to bundle nodejs libraries (fs, path, etc...)
-        target: 'node',
         module: {
             // Disable handling of unknown requires
             unknownContextRegExp: /$^/,
@@ -55,6 +54,7 @@ export default function vendorConfig(options) {
             ],
         },
         plugins: [
+            new StripNodePlugin(),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),

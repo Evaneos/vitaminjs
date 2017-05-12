@@ -1,5 +1,7 @@
 import mergeWith from 'lodash.mergewith';
 import webpack from 'webpack';
+import path from 'path';
+import { readFileSync } from 'fs';
 import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 
 import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
@@ -31,6 +33,13 @@ export default function clientConfig(options) {
             !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
                 entry: appResolve(options.client.serviceWorker),
+            }),
+            options.hot && new webpack.DllReferencePlugin({
+                context: appResolve(),
+                manifest: JSON.parse(readFileSync(path.join(
+                    options.client.buildPath,
+                    'vendor-dll-manifest.json',
+                ), 'utf8')),
             }),
         ].filter(Boolean),
         // Some libraries import Node modules but don't use them in the browser.

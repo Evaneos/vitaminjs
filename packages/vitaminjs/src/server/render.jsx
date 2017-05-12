@@ -16,8 +16,7 @@ export const renderLayout = ({ appHTMLString, ...props }) =>
                 <div dangerouslySetInnerHTML={{ __html: appHTMLString }} />
             </div>
         </Layout>,
-    )}`
-;
+    )}`;
 
 // Return a promise that resolves to the HTML string
 export default (renderProps, store, mainEntry) => {
