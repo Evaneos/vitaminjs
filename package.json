@@ -13,5 +13,6 @@
   },
   "scripts": {
     "lint": "lerna bootstrap && eslint --ext .js,.jsx packages/"
-  }
+  },
+  "dependencies": {}
 }
