@@ -44,7 +44,7 @@ export function config(options) {
         {
             loader: 'css-loader',
             options: {
-                minimize: !options.dev && { autoprefixer: false },
+                minimize: !options.dev,
                 discardComments: {
                     removeAll: !options.dev,
                 },
