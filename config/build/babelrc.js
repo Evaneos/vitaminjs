@@ -12,6 +12,7 @@ import pluginReactJsxSource from 'babel-plugin-transform-react-jsx-source';
 import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
 import transformClassProperties from 'babel-plugin-transform-class-properties';
 import transformEs2015Classes from 'babel-plugin-transform-es2015-classes';
+import recharts from 'babel-plugin-recharts';
 import { vitaminResolve } from '../utils';
 
 export default (env, options) => ({
@@ -32,6 +33,7 @@ export default (env, options) => ({
         transformClassProperties,
         // For Radium
         transformEs2015Classes,
+        recharts,
         // Make optional the explicit import of React in JSX files
         pluginReactRequire,
         // Adds component stack to warning messages
