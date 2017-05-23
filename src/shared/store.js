@@ -28,6 +28,6 @@ export function create(history, reducers, middlewares, initialState, isClient) {
 
     const rootReducer = createRootReducer(reducers);
     const store = createStoreWithMiddleware(rootReducer, initialState);
-    isClient && persistStore(store, {blacklist: ['routing', 'form'], keyPrefix: 'ector.'});
+    isClient && persistStore(store, {blacklist: ['routing'], keyPrefix: 'ector.'});
     return store;
 }
