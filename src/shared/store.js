@@ -5,6 +5,7 @@ import {
     applyMiddleware,
 } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
+import {persistStore, autoRehydrate} from 'redux-persist';
 
 import thunk from 'redux-thunk';
 /* eslint-disable import/no-extraneous-dependencies */
@@ -15,15 +16,18 @@ export function createRootReducer(reducers) {
     return combineReducers({ ...reducers, routing: routerReducer });
 }
 
-export function create(history, reducers, middlewares, initialState) {
+export function create(history, reducers, middlewares, initialState, isClient) {
+    const rehydrate = [];
 
+    isClient && rehydrate.push(autoRehydrate());
     const createStoreWithMiddleware = compose(
       applyMiddleware(...middlewares, thunk, routerMiddleware(history)),
-      ...appEnhancers,
+      ...rehydrate,
       ...devEnhancers,
-      )(createStore);
+      ...appEnhancers,)(createStore);
 
     const rootReducer = createRootReducer(reducers);
     const store = createStoreWithMiddleware(rootReducer, initialState);
+    isClient && persistStore(store, {blacklist: ['routing', 'form'], keyPrefix: 'ector.'});
     return store;
 }
