@@ -45,6 +45,7 @@ function bootstrapClient() {
         reducers.default || reducers,
         middlewares,
         initialState,
+        true
     );
 
     const syncedHistory = syncHistoryWithStore(history, store);
