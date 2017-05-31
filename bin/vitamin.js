@@ -1,20 +1,17 @@
 /* eslint no-console: 0 */
 
 import program from 'commander';
-import webpack from 'webpack';
 import path from 'path';
 import rimraf from 'rimraf';
 import { spawn } from 'child_process';
 import fs from 'fs';
-import ProgressPlugin from 'webpack/lib/ProgressPlugin';
-import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
-import ProgressBar from 'progress';
 import chalk from 'chalk';
 
 import killProcess from '../config/utils/killProcess';
 import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
+import createCompiler from '../config/utils/createCompiler';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
 
@@ -67,24 +64,6 @@ const listenExitSignal = (callback) => {
     });
 };
 
-const createCompiler = (webpackConfig, message, options) => {
-    const compiler = webpack(webpackConfig);
-    if (process.stdout.isTTY) {
-        const bar = new ProgressBar(
-            `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
-        );
-        compiler.apply(new ProgressPlugin((percentage, msg) => {
-            bar.update(percentage, { msg });
-        }));
-        compiler.apply(new FriendlyErrorsWebpackPlugin({
-            clearConsole: !!options.hot,
-        }));
-    }
-
-    return compiler;
-};
-
 const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
     const createCompilerCommonBuild = () => {
         const config = parseConfig();
@@ -126,15 +105,15 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
 const build = (options, hotCallback, restartServer) => (options.hot ?
     commonBuild(
         webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
+        `Building server bundle ${chalk.bold('[hot]')}...`,
         options,
         hotCallback,
         restartServer,
     )
 :
-    commonBuild(webpackConfigClient, 'client bundle(s)', options)
+    commonBuild(webpackConfigClient, 'Building client bundle(s)...', options)
         .then(({ buildStats }) => commonBuild(
-            webpackConfigServer, 'server bundle...',
+            webpackConfigServer, 'Building server bundle...',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
             { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },
@@ -157,7 +136,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
 
-    commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
+    commonBuild(webpackConfigTest, 'Building tests...', { hot, dev: DEV }, launchTest);
 };
 
 
