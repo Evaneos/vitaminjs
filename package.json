@@ -1,6 +1,6 @@
 {
   "name": "vitaminjs",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "./src/shared/index.js",
   "scripts": {
@@ -51,7 +51,6 @@
     "babel-plugin-minify-guarded-expressions": "0.0.4",
     "babel-plugin-minify-replace": "0.0.4",
     "babel-plugin-react-require": "^3.0.0",
-    "babel-plugin-recharts": "^1.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-export-default-name-forked": "^1.2.2",
