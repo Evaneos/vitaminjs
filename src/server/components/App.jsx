@@ -23,7 +23,7 @@ const App = ({ store, insertCss, renderProps, mainEntry }) => (
         <Helmet
             script={[
                 { innerHTML: `window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(store.getState()))}"` },
-                { src: `${config.publicPath}/${mainEntry}`, async: true },
+                { src: `${config.publicPath}/${mainEntry}`, defer: true },
             ]}
         />
         <RouterContext {...renderProps} />
