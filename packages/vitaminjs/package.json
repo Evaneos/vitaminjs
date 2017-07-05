@@ -104,6 +104,8 @@
     "strip-json-comments": "^2.0.1",
     "strip-json-comments-loader": "0.0.2",
     "url-loader": "^0.5.7",
+    "vitaminjs-build": "link:vitaminjs-build",
+    "vitaminjs-runtime": "link:vitaminjs-runtime",
     "webpack": "^2.4.1",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-hot-middleware": "^2.18.0",
