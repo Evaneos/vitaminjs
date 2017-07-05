@@ -1,7 +1,7 @@
 import { parse as parseUrl } from 'url';
 import serve from 'koa-static';
 import mount from 'koa-mount';
-import config from '../../../config';
+import config from 'vitaminjs-build/config';
 
 // examples
 // basePath: / or /app

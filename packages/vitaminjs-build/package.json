@@ -1,0 +1,22 @@
+{
+  "name": "vitaminjs-build",
+  "version": "1.2.1",
+  "description": "The build toolchain against JavaScript Fatigue",
+  "keywords": [
+    "toolchain",
+    "build",
+    "server-side rendering",
+    "hot module reload",
+    "webpack",
+    "react",
+    "redux"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Evaneos/vitaminjs.git"
+  },
+  "bin": {
+    "vitamin": "bin/vitamin.es5.js"
+  }
+}

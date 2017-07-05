@@ -13,7 +13,7 @@ import { parse as stateParser } from '__app_modules__redux_stateSerializer__';
 /* eslint-enable import/no-extraneous-dependencies */
 
 import { create as createStore, createRootReducer } from '../shared/store';
-import config from '../../config';
+import config from 'vitaminjs-build/config';
 import App from './components/App';
 
 // used require instead of import, because optional default with import cause warnings

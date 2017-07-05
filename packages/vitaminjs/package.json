@@ -2,13 +2,13 @@
   "name": "vitaminjs",
   "version": "1.2.1",
   "description": "The build toolchain against JavaScript Fatigue",
-  "main": "./src/shared/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "yarn run lint",
     "lint": "eslint --ext .js,.jsx src bin config"
   },
   "bin": {
-    "vitamin": "./bin/vitamin.es5.js"
+    "vitamin": "./bin/vitamin.js"
   },
   "repository": {
     "type": "git",

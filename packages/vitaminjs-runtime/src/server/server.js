@@ -9,8 +9,8 @@ import readline from 'readline';
 import httpGracefulShutdown from 'http-graceful-shutdown';
 
 import appMiddleware from './appMiddleware';
-import config from '../../config';
-import webpackClientConfig from '../../config/build/webpack.config.client';
+import config from 'vitaminjs-build/config';
+import webpackClientConfig from 'vitaminjs-build/config/build/webpack.config.client';
 
 global.fetch = fetch;
 

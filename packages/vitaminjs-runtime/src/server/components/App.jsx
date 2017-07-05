@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
 
 import SharedApp from '../../shared/components/App';
-import config from '../../../config';
+import config from 'vitaminjs-build/config';
 
 const propTypes = {
     store: PropTypes.shape({

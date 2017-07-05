@@ -1,0 +1,20 @@
+{
+  "name": "vitaminjs-runtime",
+  "version": "1.2.1",
+  "description": "Runtime libraries for Vitamin, the build toolchain against JavaScript fatigue",
+  "keywords": [
+    "toolchain",
+    "build",
+    "server-side rendering",
+    "hot module reload",
+    "webpack",
+    "react",
+    "redux"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Evaneos/vitaminjs.git"
+  },
+  "main": "src/shared/index.js"
+}
