@@ -23,6 +23,7 @@ export default {
         middlewares: '__vitamin__/config/utils/emptyArray',
         enhancers: '__vitamin__/config/utils/emptyArray',
         stateSerializer: '__vitamin__/src/shared/defaultStateSerializer',
+        initialStateKey: '__INITIAL_STATE__',
     },
     client: {
         buildPath: 'public',
