@@ -34,8 +34,8 @@ function render(history, store, appRoutes, element) {
 
 function bootstrapClient() {
     // Grab the state from a global injected into server-generated HTML
-    const initialState = window.__INITIAL_STATE__ ?
-        stateParser(window.__INITIAL_STATE__) :
+    const initialState = window[config.redux.initialStateKey] ?
+        stateParser(window[config.redux.initialStateKey]) :
         {};
 
     const history = useBasename(() => browserHistory)({ basename: config.basePath });

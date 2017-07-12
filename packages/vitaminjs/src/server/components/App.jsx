@@ -22,7 +22,7 @@ const App = ({ store, insertCss, renderProps, mainEntry }) => (
     <SharedApp store={store} insertCss={insertCss}>
         <Helmet
             script={[
-                { innerHTML: `window.__INITIAL_STATE__ = "${jsStringEscape(stateStringifier(store.getState()))}"` },
+                { innerHTML: `window[${config.redux.initialStateKey}] = "${jsStringEscape(stateStringifier(store.getState()))}"` },
                 { src: `${config.publicPath}/${mainEntry}`, async: true },
             ]}
         />
