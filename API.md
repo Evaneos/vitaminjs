@@ -7,29 +7,29 @@ file at the root of your project.
 
 - [routes](#routes)
 - [redux](#redux)
- - [reducers](#reducers)
- - [middlewares](#reduxMiddlewares)
- - [enhancers](#enhancers)
- - [stateSerializer](#stateSerializer)
- - [initialStateKey](#initialStateKey)
+  - [reducers](#reducers)
+  - [middlewares](#reduxMiddlewares)
+  - [enhancers](#enhancers)
+  - [stateSerializer](#stateSerializer)
+  - [initialStateKey](#initialStateKey)
 - [server](#server)
- - [buildPath](#buildPath)
- - [filename](#serverFilename)
- - [host](#host)
- - [port](#port)
- - [middlewares](#serverMiddlewares)
- - [createInitAction](#createInitAction)
- - [layout](#layout)
- - [ErrorPage](#ErrorPage)
- - [onError](#onError)
+  - [buildPath](#buildPath)
+  - [filename](#serverFilename)
+  - [host](#host)
+  - [port](#port)
+  - [middlewares](#serverMiddlewares)
+  - [createInitAction](#createInitAction)
+  - [layout](#layout)
+  - [ErrorPage](#ErrorPage)
+  - [onError](#onError)
 - [basePath](#basepath)
 - [publicPath](#publicPath)
 - [servePublic](#servePublic)
 - [client](#client)
- - [filename](#clientFilename)
- - [buildPath](#clientBuildPath)
- - [serviceWorker](#serviceWorker)
- - [targetBrowsers](#targetBrowsers)
+  - [filename](#clientFilename)
+  - [buildPath](#clientBuildPath)
+  - [serviceWorker](#serviceWorker)
+  - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
 - [rootElementId](#rootElementId)
 - [plugins](#plugins)
@@ -47,13 +47,11 @@ Config option for redux, specified in the `redux` key of the config object.
 ### <a id='reducers'></a>[`reducers`](#reducers)
 **`Path Object`**
 
-
 A path to a file exporting an object of reducers. **TODO** Print a nice warning when user export
 a simple reducer with combineReducer
 
 ### <a id='reduxMiddlewares'></a>[`middlewares`](#reduxMiddlewares)
 **`Path Array`**
-
 
 A path to a file exporting an array of [redux middleware](http://redux.js.org/docs/advanced/Middleware.html). By default, vitamin adds the [router](https://github.com/reactjs/react-router-redux#what-if-i-want-to-issue-navigation-events-via-redux-actions) and
 [redux-thunk](https://github.com/gaearon/redux-thunk) middleware.
@@ -61,12 +59,10 @@ A path to a file exporting an array of [redux middleware](http://redux.js.org/do
 ### <a id='enhancers'></a>[`enhancers`](#enhancers)
 **`Path [ StoreEnhancers ]`**
 
-
 A path to a file exporting an array of [store enhancers](https://github.com/reactjs/redux/blob/master/docs/Glossary.md#store-enhancer).
 
 ### <a id='stateSerializer'></a>[`stateSerializer`](#stateSerializer)
 **`Path`**
-
 
 Path to a file exporting two functions.
  - **`stringify`**: `State-> String`
@@ -85,7 +81,7 @@ Config option for server side rendering, specified in the `server` key of the co
 ### <a id='host'></a>[`host`](#host)
 **`String`**
 
-The host of the node server. Default to `process.env.HOST`or `localhost`
+The host of the node server. Default to `process.env.HOST` or `localhost`
 if not set
 
 ### <a id='port'></a>[`port`](#port)
