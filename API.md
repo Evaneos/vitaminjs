@@ -11,6 +11,7 @@ file at the root of your project.
  - [middlewares](#reduxMiddlewares)
  - [enhancers](#enhancers)
  - [stateSerializer](#stateSerializer)
+ - [initialStateKey](#initialStateKey)
 - [server](#server)
  - [buildPath](#buildPath)
  - [filename](#serverFilename)
@@ -36,7 +37,6 @@ file at the root of your project.
 
 ## <a id='routes'></a>[`routes`](#routes)
 **`Path (`[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)` | `[`store`](http://redux.js.org/docs/api/Store.html#store)` => `[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)`)`**
-
 
 Root route of your application. This is the only mandatory element for running vitaminjs.
 You can export a function. If you do so, the function will be call with the redux store. Useful
@@ -73,6 +73,11 @@ Path to a file exporting two functions.
  - **`parse`**: `String -> State`
 
 Used for transmetting the state computed by the server to the client. By default, it serialize the state with JSON. It should be good if you're doing Vanilla redux. If, however, you use some fancy structure in your state (for instance [Immutable.js](https://facebook.github.io/immutable-js/), you can specify a different parser and stringifier.
+
+### <a id='initialStateKey'></a>[`initialStateKey`](#initialStateKey)
+**`String`**
+
+The global `window` key the initial state of the app will be injected in by the server. Default to `__INITIAL_STATE__` if not set.
 
 ## <a id='server'></a>[`server`](#server)
 Config option for server side rendering, specified in the `server` key of the config object.
