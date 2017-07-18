@@ -7,36 +7,35 @@ file at the root of your project.
 
 - [routes](#routes)
 - [redux](#redux)
- - [reducers](#reducers)
- - [middlewares](#reduxMiddlewares)
- - [enhancers](#enhancers)
- - [stateSerializer](#stateSerializer)
+  - [reducers](#reducers)
+  - [middlewares](#reduxMiddlewares)
+  - [enhancers](#enhancers)
+  - [stateSerializer](#stateSerializer)
 - [server](#server)
- - [buildPath](#buildPath)
- - [filename](#serverFilename)
- - [host](#host)
- - [port](#port)
- - [middlewares](#serverMiddlewares)
- - [createInitAction](#createInitAction)
- - [layout](#layout)
- - [ErrorPage](#ErrorPage)
- - [onError](#onError)
+  - [buildPath](#buildPath)
+  - [filename](#serverFilename)
+  - [host](#host)
+  - [port](#port)
+  - [middlewares](#serverMiddlewares)
+  - [createInitAction](#createInitAction)
+  - [layout](#layout)
+  - [ErrorPage](#ErrorPage)
+  - [onError](#onError)
 - [basePath](#basepath)
 - [publicPath](#publicPath)
 - [servePublic](#servePublic)
 - [client](#client)
- - [filename](#clientFilename)
- - [buildPath](#clientBuildPath)
- - [serviceWorker](#serviceWorker)
- - [targetBrowsers](#targetBrowsers)
+  - [filename](#clientFilename)
+  - [buildPath](#clientBuildPath)
+  - [serviceWorker](#serviceWorker)
+  - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
 - [rootElementId](#rootElementId)
 
 ## <a id='routes'></a>[`routes`](#routes)
 **`Path (`[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)` | `[`store`](http://redux.js.org/docs/api/Store.html#store)` => `[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)`)`**
 
-
-Root route of your application. This is the only mandatory element for running vitaminjs. 
+Root route of your application. This is the only mandatory element for running vitaminjs.
 You can export a function. If you do so, the function will be call with the redux store. Useful
 for registering listener before the application starts. You might want to do that only on client side (you can use the global [`IS_CLIENT`](#isclient-isserver) for that).
 
@@ -78,7 +77,7 @@ Config option for server side rendering, specified in the `server` key of the co
 ### <a id='host'></a>[`host`](#host)
 **`String`**
 
-The host of the node server. Default to `process.env.HOST`or `localhost`
+The host of the node server. Default to `process.env.HOST` or `localhost`
 if not set
 
 ### <a id='port'></a>[`port`](#port)
