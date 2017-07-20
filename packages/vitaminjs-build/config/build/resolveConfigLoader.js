@@ -11,8 +11,9 @@
 */
 
 module.exports = function resolveConfigLoader() {
+    const config = require('..').default();
     try {
-        return `module.exports = ${JSON.stringify(require(this.resource).default())}`;
+        return `module.exports = ${JSON.stringify(config)}`;
     } catch (e) {
         this.emitError(e);
     }

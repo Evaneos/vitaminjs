@@ -34,7 +34,7 @@ export function createBabelLoader(env, options) {
 
 export const createResolveConfigLoader = () => ({
     // The following loader will resolve the config to its final value during the build
-    test: require.resolve('..'), // vitaminjs-build/config/index.js
+    test: require.resolve('../runtimeConfig'),
     loader: require.resolve('./resolveConfigLoader'),
 });
 
@@ -112,7 +112,7 @@ export function config(options) {
         resolve: {
             alias: {
                 ...options.moduleMap,
-                '__vitamin_runtime_config__': RUNTIME_CONFIG_MODULE_PATH,
+                '__vitamin_runtime_config__': require.resolve('../runtimeConfig'),
             },
             // Commmented out beause absolute paths were opting out of node resolve algorithm
             // modules: MODULES_DIRECTORIES,

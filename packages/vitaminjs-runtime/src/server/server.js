@@ -9,7 +9,7 @@ import readline from 'readline';
 import httpGracefulShutdown from 'http-graceful-shutdown';
 
 import appMiddleware from './appMiddleware';
-import config from 'vitaminjs-build/config';
+import config from '__vitamin_runtime_config__';
 
 global.fetch = fetch;
 

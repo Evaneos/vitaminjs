@@ -4,7 +4,7 @@ import { Resolver } from 'react-resolver';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Layout from '__app_modules__server_layout__';
 
-import config from 'vitaminjs-build/config';
+import config from '__vitamin_runtime_config__';
 import App from './components/App';
 
 /* eslint-disable react/no-danger */

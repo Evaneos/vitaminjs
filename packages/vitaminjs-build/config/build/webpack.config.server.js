@@ -14,7 +14,7 @@ function externals(context, request, callback) {
         !isRuntimeModule(request) &&
         // Oh look, it's one of our proprietary imports! This is certainly not external
         !request.startsWith('__app_modules__') &&
-        request !== 'vitaminjs-build/config' &&
+        request !== '__vitamin_runtime_config__' &&
         // FIXME Internal webpack chained loaders syntax
         !request.startsWith('!')
     ) {
