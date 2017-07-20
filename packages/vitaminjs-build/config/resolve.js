@@ -29,6 +29,7 @@ export function resolveConfigModule(id) {
     return resolveModule(id, dirname(resolveRcPath()));
 }
 
+// FIXME Consider not exporting this function anymore but use webpack's "context" config
 export function resolveParentModule(id) {
     // Sample node modules paths for 'vitaminjs-runtime/src/server/components/HTMLLayout',
     // according to node's resolve algorithm:

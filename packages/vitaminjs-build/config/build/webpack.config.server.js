@@ -31,8 +31,11 @@ export default function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             options.hot && require.resolve('../utils/hot'),
+            // FIXME Should we use resolveParentModule() or give a context to webpack?
             resolveParentModule('vitaminjs-runtime/src/server/server'),
         ].filter(Boolean),
+        // TODO
+        // context: '',
         output: {
             filename: options.server.filename,
             path: options.server.buildPath,

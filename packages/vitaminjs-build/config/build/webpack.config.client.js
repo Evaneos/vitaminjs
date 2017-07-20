@@ -11,6 +11,7 @@ export default function clientConfig(options) {
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
         entry: [
+            // FIXME Should we use resolveParentModule() or give a context to webpack?
             resolveParentModule('vitaminjs-runtime/src/client/index'),
             options.hot && hotMiddlewareEntry,
         ].filter(Boolean),
