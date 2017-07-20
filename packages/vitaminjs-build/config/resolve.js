@@ -22,8 +22,8 @@ export function resolveConfigModule(id) {
     // So runtime package resolving will not always be relative to the app
     // (where the .vitaminrc file is located). We try resolve the runtime
     // package by walking up the dependency tree.
-    if (id.startsWith('__vitamin__/')) {
-        return resolveParentModule(id.replace('__vitamin__', 'vitaminjs-runtime'));
+    if (id.startsWith('__vitamin_runtime__/')) {
+        return resolveParentModule(id.replace('__vitamin_runtime__', 'vitaminjs-runtime'));
     }
     // .vitaminrc relative resolution
     return resolveModule(id, dirname(resolveRcPath()));
