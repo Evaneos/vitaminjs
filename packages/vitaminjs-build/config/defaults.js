@@ -4,13 +4,13 @@ export default {
         filename: 'server_bundle.js',
         host: process.env.HOST || 'localhost',
         port: process.env.PORT || 3000,
-        middlewares: '__vitamin__/config/utils/emptyArray',
+        middlewares: '__vitamin__/src/shared/utils/emptyArray',
         ErrorPage: '__vitamin__/src/server/components/ErrorPage',
-        onError: '__vitamin__/config/utils/defaultFunction',
+        onError: '__vitamin__/src/shared/utils/defaultFunction',
         layout: '__vitamin__/src/server/components/HTMLLayout',
-        createInitAction: '__vitamin__/config/utils/defaultFunction',
+        createInitAction: '__vitamin__/src/shared/utils/defaultFunction',
     },
-    routes: '__vitamin__/config/utils/emptyArray',
+    routes: '__vitamin__/src/shared/utils/emptyArray',
     basePath: '',
 
     // The URL from which the all the public files should be made available
@@ -19,9 +19,9 @@ export default {
     publicPath: '/assets',
     servePublic: true,
     redux: {
-        reducers: '__vitamin__/config/utils/emptyObject',
-        middlewares: '__vitamin__/config/utils/emptyArray',
-        enhancers: '__vitamin__/config/utils/emptyArray',
+        reducers: '__vitamin__/src/shared/utils/emptyObject',
+        middlewares: '__vitamin__/src/shared/utils/emptyArray',
+        enhancers: '__vitamin__/src/shared/utils/emptyArray',
         stateSerializer: '__vitamin__/src/shared/defaultStateSerializer',
     },
     client: {

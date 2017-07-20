@@ -1,40 +1,37 @@
 import { optimize, BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
-import fs from 'fs';
 import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
-import { vitaminResolve, appResolve, concat } from '../utils';
-
-const safeReaddirSync = (path) => {
-    try {
-        return fs.readdirSync(path);
-    } catch (e) {
-        return [];
-    }
-};
-
-const externalModules = modulesPath => safeReaddirSync(modulesPath).filter(m => m !== '.bin');
-const appModules = externalModules(appResolve('node_modules')).filter(m => m !== 'vitaminjs');
-const vitaminModules = externalModules(vitaminResolve('node_modules'));
-const hotPoll = vitaminResolve('config', 'utils', 'hot.js');
+import { isExternalModule, isRuntimeModule, resolveParentModule, __isVitaminFacadeModule } from '../resolve';
+import { concat } from '../utils';
 
 function externals(context, request, callback) {
-    const pathStart = request.split('/')[0];
+    // TODO Take a look at `webpack-node-externals`
+    if (
+        isExternalModule(request) &&
+        // TODO Remove for Vitamin 2
+        !__isVitaminFacadeModule(request) &&
+        // Runtime should be built along with application because of our proprietary imports in it
+        !isRuntimeModule(request) &&
+        // Oh look, it's one of our proprietary imports! This is certainly not external
+        !request.startsWith('__app_modules__') &&
+        request !== 'vitaminjs-build/config' &&
+        // FIXME Internal webpack chained loaders syntax
+        !request.startsWith('!')
+    ) {
+        // FIXME Why commonjs2 over commonjs
+        callback(null, 'commonjs2 ' + request);
+        return;
+    }
 
-    if (appModules.includes(pathStart)) {
-        return callback(null, `commonjs2 ${request}`);
-    }
-    if (vitaminModules.includes(pathStart)) {
-        return callback(null, `commonjs2 vitaminjs/node_modules/${request}`);
-    }
-    return callback();
+    callback();
 }
 
 
 export default function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
-            options.hot && hotPoll,
-            vitaminResolve('src', 'server', 'server.js'),
+            options.hot && require.resolve('../utils/hot'),
+            resolveParentModule('vitaminjs-runtime/src/server/server'),
         ].filter(Boolean),
         output: {
             filename: options.server.filename,

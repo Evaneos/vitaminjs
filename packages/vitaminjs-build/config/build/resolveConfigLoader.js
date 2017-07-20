@@ -10,8 +10,6 @@
     That's why we use require and not this.exec
 */
 
-require('../utils/transpile');
-
 module.exports = function resolveConfigLoader() {
     try {
         return `module.exports = ${JSON.stringify(require(this.resource).default())}`;

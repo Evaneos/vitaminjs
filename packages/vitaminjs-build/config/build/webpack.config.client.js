@@ -3,14 +3,15 @@ import webpack from 'webpack';
 import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
 
 import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
-import { concat, vitaminResolve, appResolve } from '../utils';
+import { resolveConfigModule, resolveParentModule } from '../resolve';
+import { concat } from '../utils';
 
 export default function clientConfig(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
         entry: [
-            vitaminResolve('src', 'client', 'index.jsx'),
+            resolveParentModule('vitaminjs-runtime/src/client/index'),
             options.hot && hotMiddlewareEntry,
         ].filter(Boolean),
         output: {
@@ -30,7 +31,8 @@ export default function clientConfig(options) {
             options.hot && new webpack.NoEmitOnErrorsPlugin(),
             !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
-                entry: appResolve(options.client.serviceWorker),
+                // FIXME Move resolving with other config props
+                entry: resolveConfigModule(options.client.serviceWorker),
             }),
         ].filter(Boolean),
         // Some libraries import Node modules but don't use them in the browser.

@@ -10,7 +10,6 @@ import httpGracefulShutdown from 'http-graceful-shutdown';
 
 import appMiddleware from './appMiddleware';
 import config from 'vitaminjs-build/config';
-import webpackClientConfig from 'vitaminjs-build/config/build/webpack.config.client';
 
 global.fetch = fetch;
 
@@ -28,6 +27,8 @@ function appServer() {
 const mountedServer = express();
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
+    require('vitaminjs-build/config/utils/transpile');
+    const webpackClientConfig = require('vitaminjs-build/config/build/webpack.config.client').default;
     const hotReloadServer = () => {
         const app = express();
         const webpack = require('webpack');

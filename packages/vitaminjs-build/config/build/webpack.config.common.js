@@ -8,29 +8,34 @@ import postcssCssNext from 'postcss-cssnext';
 import postcssBrowserReporter from 'postcss-browser-reporter';
 import postcssReporter from 'postcss-reporter';
 import { join } from 'path';
-import { vitaminResolve, appResolve } from '../utils';
+import { isBuildModulePath, isExternalModulePath, isRuntimeModulePath, __isVitaminFacadeModulePath } from '../resolve';
+import { appResolve } from '../utils';
 import babelrc from './babelrc';
 
-const VITAMIN_DIRECTORY = vitaminResolve();
-const VITAMIN_MODULES_DIRECTORY = vitaminResolve('node_modules');
-const VITAMIN_MODULES_EXAMPLES_DIRECTORY = vitaminResolve('examples');
 const APP_MODULES = appResolve('node_modules');
-const MODULES_DIRECTORIES = [APP_MODULES, VITAMIN_MODULES_DIRECTORY];
 
-export const createBabelLoader = (env, options) => ({
-    test: /\.js(x?)$/,
-    loader: 'babel-loader',
-    include: path => !path.includes('node_modules') ||
-        (path.startsWith(VITAMIN_DIRECTORY)
-         && !path.startsWith(VITAMIN_MODULES_DIRECTORY)
-         && !path.startsWith(VITAMIN_MODULES_EXAMPLES_DIRECTORY)),
-    query: babelrc(env, options),
-});
+export function createBabelLoader(env, options) {
+    return {
+        test: /\.js(x?)$/,
+        loader: 'babel-loader',
+        include: path => {
+            // We only want to transpile user land application code and our own runtime
+            return (
+                !isExternalModulePath(path) ||
+                __isVitaminFacadeModulePath(path) ||
+                isRuntimeModulePath(path) ||
+                // FIXME This is only required for parts of the runtime that require the build system
+                isBuildModulePath(path)
+            );
+        },
+        query: babelrc(env, options),
+    };
+}
 
 export const createResolveConfigLoader = () => ({
     // The following loader will resolve the config to its final value during the build
-    test: vitaminResolve('config/index'),
-    loader: vitaminResolve('config/build/resolveConfigLoader'),
+    test: require.resolve('..'), // vitaminjs-build/config/index.js
+    loader: require.resolve('./resolveConfigLoader'),
 });
 
 export function config(options) {
@@ -100,12 +105,17 @@ export function config(options) {
         },
 
         resolveLoader: {
-            modules: MODULES_DIRECTORIES,
+            // Commmented out beause absolute paths were opting out of node resolve algorithm
+            // modules: MODULES_DIRECTORIES,
         },
         cache: options.hot,
         resolve: {
-            alias: options.moduleMap,
-            modules: MODULES_DIRECTORIES,
+            alias: {
+                ...options.moduleMap,
+                '__vitamin_runtime_config__': RUNTIME_CONFIG_MODULE_PATH,
+            },
+            // Commmented out beause absolute paths were opting out of node resolve algorithm
+            // modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
             mainFields: ['browser', 'module', 'main', 'style'],
         },

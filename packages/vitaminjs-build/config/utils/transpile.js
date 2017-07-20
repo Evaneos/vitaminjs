@@ -2,6 +2,8 @@
 require('babel-register')({
     sourceRoot: process.env.VITAMIN_PATH,
     presets: [['env', { targets: { node: 'current' } }], 'stage-1'],
+    // FIXME Seems useless
     ignore: false,
-    only: /vitaminjs\/(bin|config)/,
+    // FIXME Try to consolidate with babel-loader config of prebuild vitamin packages
+    only: /vitaminjs-(?:runtime|build\/(?:bin|config))/,
 });

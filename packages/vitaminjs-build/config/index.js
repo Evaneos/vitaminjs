@@ -2,7 +2,11 @@ import stripJsonComments from 'strip-json-comments';
 import mergeWith from 'lodash.mergewith';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
-import { appResolve, vitaminResolve } from './utils';
+import {
+    resolveConfigModule,
+    resolveConfigPath,
+    resolveRcPath,
+} from './resolve';
 import defaults from './defaults';
 
 // eslint-disable-next-line consistent-return
@@ -65,18 +69,6 @@ function pathToModuleName(path) {
     return `__app_modules__${path.join('_')}__`;
 }
 
-function resolveModulePath(modulePath) {
-    /* eslint no-nested-ternary: 0 */
-    return (
-        modulePath.indexOf('__vitamin__/') === 0 ?
-            vitaminResolve(modulePath.slice('__vitamin__/'.length)) :
-        modulePath.indexOf('.') === 0 ?
-            appResolve(modulePath) :
-        // otherwise, it is an external module
-            modulePath
-    );
-}
-
 function loadExtendedConfig(config, configPath) {
     if (!config.extends) {
         return config;
@@ -93,7 +85,7 @@ function loadExtendedConfig(config, configPath) {
 }
 
 
-export const rcPath = appResolve('.vitaminrc');
+export const rcPath = resolveRcPath();
 
 export default () => {
     let config = loadConfigFile(rcPath);
@@ -102,7 +94,7 @@ export default () => {
         const moduleMap = {};
         configPaths.forEach((configPath) => {
             moduleMap[pathToModuleName(configPath)]
-                = resolveModulePath(lookupPath(configPath, config));
+                = resolveConfigModule(lookupPath(configPath, config));
         });
         return moduleMap;
     };
@@ -136,7 +128,7 @@ export default () => {
         ['server', 'buildPath'],
         ['client', 'buildPath'],
     ].forEach(path =>
-        updatePath(path, appResolve, config),
+        updatePath(path, resolveConfigPath, config),
     );
 
     // Prepend / to publicPath and basePath if necessary
