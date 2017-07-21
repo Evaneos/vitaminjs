@@ -104,7 +104,10 @@ export function config(options) {
         },
         cache: options.hot,
         resolve: {
-            alias: options.moduleMap,
+            alias: {
+                ...options.webpack.alias,
+                ...options.moduleMap,
+            },
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
             mainFields: ['browser', 'module', 'main', 'style'],

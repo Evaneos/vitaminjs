@@ -139,6 +139,13 @@ export default () => {
         updatePath(path, appResolve, config),
     );
 
+    // Resolve user webpack alias to absolute paths
+    Object.keys(config.webpack.alias)
+        .map(aliasKey => ['webpack', 'alias', aliasKey])
+        .forEach(path =>
+            updatePath(path, appResolve, config),
+        );
+
     // Prepend / to publicPath and basePath if necessary
     const prependSlash = path => (
         ((path.startsWith('/') || path.match(/^(http|\/|$)/)) ? '' : '/') + path
