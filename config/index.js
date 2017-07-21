@@ -143,8 +143,8 @@ export default () => {
     Object.keys(config.webpack.alias)
         .map(aliasKey => ['webpack', 'alias', aliasKey])
         .forEach(path =>
-            updatePath(path, appResolve, config)
-        )
+            updatePath(path, appResolve, config),
+        );
 
     // Prepend / to publicPath and basePath if necessary
     const prependSlash = path => (
