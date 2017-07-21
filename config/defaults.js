@@ -35,6 +35,9 @@ export default {
             'not ie < 9', // react doesn't support ie < 9
         ],
     },
+    webpack: {
+        alias: {},
+    },
     filesPath: 'files',
     rootElementId: 'vitamin-app',
 };

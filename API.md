@@ -30,6 +30,8 @@ file at the root of your project.
   - [serviceWorker](#serviceWorker)
   - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
+- [webpack](#webpack)
+  - [alias](#alias)
 - [rootElementId](#rootElementId)
 
 ## <a id='routes'></a>[`routes`](#routes)
@@ -211,6 +213,13 @@ If you want to run your application without headers, you can define here the ele
 **`Path`**
 
 Make your .vitaminrc extends another vitamin config. It is useful in case you want to have a base configuration for multiple environments.
+
+## <a id='webpack'></a>[`webpack`](#webpack)
+Endpoint to customize some specific webpack config.
+### <a id='alias'></a>[`alias`](#alias)
+**`Object`** 
+Add your own aliases for custome resolution. 
+
 
 # Globals
 ## <a id='isclient-isserver'></a>[`IS_CLIENT` / `IS_SERVER`](#isclient-isserver)

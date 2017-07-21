@@ -1,4 +1,8 @@
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
+import {
+    HotModuleReplacementPlugin,
+    LoaderOptionsPlugin,
+    NamedModulesPlugin,
+} from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import postcssOmitImportTilde from 'postcss-omit-import-tilde';
@@ -20,10 +24,11 @@ const MODULES_DIRECTORIES = [APP_MODULES, VITAMIN_MODULES_DIRECTORY];
 export const createBabelLoader = (env, options) => ({
     test: /\.js(x?)$/,
     loader: 'babel-loader',
-    include: path => !path.includes('node_modules') ||
-        (path.startsWith(VITAMIN_DIRECTORY)
-         && !path.startsWith(VITAMIN_MODULES_DIRECTORY)
-         && !path.startsWith(VITAMIN_MODULES_EXAMPLES_DIRECTORY)),
+    include: path =>
+        !path.includes('node_modules') ||
+        (path.startsWith(VITAMIN_DIRECTORY) &&
+            !path.startsWith(VITAMIN_MODULES_DIRECTORY) &&
+            !path.startsWith(VITAMIN_MODULES_EXAMPLES_DIRECTORY)),
     query: babelrc(env, options),
 });
 
@@ -49,11 +54,14 @@ export function config(options) {
                     removeAll: !options.dev,
                 },
                 importLoaders: 1,
-                ...(modules ? {
-                    localIdentName: options.dev ?
-                        '[name]__[local]___[hash:base64:5]' : '[hash:base64]',
-                    modules: true,
-                } : {}),
+                ...(modules
+                    ? {
+                          localIdentName: options.dev
+                              ? '[name]__[local]___[hash:base64:5]'
+                              : '[hash:base64]',
+                          modules: true,
+                      }
+                    : {}),
             },
         },
         'postcss-loader',
@@ -75,28 +83,34 @@ export function config(options) {
             wrappedContextRegExp: /$^/,
             wrappedContextCritical: true,
 
-            rules: [{
-                // only files with .global will go through this loader
-                test: /\.global\.css$/,
-                loaders: CSSLoaders({ modules: false }),
-            }, {
-                // anything with .global will not go through css modules loader
-                test: /^((?!\.global).)*\.css$/,
-                loaders: CSSLoaders({ modules: true }),
-            }, {
-                test: /\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|eot|ttf)$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    name: join(options.filesPath, '[hash].[ext]'),
+            rules: [
+                {
+                    // only files with .global will go through this loader
+                    test: /\.global\.css$/,
+                    loaders: CSSLoaders({ modules: false }),
                 },
-            }, {
-                test: /\.json$/,
-                loader: 'json-loader',
-            }, {
-                test: /\.ya?ml$/,
-                loader: 'yaml-loader',
-            }],
+                {
+                    // anything with .global will not go through css modules loader
+                    test: /^((?!\.global).)*\.css$/,
+                    loaders: CSSLoaders({ modules: true }),
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|eot|ttf)$/,
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        name: join(options.filesPath, '[hash].[ext]'),
+                    },
+                },
+                {
+                    test: /\.json$/,
+                    loader: 'json-loader',
+                },
+                {
+                    test: /\.ya?ml$/,
+                    loader: 'yaml-loader',
+                },
+            ],
         },
 
         resolveLoader: {
@@ -104,7 +118,10 @@ export function config(options) {
         },
         cache: options.hot,
         resolve: {
-            alias: options.moduleMap,
+            alias: {
+                ...options.webpack.alias,
+                ...options.moduleMap,
+            },
             modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],
             mainFields: ['browser', 'module', 'main', 'style'],
@@ -117,7 +134,9 @@ export function config(options) {
                         postcssOmitImportTilde(),
                         postcssImport(),
                         postcssUrl(),
-                        postcssCssNext({ browsers: options.client.targetBrowsers }),
+                        postcssCssNext({
+                            browsers: options.client.targetBrowsers,
+                        }),
                         options.dev && postcssBrowserReporter(),
                         postcssReporter(),
                     ].filter(Boolean),
