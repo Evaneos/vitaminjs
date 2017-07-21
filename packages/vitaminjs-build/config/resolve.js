@@ -111,3 +111,9 @@ export function __isVitaminFacadeModulePath(path) {
         relativeModulePath.startsWith(`node_modules${sep}vitaminjs${sep}`)
     );
 }
+
+// FIXME This is fragile, make sure only webpack loaders contains !
+export function __hasWebpackLoader(id) {
+    // Internal loaders begin or includes !, !!, -! see https://webpack.github.io/docs/loaders.html#loader-order
+    return id.includes('!');
+}

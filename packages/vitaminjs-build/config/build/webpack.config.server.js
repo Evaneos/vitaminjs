@@ -1,7 +1,13 @@
 import { optimize, BannerPlugin, DefinePlugin } from 'webpack';
 import mergeWith from 'lodash.mergewith';
 import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
-import { isExternalModule, isRuntimeModule, resolveParentModule, __isVitaminFacadeModule } from '../resolve';
+import {
+    isExternalModule,
+    isRuntimeModule,
+    resolveParentModule,
+    __isVitaminFacadeModule,
+    __hasWebpackLoader,
+} from '../resolve';
 import { concat } from '../utils';
 
 function externals(context, request, callback) {
@@ -16,7 +22,7 @@ function externals(context, request, callback) {
         !request.startsWith('__app_modules__') &&
         request !== '__vitamin_runtime_config__' &&
         // FIXME Internal webpack chained loaders syntax
-        !request.startsWith('!')
+        !__hasWebpackLoader(request)
     ) {
         // FIXME Why commonjs2 over commonjs
         callback(null, 'commonjs2 ' + request);
