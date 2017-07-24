@@ -1,6 +1,6 @@
 {
   "name": "vitaminjs-runtime",
-  "version": "1.2.1",
+  "version": "1.3.0-rc1",
   "description": "Runtime libraries for Vitamin, the build toolchain against JavaScript fatigue",
   "keywords": [
     "toolchain",
