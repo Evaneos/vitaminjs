@@ -1,6 +1,8 @@
 {
+  "private": true,
   "name": "vitamin-entries-and-chunks-example",
-  "version": "1.0.0",
+  "version": "1.3.0-rc1",
+  "description": "vitamin entries and chunks example",
   "scripts": {
     "build": "vitamin build",
     "start": "vitamin start",
@@ -14,6 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "react": "^15.5.4",
-    "vitaminjs": "file:../.."
+    "vitaminjs": "file:../../packages/vitaminjs"
   }
 }

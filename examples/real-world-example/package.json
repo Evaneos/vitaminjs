@@ -1,7 +1,8 @@
 {
-  "name": "vitamin-real-world",
-  "version": "0.1.0",
   "private": true,
+  "name": "vitamin-real-world",
+  "version": "1.3.0-rc1",
+  "description": "vitamin implementation of redux real-world-example",
   "dependencies": {
     "humps": "^1.1.0",
     "lodash": "^4.17.4",
