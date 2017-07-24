@@ -1,6 +1,6 @@
 {
   "name": "vitaminjs",
-  "version": "1.3.0-rc1",
+  "version": "1.3.0-rc2",
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "index.js",
   "scripts": {
