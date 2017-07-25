@@ -11,6 +11,7 @@ import { join } from 'path';
 import { isBuildModulePath, isExternalModulePath, isRuntimeModulePath, __isVitaminFacadeModulePath } from '../resolve';
 import { appResolve } from '../utils';
 import babelrc from './babelrc';
+import { loadWebpackConfigPlugins } from '../../bin/loadPlugins';
 
 const APP_MODULES = appResolve('node_modules');
 
@@ -63,7 +64,7 @@ export function config(options) {
         },
         'postcss-loader',
     ];
-    return {
+    const webpackCommonConfig = {
         devtool: options.dev && 'source-map',
         output: {
             pathinfo: options.dev,
@@ -150,4 +151,6 @@ export function config(options) {
             options.dev && new CaseSensitivePathsPlugin(),
         ].filter(Boolean),
     };
+
+    return loadWebpackConfigPlugins(webpackCommonConfig, options);
 }

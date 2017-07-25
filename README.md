@@ -79,6 +79,11 @@ npm run build
 
 It bundles your application and optimizes its performances. The bundle is also minified.
 
+## Plugins
+You can extend vitamin behaviour with plugins. Below is a list of useful plugins that we currently support
+
+- [vitaminjs-plugin-jest](https://github.com/Evaneos/vitaminjs/tree/master/packages/vitaminjs-plugin-jest): use Facebook's [Jest]('https://facebook.github.io/jest/') as a test runner in your application without configuration
+
 ## Frequently Asked Questions
 We have started to answer some frequently asked questions. You can find all of them here: [FAQ](https://github.com/Evaneos/vitaminjs/blob/master/FAQ.md)  
 If you have any questions you think are worth be displayed, please raise an issue in the project.  

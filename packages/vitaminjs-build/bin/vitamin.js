@@ -16,6 +16,7 @@ import webpackConfigServer from '../config/build/webpack.config.server';
 import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import parseConfig, { rcPath as configRcPath } from '../config';
+import loadPlugins from './loadPlugins';
 import { version } from '../package.json';
 
 const DEV = process.env.NODE_ENV !== 'production';
@@ -311,5 +312,7 @@ program
             process.exit(1);
         });
     });
+
+loadPlugins(program, parseConfig());
 
 program.parse(process.argv);

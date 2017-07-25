@@ -7,30 +7,32 @@ file at the root of your project.
 
 - [routes](#routes)
 - [redux](#redux)
- - [reducers](#reducers)
- - [middlewares](#reduxMiddlewares)
- - [enhancers](#enhancers)
- - [stateSerializer](#stateSerializer)
+  - [reducers](#reducers)
+  - [middlewares](#reduxMiddlewares)
+  - [enhancers](#enhancers)
+  - [stateSerializer](#stateSerializer)
 - [server](#server)
- - [buildPath](#buildPath)
- - [filename](#serverFilename)
- - [host](#host)
- - [port](#port)
- - [middlewares](#serverMiddlewares)
- - [createInitAction](#createInitAction)
- - [layout](#layout)
- - [ErrorPage](#ErrorPage)
- - [onError](#onError)
+  - [buildPath](#buildPath)
+  - [filename](#serverFilename)
+  - [host](#host)
+  - [port](#port)
+  - [middlewares](#serverMiddlewares)
+  - [createInitAction](#createInitAction)
+  - [layout](#layout)
+  - [ErrorPage](#ErrorPage)
+  - [onError](#onError)
 - [basePath](#basepath)
 - [publicPath](#publicPath)
 - [servePublic](#servePublic)
 - [client](#client)
- - [filename](#clientFilename)
- - [buildPath](#clientBuildPath)
- - [serviceWorker](#serviceWorker)
- - [targetBrowsers](#targetBrowsers)
+  - [filename](#clientFilename)
+  - [buildPath](#clientBuildPath)
+  - [serviceWorker](#serviceWorker)
+  - [targetBrowsers](#targetBrowsers)
 - [extends](#extends)
 - [rootElementId](#rootElementId)
+- [plugins](#plugins)
+
 
 ## <a id='routes'></a>[`routes`](#routes)
 **`Path (`[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)` | `[`store`](http://redux.js.org/docs/api/Store.html#store)` => `[`<Route>`](https://github.com/reactjs/react-router/blob/master/docs/API.md#route)`)`**
@@ -212,6 +214,11 @@ If you want to run your application without headers, you can define here the ele
 **`Path`**
 
 Make your .vitaminrc extends another vitamin config. It is useful in case you want to have a base configuration for multiple environments.
+
+## <a id='plugins'></a>[`plugins`](#plugins)
+**`String`**
+
+You can add new behaviour to vitaminjs thanks to plugins. See the plugin section in the README
 
 # Globals
 ## <a id='isclient-isserver'></a>[`IS_CLIENT` / `IS_SERVER`](#isclient-isserver)
