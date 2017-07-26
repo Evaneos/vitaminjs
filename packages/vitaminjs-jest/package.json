@@ -1,0 +1,41 @@
+{
+  "name": "vitaminjs-jest",
+  "version": "1.0.0",
+  "description": "Plugin for vitamin that enable testing with jest",
+  "repository": "https://github.com/Evaneos/vitaminjs/tree/master/packages/vitaminjs-plugin-jest",
+  "keywords": [
+    "vitaminjs",
+    "jest"
+  ],
+  "collaborators": [
+    "Johan Girod <johangirod@gmail.com>",
+    "Lucas Personnaz <lucas@evaneos.com"
+  ],
+  "dependencies": {
+    "babel-jest": "^20.0.0",
+    "enzyme": "^2.8.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^19.0.2",
+    "jest-enzyme": "^3.0.0",
+    "npm-run": "^4.1.2",
+    "react-test-renderer": "^15.6.1"
+  },
+  "peerDependencies": {
+    "react": "^15.6.1"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "version": "yarn run build && git add -A lib",
+    "postversion": "git push && git push --tags"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-react-require": "^3.0.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "vitaminjs-build": "vitaminjs-build"
+  }
+}
