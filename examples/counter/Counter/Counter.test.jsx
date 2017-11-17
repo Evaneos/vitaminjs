@@ -33,12 +33,12 @@ describe('Counter component', () => {
         expect(wrapper).toBeDefined();
     });
     it('should print the value prop', () => {
-        const { counterValueText, props: { value } } = setup({ value: 102 });
-        expect(counterValueText).toBe(value.toString());
+        const { counterValueText } = setup({ value: 102 });
+        expect(counterValueText).toBe('102');
     });
     it('should call onIncrement when click on the +1 button', () => {
-        const { firstButton, props: { onIncrement } } = setup();
+        const { firstButton, props } = setup();
         firstButton.simulate('click');
-        expect(onIncrement).toHaveBeenCalled();
+        expect(props.onIncrement).toHaveBeenCalled();
     });
 });
