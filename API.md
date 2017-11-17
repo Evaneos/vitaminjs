@@ -15,7 +15,9 @@ file at the root of your project.
  - [buildPath](#buildPath)
  - [filename](#serverFilename)
  - [host](#host)
+ - [defaultHost](#defaultHost)
  - [port](#port)
+ - [defaultPort](#defaultPort)
  - [middlewares](#serverMiddlewares)
  - [createInitAction](#createInitAction)
  - [layout](#layout)
@@ -75,16 +77,25 @@ Used for transmetting the state computed by the server to the client. By default
 ## <a id='server'></a>[`server`](#server)
 Config option for server side rendering, specified in the `server` key of the config object.
 
-### <a id='host'></a>[`host`](#host)
+### <a id='host'></a>@deprecated [`host`](#host), use `defaultHost` instead
 **`String`**
 
-The host of the node server. Default to `process.env.HOST`or `localhost`
-if not set
+The default host of the node server, it is used if `process.env.HOST` is not defined.
 
-### <a id='port'></a>[`port`](#port)
+### <a id='defaultHost'></a>[`defaultHost`](#defaultHost)
+**`String`**
+
+The default host of the node server, it is used if `process.env.HOST` is not defined.
+
+### <a id='port'></a>@deprecated [`port`](#port), use `defaultPort` instead
 **`String | Integer`**
 
-The port on which the node server is listening. Default to `process.env.PORT`or `3000`
+The default port on which the node server is listening, it is used if `process.env.PORT` is not defined.
+
+### <a id='defaultPort'></a>[`defaultPort`](#defaultPort)
+**`String | Integer`**
+
+The default port on which the node server is listening, it is used if `process.env.PORT` is not defined.
 
 ### <a id='externalUrl'></a>[`externalUrl`](#externalUrl)
 **`String`**

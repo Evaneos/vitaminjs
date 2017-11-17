@@ -77,10 +77,13 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
     });
 }
 
-const { port, host } = config.server;
 mountedServer.use(config.basePath, appServer());
 
-const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
+// Keep using config.server.port & config.server.host to avoid breaking changes.
+const port = process.env.PORT || config.server.defaultPort || config.server.port;
+const host = process.env.HOST || config.server.defaultHost || config.server.host;
+
+const server = mountedServer.listen(port, host, () => {
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
     process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
