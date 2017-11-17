@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", {
 var _resolve = require('vitaminjs-build/config/resolve');
 
 exports.default = JSON.stringify({
-    rootDir: process.cwd(),
+    rootDir: (0, _resolve.resolveConfigPath)('.'),
     setupTestFrameworkScriptFile: 'jest-enzyme/lib/index.js',
-    modulePaths: [(0, _resolve.resolveConfigPath)('vitaminjs-runtime/node_modules'), (0, _resolve.resolveConfigPath)('node_modules')],
+    modulePaths: ['<rootDir>/node_modules'],
     transform: {
-        '^.+\\.(js|jsx)$': (0, _resolve.resolveConfigModule)('vitaminjs-jest/lib/babelrcJestTransformer.js')
+        '^.+\\.(js|jsx)$': (0, _resolve.resolveConfigModule)('vitaminjs-jest/lib/babelrcJestTransformer')
     },
     transformIgnorePatterns: ['/node_modules/(?!vitaminjs).*'],
     moduleNameMapper: {

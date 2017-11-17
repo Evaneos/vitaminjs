@@ -1,11 +1,11 @@
 import { resolveConfigPath, resolveConfigModule } from 'vitaminjs-build/config/resolve';
 
 export default JSON.stringify({
-    rootDir: process.cwd(),
+    rootDir: resolveConfigPath('.'),
     setupTestFrameworkScriptFile: 'jest-enzyme/lib/index.js',
-    modulePaths: [resolveConfigPath('vitaminjs-runtime/node_modules'), resolveConfigPath('node_modules')],
+    modulePaths: ['<rootDir>/node_modules'],
     transform: {
-        '^.+\\.(js|jsx)$': resolveConfigModule('vitaminjs-jest/lib/babelrcJestTransformer.js'),
+        '^.+\\.(js|jsx)$': resolveConfigModule('vitaminjs-jest/lib/babelrcJestTransformer'),
     },
     transformIgnorePatterns: ['/node_modules/(?!vitaminjs).*'],
     moduleNameMapper: {
