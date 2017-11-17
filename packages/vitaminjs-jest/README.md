@@ -1,5 +1,5 @@
 <big>
-    <h1 align="center">vitaminjs-plugin-jest</h1>
+    <h1 align="center">vitaminjs-jest</h1>
 </big>
 
 <p>
@@ -7,13 +7,13 @@
 </p>
 
 ## How to use ?
-In your project, install the plugin as a dev dependency:
+In your project, install the package as a dev dependency:
 ```
-npm install --dev vitaminjs-plugiin-jest
+npm install --dev vitaminjs-jest
 ```
 or
 ```
-yarn add --dev vitaminjs-plugin-jest
+yarn add --dev vitaminjs-jest
 ```
 
 You can launch jest with
