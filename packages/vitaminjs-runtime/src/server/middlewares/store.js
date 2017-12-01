@@ -9,7 +9,7 @@ const reducers = require('__app_modules__redux_reducers__');
 
 /* eslint-disable import/first */
 import { create as createStore } from '../../shared/store';
-import config from '../../../config';
+import config from '__vitamin_runtime_config__';
 /* eslint-enable import/first */
 
 export default () => (ctx, next) => {
