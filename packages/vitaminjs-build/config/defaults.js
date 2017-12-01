@@ -2,8 +2,10 @@ export default {
     server: {
         buildPath: 'build',
         filename: 'server_bundle.js',
-        host: process.env.HOST || 'localhost',
-        port: process.env.PORT || 3000,
+        defaultHost: 'localhost',
+        host: 'localhost', // @deprecated, use `defaultHost` instead.
+        defaultPort: 3000,
+        port: 3000, // @deprecated, use `defaultPort` instead.
         middlewares: '__vitamin_runtime__/src/shared/utils/emptyArray',
         ErrorPage: '__vitamin_runtime__/src/server/components/ErrorPage',
         onError: '__vitamin_runtime__/src/shared/utils/defaultFunction',
