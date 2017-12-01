@@ -17,6 +17,7 @@ function loadConfigFile(configPath) {
         config = JSON.parse(stripJsonComments(json));
         return config;
     } catch (e) {
+        // FIXME direct print
         process.stderr.write(`Couldn't load configuration from ${configPath}\n${e.message}`);
         process.exit(1);
     }

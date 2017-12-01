@@ -20,6 +20,7 @@ var checkForUpdate = function checkForUpdate(fromUpdate) {
 module.hot.check().then(function(updatedModules) {
   if(!updatedModules) {
     if(fromUpdate)
+      // FIXME direct print
       console.log(`${chalk.green('\u2713')} Server hot reloaded.`);
     return;
   }
@@ -44,6 +45,7 @@ module.hot.check().then(function(updatedModules) {
 
 process.on(__resourceQuery.substr(1) || "SIGUSR2", function() {
 if(module.hot.status() !== "idle") {
+  // FIXME direct print
   console.warn("[HMR] Got signal but currently in " + module.hot.status() + " state.");
   console.warn("[HMR] Need to be in idle state to start hot update.");
   return;

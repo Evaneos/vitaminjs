@@ -34,6 +34,7 @@ const clean = () => new Promise((resolve, reject) => {
 
 const checkHot = (hot) => {
     if (hot && !DEV) {
+        // FIXME direct print
         console.log(chalk.yellow(
             '[WARNING]: Hot module reload option ignored in production environment.\n' +
             '(based on your NODE_ENV variable)\n',
@@ -69,6 +70,7 @@ const listenExitSignal = (callback) => {
 
 const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
+    // FIXME direct print
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
             `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
@@ -149,6 +151,7 @@ const test = ({ hot, runner, runnerArgs }) => {
             throw new Error('Please specify a test file path in .vitaminrc');
         }
 
+        // FIXME direct print
         console.log(chalk.blue(`${symbols.clock} Launching tests...`));
         const serverFile = path.join(
             config.server.buildPath,
@@ -170,6 +173,7 @@ const serve = (config) => {
     try {
         fs.accessSync(serverFile, fs.F_OK);
     } catch (e) {
+        // FIXME direct print
         console.log('\n');
         console.error(e);
         console.error(chalk.red(
@@ -190,6 +194,7 @@ const start = (options) => {
         exiting = true;
         if (!serverProcess) process.exit();
         killProcess(serverProcess, { signal }).then(() => {
+            // FIXME direct print
             console.log('exiting'); process.exit();
         });
     });
@@ -240,6 +245,7 @@ program
         test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
     })
     .on('--help', () => {
+        // FIXME direct print
         console.log('  Examples:');
         console.log('');
         console.log('    $ vitamin test -r mocha -- --color');
@@ -254,6 +260,7 @@ program
     .action(({ hot }) => build({ hot: checkHot(hot) })
         .catch((err) => {
             if (err !== BUILD_FAILED) {
+                // FIXME direct print
                 console.log(err.stack || err);
             }
             process.exit(1);
@@ -277,6 +284,7 @@ program
             .then(() => start({ hot: checkHot(hmr) }))
             .catch((err) => {
                 if (err !== BUILD_FAILED) {
+                    // FIXME direct print
                     console.log(err.stack || err);
                 }
                 process.exit(1);
@@ -299,6 +307,7 @@ program
             if (!code) {
                 return;
             }
+            // FIXME direct print
             console.error(chalk.red(
                 `${chalk.bold('\n\nServer process exited unexpectedly. \n')}` +
                 '- If it is an `EADDRINUSE error, you might want to change the `server.port` key' +

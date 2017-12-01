@@ -50,6 +50,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
                     return;
                 }
                 clientBuilt = true;
+                // FIXME direct print
                 process.stdout.write(`\x1b[0G${chalk.green('\u2713')
                     } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
                 );
@@ -72,6 +73,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         try {
             currentApp = require('./appMiddleware').default;
         } catch (e) {
+            // FIXME direct print
             console.error(e);
         }
     });
@@ -81,12 +83,14 @@ const { port, host } = config.server;
 mountedServer.use(config.basePath, appServer());
 
 const server = mountedServer.listen(process.env.PORT || port, process.env.HOST || host, () => {
+    // FIXME direct print
     readline.clearLine(process.stdout);
     readline.cursorTo(0, process.stdout);
     process.stdout.write(`\x1b[0G${chalk.green('\u2713')} Server listening on: ${
         chalk.bold.underline(`http://${host}:${port}${config.basePath}`)
     }\n`);
     if (module.hot) {
+        // FIXME direct print
         console.log(`${chalk.green('\u2713')} ${chalk.bold('Hot module reload')} activated`);
         process.stdout.write(`\x1b[0G${
             chalk.blue('\uD83D\uDD50  Building client bundle [in memory]...')
