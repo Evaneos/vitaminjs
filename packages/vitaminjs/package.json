@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "yarn run lint",
-    "lint": "eslint --ext .js,.jsx src bin config"
+    "lint": "eslint --ext .js,.jsx src bin"
   },
   "bin": {
     "vitamin": "./bin/vitamin.js"
