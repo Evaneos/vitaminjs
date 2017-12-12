@@ -30,7 +30,10 @@ export default function clientConfig(options) {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
             options.hot && new webpack.NoEmitOnErrorsPlugin(),
-            !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+            !options.dev && new webpack.optimize.UglifyJsPlugin({
+                sourceMap: options.withSourceMaps,
+                minimize: true
+            }),
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
                 // FIXME Move resolving with other config props
                 entry: resolveConfigModule(options.client.serviceWorker),

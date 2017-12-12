@@ -64,7 +64,7 @@ export function config(options) {
         'postcss-loader',
     ];
     return {
-        devtool: options.dev && 'source-map',
+        devtool: (options.withSourceMaps || options.dev) && 'source-map',
         output: {
             pathinfo: options.dev,
             publicPath: `${options.publicPath}/`,

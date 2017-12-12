@@ -251,13 +251,16 @@ program
     .alias('b')
     .description('Build server and client bundles')
     .option('-h, --hot', 'Activate hot module reload')
-    .action(({ hot }) => build({ hot: checkHot(hot) })
-        .catch((err) => {
-            if (err !== BUILD_FAILED) {
-                console.log(err.stack || err);
-            }
-            process.exit(1);
-        }),
+    .option('--with-source-maps', 'Generate source maps')
+    .action(({ hot, withSourceMaps }) => {
+        build({ hot: checkHot(hot), withSourceMaps })
+            .catch((err) => {
+                if (err !== BUILD_FAILED) {
+                    console.log(err.stack || err);
+                }
+                process.exit(1);
+            });
+        }
     );
 
 program
