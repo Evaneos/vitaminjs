@@ -17,12 +17,14 @@
   },
   "license": "MIT",
   "dependencies": {
-    "enzyme": "2",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "vitaminjs": "file:../../packages/vitaminjs"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-15": "^1.0.5",
+    "enzyme-to-json": "^3.3.0",
     "react-test-renderer": "15",
     "vitaminjs-jest": "file:../../packages/vitaminjs-jest"
   }

@@ -4,7 +4,8 @@
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "index.js",
   "bin": {
-    "vitamin": "./bin/vitamin.js"
+    "vitamin": "./bin/vitamin.sh",
+    "vitamin-version": "./bin/vitamin-version.js"
   },
   "repository": {
     "type": "git",

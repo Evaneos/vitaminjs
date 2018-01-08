@@ -1,7 +1,7 @@
-import { spawn } from 'npm-run';
-import jestConfig from './jestrc'
+const { spawn } = require('npm-run');
+const jestConfig = require('./jestrc');
 
-export function registerCommand(program) {
+function registerCommand(program) {
     return program
         .command('jest [runnerArgs...]')
         .description('Launch test suite with Jest')
@@ -9,6 +9,8 @@ export function registerCommand(program) {
             spawnJest({ runnerArgs: runnerArgs.join(' ') });
         });
 };
+
+console.log(jestConfig);
 
 const spawnJest = ({ runnerArgs }) => {
     const args = [
@@ -23,3 +25,5 @@ const spawnJest = ({ runnerArgs }) => {
         }
     );
 };
+
+exports.registerCommand = registerCommand;

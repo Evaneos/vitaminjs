@@ -9,17 +9,19 @@
   ],
   "author": "Lucas Personnaz <lucas@evaneos.com>",
   "dependencies": {
-    "babel-jest": "^20.0.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.0.4",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^19.0.2",
-    "jest-enzyme": "^3.0.0",
+    "jest": "^22.0.4",
+    "jest-enzyme": "^4.0.2",
     "npm-run": "^4.1.2"
   },
   "peerDependencies": {
-    "enzyme": "^2.8.0",
+    "enzyme": "^3.3.0",
+    "enzyme-to-json": "^3.3.0",
     "vitaminjs-build": "file:../vitaminjs-build"
   },
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "babel src -d lib",
     "version": "yarn run build && git add -A lib",
@@ -27,11 +29,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-react-require": "^3.0.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1"
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "enzyme-adapter-react-15": "^1.0.5"
   },
   "engines": {
     "node": ">=6.5.0"
