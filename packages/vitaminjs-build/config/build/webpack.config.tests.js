@@ -1,8 +1,8 @@
-import mergeWith from 'lodash.mergewith';
-import { vitaminResolve, concat } from '../utils';
-import { config, createBabelLoader } from './webpack.config.common';
+const mergeWith = require('lodash.mergewith');
+const { vitaminResolve, concat } = require('../utils');
+const { config, createBabelLoader } = require('./webpack.config.common');
 
-export default function testConfig(options) {
+module.exports = function testConfig(options) {
     return mergeWith({}, config(options), {
         entry: `${options.test}`,
         output: {

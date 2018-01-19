@@ -1,18 +1,20 @@
-import presetEnv from 'babel-preset-env';
-import presetReact from 'babel-preset-react';
-import presetStage1 from 'babel-preset-stage-1';
-import pluginReactRequire from 'babel-plugin-react-require';
-import pluginTransformExportDefaultName from 'babel-plugin-transform-export-default-name-forked';
-import pluginMinifyReplace from 'babel-plugin-minify-replace';
-import pluginNodeEnvInline from 'babel-plugin-transform-node-env-inline';
-import pluginMinifyDeadCodeElimination from 'babel-plugin-minify-dead-code-elimination';
-import pluginMinifyGuardedExpressions from 'babel-plugin-minify-guarded-expressions';
-import pluginDiscardModuleReferences from 'babel-plugin-discard-module-references';
-import pluginReactJsxSource from 'babel-plugin-transform-react-jsx-source';
-import pluginReactJsxSelf from 'babel-plugin-transform-react-jsx-self';
-import { vitaminResolve } from '../utils';
+const presetEnv = require('babel-preset-env');
+const presetReact = require('babel-preset-react');
+const presetStage1 = require('babel-preset-stage-1');
+// FIXME This dependency is not exposing a valid CommonJS module, hence the trailing ".default"
+const pluginReactRequire = require('babel-plugin-react-require').default;
+const pluginTransformExportDefaultName = require('babel-plugin-transform-export-default-name-forked');
+const pluginMinifyReplace = require('babel-plugin-minify-replace');
+const pluginNodeEnvInline = require('babel-plugin-transform-node-env-inline');
+const pluginMinifyDeadCodeElimination = require('babel-plugin-minify-dead-code-elimination');
+const pluginMinifyGuardedExpressions = require('babel-plugin-minify-guarded-expressions');
+// FIXME This dependency is not exposing a valid CommonJS module, hence the trailing ".default"
+const pluginDiscardModuleReferences = require('babel-plugin-discard-module-references').default;
+const pluginReactJsxSource = require('babel-plugin-transform-react-jsx-source');
+const pluginReactJsxSelf = require('babel-plugin-transform-react-jsx-self');
+const { vitaminResolve } = require('../utils');
 
-export default (env, options) => ({
+module.exports = (env, options) => ({
     // order is: last to first
     presets: [
         [presetEnv, {

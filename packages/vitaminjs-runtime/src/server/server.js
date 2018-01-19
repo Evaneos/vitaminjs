@@ -27,8 +27,7 @@ function appServer() {
 const mountedServer = express();
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
-    require('vitaminjs-build/config/utils/transpile');
-    const webpackClientConfig = require('vitaminjs-build/config/build/webpack.config.client').default;
+    const webpackClientConfig = require('vitaminjs-build/config/build/webpack.config.client');
     const hotReloadServer = () => {
         const app = express();
         const webpack = require('webpack');

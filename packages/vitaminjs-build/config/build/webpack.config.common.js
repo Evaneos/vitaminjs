@@ -1,20 +1,20 @@
-import { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } from 'webpack';
-import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
-import postcssOmitImportTilde from 'postcss-omit-import-tilde';
-import postcssImport from 'postcss-import';
-import postcssUrl from 'postcss-url';
-import postcssCssNext from 'postcss-cssnext';
-import postcssBrowserReporter from 'postcss-browser-reporter';
-import postcssReporter from 'postcss-reporter';
-import { join } from 'path';
-import { isBuildModulePath, isExternalModulePath, isRuntimeModulePath, __isVitaminFacadeModulePath } from '../resolve';
-import { appResolve } from '../utils';
-import babelrc from './babelrc';
+const { HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin } = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const postcssOmitImportTilde = require('postcss-omit-import-tilde');
+const postcssImport = require('postcss-import');
+const postcssUrl = require('postcss-url');
+const postcssCssNext = require('postcss-cssnext');
+const postcssBrowserReporter = require('postcss-browser-reporter');
+const postcssReporter = require('postcss-reporter');
+const { join } = require('path');
+const { isBuildModulePath, isExternalModulePath, isRuntimeModulePath, __isVitaminFacadeModulePath } = require('../resolve');
+const { appResolve } = require('../utils');
+const babelrc = require('./babelrc');
 
 const APP_MODULES = appResolve('node_modules');
 
-export function createBabelLoader(env, options) {
+function createBabelLoader(env, options) {
     return {
         test: /\.js(x?)$/,
         loader: 'babel-loader',
@@ -32,13 +32,13 @@ export function createBabelLoader(env, options) {
     };
 }
 
-export const createResolveConfigLoader = () => ({
+const createResolveConfigLoader = () => ({
     // The following loader will resolve the config to its final value during the build
     test: require.resolve('../runtimeConfig'),
     loader: require.resolve('./resolveConfigLoader'),
 });
 
-export function config(options) {
+function config(options) {
     const CSSLoaders = ({ modules }) => [
         {
             loader: 'isomorphic-style-loader',
@@ -151,3 +151,9 @@ export function config(options) {
         ].filter(Boolean),
     };
 }
+
+module.exports = {
+    createBabelLoader,
+    createResolveConfigLoader,
+    config,
+};

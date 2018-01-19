@@ -1,13 +1,13 @@
-import stripJsonComments from 'strip-json-comments';
-import mergeWith from 'lodash.mergewith';
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import {
+const stripJsonComments = require('strip-json-comments');
+const mergeWith = require('lodash.mergewith');
+const { readFileSync } = require('fs');
+const { join, dirname } = require('path');
+const {
     resolveConfigModule,
     resolveConfigPath,
     resolveRcPath,
-} from './resolve';
-import defaults from './defaults';
+} = require('./resolve');
+const defaults = require('./defaults');
 
 // eslint-disable-next-line consistent-return
 function loadConfigFile(configPath) {
@@ -85,9 +85,9 @@ function loadExtendedConfig(config, configPath) {
 }
 
 
-export const rcPath = resolveRcPath();
+const rcPath = exports.rcPath = resolveRcPath();
 
-export default () => {
+exports.default = () => {
     let config = loadConfigFile(rcPath);
 
     const getModuleMap = (configPaths) => {

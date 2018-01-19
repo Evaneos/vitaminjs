@@ -1,12 +1,12 @@
-import { dirname, relative, resolve as resolvePath, sep } from 'path';
-import resolve from 'resolve';
+const { dirname, relative, resolve: resolvePath, sep } = require('path');
+const resolve = require('resolve');
 
 // .vitaminrc path
-export function resolveRcPath() {
+function resolveRcPath() {
     return resolvePath(process.cwd(), '.vitaminrc');
 }
 
-export function resolveConfigPath(path) {
+function resolveConfigPath(path) {
     return resolvePath(dirname(resolveRcPath()), path);
 }
 
@@ -14,7 +14,7 @@ function resolveModule(id, basedir) {
     return resolve.sync(id, { basedir, extensions: ['.js', '.jsx'] });
 }
 
-export function resolveConfigModule(id) {
+function resolveConfigModule(id) {
     // This is used in a context with the following dependency graph:
     //      app -> vitaminjs
     //      vitaminjs -> vitaminjs-build
@@ -30,7 +30,7 @@ export function resolveConfigModule(id) {
 }
 
 // FIXME Consider not exporting this function anymore but use webpack's "context" config
-export function resolveParentModule(id) {
+function resolveParentModule(id) {
     // Sample node modules paths for 'vitaminjs-runtime/src/server/components/HTMLLayout',
     // according to node's resolve algorithm:
     //
@@ -56,7 +56,7 @@ export function resolveParentModule(id) {
     return resolveModule(id, basedir);
 }
 
-export function isExternalModulePath(path) {
+function isExternalModulePath(path) {
     // There is a theoretical edge case when the application is contained in a
     // parent directory called "node_modules". In that case any internal
     // application module would be erroneously considered as external.
@@ -68,18 +68,18 @@ export function isExternalModulePath(path) {
 }
 
 const INTERNAL_REGEXP = /^\.{0,2}\//;
-export function isExternalModule(id) {
+function isExternalModule(id) {
     // Core node modules are considerered external too, they never match the
     // internal RegExp.
     return !INTERNAL_REGEXP.test(id);
 }
 
-export function isRuntimeModule(id, basedir) {
+function isRuntimeModule(id, basedir) {
     // FIXME
     return /vitaminjs-runtime/.test(id);
 }
 
-export function isRuntimeModulePath(path) {
+function isRuntimeModulePath(path) {
     const relativeModulePath = relative(dirname(resolveRcPath()), path);
     // FIXME Find a more elegant implementation
     return (
@@ -89,7 +89,7 @@ export function isRuntimeModulePath(path) {
 }
 
 // FIXME Duplicate of isRuntimeModulePath()
-export function isBuildModulePath(path) {
+function isBuildModulePath(path) {
     const relativeModulePath = relative(dirname(resolveRcPath()), path);
     return (
         relativeModulePath.includes(`${sep}node_modules${sep}vitaminjs-build${sep}`) ||
@@ -98,13 +98,13 @@ export function isBuildModulePath(path) {
 }
 
 // TODO Remove this for Vitamin 2
-export function __isVitaminFacadeModule(id) {
+function __isVitaminFacadeModule(id) {
     return /vitaminjs(\/|$)/.test(id);
 }
 
 // TODO Remove this for Vitamin 2
 // FIXME Duplicate of isRuntimeModulePath()
-export function __isVitaminFacadeModulePath(path) {
+function __isVitaminFacadeModulePath(path) {
     const relativeModulePath = relative(dirname(resolveRcPath()), path);
     return (
         relativeModulePath.includes(`${sep}node_modules${sep}vitaminjs${sep}`) ||
@@ -113,7 +113,22 @@ export function __isVitaminFacadeModulePath(path) {
 }
 
 // FIXME This is fragile, make sure only webpack loaders contains !
-export function __hasWebpackLoader(id) {
+function __hasWebpackLoader(id) {
     // Internal loaders begin or includes !, !!, -! see https://webpack.github.io/docs/loaders.html#loader-order
     return id.includes('!');
 }
+
+module.exports = {
+    resolveRcPath,
+    resolveConfigPath,
+    resolveConfigModule,
+    resolveParentModule,
+    isExternalModulePath,
+    isExternalModule,
+    isRuntimeModule,
+    isRuntimeModulePath,
+    isBuildModulePath,
+    __isVitaminFacadeModule,
+    __isVitaminFacadeModulePath,
+    __hasWebpackLoader,
+};

@@ -1,12 +1,12 @@
-import mergeWith from 'lodash.mergewith';
-import webpack from 'webpack';
-import ServiceWorkerWebpackPlugin from 'serviceworker-webpack-plugin';
+const mergeWith = require('lodash.mergewith');
+const webpack = require('webpack');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
-import { createBabelLoader, createResolveConfigLoader, config } from './webpack.config.common.js';
-import { resolveConfigModule, resolveParentModule } from '../resolve';
-import { concat } from '../utils';
+const { createBabelLoader, createResolveConfigLoader, config } = require('./webpack.config.common.js');
+const { resolveConfigModule, resolveParentModule } = require('../resolve');
+const { concat } = require('../utils');
 
-export default function clientConfig(options) {
+module.exports = function clientConfig(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {
