@@ -8,7 +8,6 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
-import ProgressBar from 'progress';
 import chalk from 'chalk';
 
 import killProcess from '../config/utils/killProcess';
@@ -17,6 +16,7 @@ import webpackConfigClient from '../config/build/webpack.config.client';
 import webpackConfigTest from '../config/build/webpack.config.tests';
 import parseConfig, { rcPath as configRcPath } from '../config';
 import { version } from '../package.json';
+import { beginTask } from '../stdio';
 
 const DEV = process.env.NODE_ENV !== 'production';
 
@@ -70,19 +70,21 @@ const listenExitSignal = (callback) => {
 
 const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
-    // FIXME direct print
-    if (process.stdout.isTTY) {
-        const bar = new ProgressBar(
-            `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
-        );
-        compiler.apply(new ProgressPlugin((percentage, msg) => {
-            bar.update(percentage, { msg });
-        }));
-        compiler.apply(new FriendlyErrorsWebpackPlugin({
-            clearConsole: !!options.hot,
-        }));
-    }
+    const task = beginTask(message);
+    // FIXME Duplicate code
+    compiler.apply(new ProgressPlugin((percentage, msg) => {
+        task.progress(percentage);
+    }));
+    compiler.plugin('done', () => {
+        task.success();
+    });
+    compiler.plugin('failed', (error) => {
+        task.failure(error);
+    });
+    compiler.apply(new FriendlyErrorsWebpackPlugin({
+        // clearConsole: !!options.hot,
+        clearConsole: false,
+    }));
 
     return compiler;
 };
@@ -128,15 +130,15 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
 const build = (options, hotCallback, restartServer) => (options.hot ?
     commonBuild(
         webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
+        'build/server/hmr',
         options,
         hotCallback,
         restartServer,
     )
 :
-    commonBuild(webpackConfigClient, 'client bundle(s)', options)
+    commonBuild(webpackConfigClient, 'build/client', options)
         .then(({ buildStats }) => commonBuild(
-            webpackConfigServer, 'server bundle...',
+            webpackConfigServer, 'build/server',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
             { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },

@@ -17,7 +17,14 @@
 - Of the http process
 - When require() of new module version fails during HMR
 # Vitamin CLI help
-
+At runtime:
+```javascript
+{
+    log(message: string): void;
+}
+```
+At build time:
+```javascript
 {
     log(message: string): void;
     beginServerBuild(): {
@@ -31,3 +38,4 @@
         failed() => void
     }
 }
+```

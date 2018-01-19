@@ -5,5 +5,6 @@ require('babel-register')({
     // FIXME Seems useless
     ignore: false,
     // FIXME Try to consolidate with babel-loader config of prebuild vitamin packages
-    only: /vitaminjs-(?:runtime|build\/(?:bin|config))/,
+    // only: /vitaminjs-(?:runtime|build\/(?:bin|config|stdio))/
+    only: /vitaminjs-(?:runtime|build\/(?:bin|config))/
 });

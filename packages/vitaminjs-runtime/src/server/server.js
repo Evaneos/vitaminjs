@@ -28,6 +28,8 @@ const mountedServer = express();
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
     require('vitaminjs-build/config/utils/transpile');
+    const { beginTask } = require('vitaminjs-build/stdio');
+    const ProgressPlugin = require('webpack/lib/ProgressPlugin');
     const webpackClientConfig = require('vitaminjs-build/config/build/webpack.config.client').default;
     const hotReloadServer = () => {
         const app = express();
@@ -39,22 +41,27 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
         });
 
         const compiler = webpack(clientBuildConfig);
-        let clientBuilt = false;
+        // FIXME Duplicate code
+
+        let task;
+        compiler.plugin('compile', () => {
+            task = beginTask('build/client/hmr');
+        });
+        // compiler.apply(new ProgressPlugin((percentage, msg) => {
+        //     task.progress(percentage);
+        // }));
+        compiler.plugin('done', stats => {
+            stats.hasErrors() ? task.failure() : task.success();
+        });
+        // FIXME Needed?
+        // compiler.plugin('failed', (error) => {
+        //     throw error;
+        // });
         const parsedPublicPath = parseUrl(config.publicPath).pathname || '';
         app.use(require('webpack-dev-middleware')(compiler, {
             quiet: true,
             noInfo: true,
             publicPath: parsedPublicPath,
-            reporter: (stats) => {
-                if (stats.hasErrors || clientBuilt) {
-                    return;
-                }
-                clientBuilt = true;
-                // FIXME direct print
-                process.stdout.write(`\x1b[0G${chalk.green('\u2713')
-                    } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
-                );
-            },
             serverSideRender: true,
         }));
 
@@ -92,9 +99,6 @@ const server = mountedServer.listen(process.env.PORT || port, process.env.HOST |
     if (module.hot) {
         // FIXME direct print
         console.log(`${chalk.green('\u2713')} ${chalk.bold('Hot module reload')} activated`);
-        process.stdout.write(`\x1b[0G${
-            chalk.blue('\uD83D\uDD50  Building client bundle [in memory]...')
-        }`);
     }
 });
 
