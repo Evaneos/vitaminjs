@@ -1,5 +1,5 @@
 /* eslint-disable */
-import chalk from 'chalk';
+const chalk = require('chalk');
 
 /*
  * copied from https://github.com/webpack/webpack/blob/master/hot/signal.js

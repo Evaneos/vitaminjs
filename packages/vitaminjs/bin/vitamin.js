@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-module.exports = require('vitaminjs-build/bin/vitamin.es5.js');
+module.exports = require('vitaminjs-build/bin/vitamin.js');

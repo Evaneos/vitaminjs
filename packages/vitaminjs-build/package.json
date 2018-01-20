@@ -17,7 +17,7 @@
     "url": "https://github.com/Evaneos/vitaminjs.git"
   },
   "bin": {
-    "vitamin": "bin/vitamin.es5.js"
+    "vitamin": "bin/vitamin.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",

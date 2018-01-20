@@ -1,22 +1,25 @@
+#!/usr/bin/env node
 /* eslint no-console: 0 */
 
-import program from 'commander';
-import webpack from 'webpack';
-import path from 'path';
-import rimraf from 'rimraf';
-import { spawn } from 'child_process';
-import fs from 'fs';
-import ProgressPlugin from 'webpack/lib/ProgressPlugin';
-import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
-import ProgressBar from 'progress';
-import chalk from 'chalk';
+const program = require('commander');
+const webpack = require('webpack');
+const path = require('path');
+const rimraf = require('rimraf');
+const { spawn } = require('child_process');
+const fs = require('fs');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const ProgressBar = require('progress');
+const chalk = require('chalk');
 
-import killProcess from '../config/utils/killProcess';
-import webpackConfigServer from '../config/build/webpack.config.server';
-import webpackConfigClient from '../config/build/webpack.config.client';
-import webpackConfigTest from '../config/build/webpack.config.tests';
-import parseConfig, { rcPath as configRcPath } from '../config';
-import { version } from '../package.json';
+const killProcess = require('../config/utils/killProcess');
+const webpackConfigServer = require('../config/build/webpack.config.server');
+const webpackConfigClient = require('../config/build/webpack.config.client');
+const webpackConfigTest = require('../config/build/webpack.config.tests');
+const { default: parseConfig, rcPath: configRcPath } = require('../config');
+const { version } = require('../package.json');
+
+process.env.VITAMIN_PATH = path.resolve(__dirname, '..');
 
 const DEV = process.env.NODE_ENV !== 'production';
 

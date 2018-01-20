@@ -1,14 +1,14 @@
-import { optimize, BannerPlugin, DefinePlugin } from 'webpack';
-import mergeWith from 'lodash.mergewith';
-import { config, createBabelLoader, createResolveConfigLoader } from './webpack.config.common';
-import {
+const { optimize, BannerPlugin, DefinePlugin } = require('webpack');
+const mergeWith = require('lodash.mergewith');
+const { config, createBabelLoader, createResolveConfigLoader } = require('./webpack.config.common');
+const {
     isExternalModule,
     isRuntimeModule,
     resolveParentModule,
     __isVitaminFacadeModule,
     __hasWebpackLoader,
-} from '../resolve';
-import { concat } from '../utils';
+} = require('../resolve');
+const { concat } = require('../utils');
 
 function externals(context, request, callback) {
     // TODO Take a look at `webpack-node-externals`
@@ -33,7 +33,7 @@ function externals(context, request, callback) {
 }
 
 
-export default function serverConfig(options) {
+module.exports = function serverConfig(options) {
     return mergeWith({}, config(options), {
         entry: [
             options.hot && require.resolve('../utils/hot'),

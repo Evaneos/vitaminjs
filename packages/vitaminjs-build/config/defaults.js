@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     server: {
         buildPath: 'build',
         filename: 'server_bundle.js',
