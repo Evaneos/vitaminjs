@@ -8,13 +8,11 @@ jobs:
       - checkout
       - run:
           name: Dependencies
-          command: (yarn install --no-progress --frozen-lockfile || yarn install --no-progress --frozen-lockfile)
-      - run:
-          name: Packages link
-          command: cd ./packages/vitaminjs && yarn link && cd ../vitaminjs-runtime && yarn link && cd ../vitaminjs-build && yarn link
-      - run:
-          name: Lint
-          command: cd ./packages/vitaminjs && yarn run lint
+          command: yarn install --no-progress --frozen-lockfile
+#      - run:
+#          name: Lint vitaminjs packages
+#          command: yarn lint
       - run:
           name: Build examples
           command: ls -1 examples | picard tests split | xargs -n 1 ./.circleci/test.sh
+

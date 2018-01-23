@@ -3,10 +3,6 @@
   "version": "1.3.0-rc2",
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "index.js",
-  "scripts": {
-    "test": "yarn run lint",
-    "lint": "eslint --ext .js,.jsx src bin"
-  },
   "bin": {
     "vitamin": "./bin/vitamin.js"
   },
@@ -30,14 +26,6 @@
     "Antoine Lépée <antoine@evanoes.com>"
   ],
   "license": "MIT",
-  "devDependencies": {
-    "babel-eslint": "^7.2.2",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.3"
-  },
   "peerDependencies": {
     "react": "^0.14.9 || ^15.3.0"
   },

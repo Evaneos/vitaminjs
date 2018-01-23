@@ -12,6 +12,7 @@
     "vitaminjs": "file:../../packages/vitaminjs"
   },
   "scripts": {
+    "clean": "vitamin clean",
     "build": "vitamin build",
     "start": "vitamin start",
     "serve": "vitamin serve"

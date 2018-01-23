@@ -1,5 +1,14 @@
 {
+	"scripts": {
+		"lint": "./node_modules/.bin/eslint scripts packages --ext .js .jsx"
+	},
 	"devDependencies": {
+		"babel-eslint": "7",
+		"eslint": "3",
+		"eslint-config-airbnb": "14",
+		"eslint-plugin-import": "2",
+		"eslint-plugin-jsx-a11y": "4",
+		"eslint-plugin-react": "6",
 		"lerna": "^2.0.0"
 	}
 }
