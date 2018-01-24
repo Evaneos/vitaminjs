@@ -1,4 +1,5 @@
 const { dirname, relative, resolve: resolvePath, sep } = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const resolve = require('resolve');
 
 // .vitaminrc path
@@ -12,21 +13,6 @@ function resolveConfigPath(path) {
 
 function resolveModule(id, basedir) {
     return resolve.sync(id, { basedir, extensions: ['.js', '.jsx'] });
-}
-
-function resolveConfigModule(id) {
-    // This is used in a context with the following dependency graph:
-    //      app -> vitaminjs
-    //      vitaminjs -> vitaminjs-build
-    //      vitaminjs -> vitaminjs-runtime -> vitaminjs-build
-    // So runtime package resolving will not always be relative to the app
-    // (where the .vitaminrc file is located). We try resolve the runtime
-    // package by walking up the dependency tree.
-    if (id.startsWith('__vitamin_runtime__/')) {
-        return resolveParentModule(id.replace('__vitamin_runtime__', 'vitaminjs-runtime'));
-    }
-    // .vitaminrc relative resolution
-    return resolveModule(id, dirname(resolveRcPath()));
 }
 
 // FIXME Consider not exporting this function anymore but use webpack's "context" config
@@ -56,6 +42,21 @@ function resolveParentModule(id) {
     return resolveModule(id, basedir);
 }
 
+function resolveConfigModule(id) {
+    // This is used in a context with the following dependency graph:
+    //      app -> vitaminjs
+    //      vitaminjs -> vitaminjs-build
+    //      vitaminjs -> vitaminjs-runtime -> vitaminjs-build
+    // So runtime package resolving will not always be relative to the app
+    // (where the .vitaminrc file is located). We try resolve the runtime
+    // package by walking up the dependency tree.
+    if (id.startsWith('__vitamin_runtime__/')) {
+        return resolveParentModule(id.replace('__vitamin_runtime__', 'vitaminjs-runtime'));
+    }
+    // .vitaminrc relative resolution
+    return resolveModule(id, dirname(resolveRcPath()));
+}
+
 function isExternalModulePath(path) {
     // There is a theoretical edge case when the application is contained in a
     // parent directory called "node_modules". In that case any internal
@@ -74,7 +75,7 @@ function isExternalModule(id) {
     return !INTERNAL_REGEXP.test(id);
 }
 
-function isRuntimeModule(id, basedir) {
+function isRuntimeModule(id) {
     // FIXME
     return /vitaminjs-runtime/.test(id);
 }

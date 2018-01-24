@@ -24,7 +24,8 @@ function createBabelLoader(env, options) {
                 !isExternalModulePath(path) ||
                 __isVitaminFacadeModulePath(path) ||
                 isRuntimeModulePath(path) ||
-                // FIXME This is only required for parts of the runtime that require the build system
+                // FIXME This is only required for parts of the runtime
+                // that require the build system
                 isBuildModulePath(path)
             ),
         query: babelrc(env, options),

@@ -85,7 +85,8 @@ function loadExtendedConfig(config, configPath) {
 }
 
 
-const rcPath = exports.rcPath = resolveRcPath();
+const rcPath = resolveRcPath();
+exports.rcPath = rcPath;
 
 exports.default = () => {
     let config = loadConfigFile(rcPath);
@@ -142,7 +143,7 @@ exports.default = () => {
     // If public path is not absolute url, prepend basePath
     updatePath(['publicPath'], publicPath =>
         (!publicPath.match(/^(http|\/\/)/) ? config.basePath.replace(/\/$/, '') : '') + config.publicPath,
-    config);
+        config);
 
     return Object.assign({}, config, {
         moduleMap,

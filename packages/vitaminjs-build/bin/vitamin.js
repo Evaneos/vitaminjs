@@ -136,7 +136,9 @@ const build = (options, hotCallback, restartServer) => (options.hot
                 webpackConfigServer, 'server bundle...',
                 // Cannot build in parallel because server-side rendering
                 // needs client bundle name in the html layout for script path
-                Object.assign({}, options, { assetsByChunkName: buildStats.toJson().assetsByChunkName })
+                Object.assign({}, options, {
+                    assetsByChunkName: buildStats.toJson().assetsByChunkName,
+                })
             ))
             .then(({ config }) => restartServer && restartServer(config))
 );

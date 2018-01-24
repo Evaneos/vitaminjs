@@ -8,8 +8,8 @@ import fetch from 'node-fetch';
 import readline from 'readline';
 import httpGracefulShutdown from 'http-graceful-shutdown';
 
-import appMiddleware from './appMiddleware';
 import config from '__vitamin_runtime_config__';
+import appMiddleware from './appMiddleware';
 
 global.fetch = fetch;
 
