@@ -14,21 +14,6 @@ function resolveModule(id, basedir) {
     return resolve.sync(id, { basedir, extensions: ['.js', '.jsx'] });
 }
 
-function resolveConfigModule(id) {
-    // This is used in a context with the following dependency graph:
-    //      app -> vitaminjs
-    //      vitaminjs -> vitaminjs-build
-    //      vitaminjs -> vitaminjs-runtime -> vitaminjs-build
-    // So runtime package resolving will not always be relative to the app
-    // (where the .vitaminrc file is located). We try resolve the runtime
-    // package by walking up the dependency tree.
-    if (id.startsWith('__vitamin_runtime__/')) {
-        return resolveParentModule(id.replace('__vitamin_runtime__', 'vitaminjs-runtime'));
-    }
-    // .vitaminrc relative resolution
-    return resolveModule(id, dirname(resolveRcPath()));
-}
-
 // FIXME Consider not exporting this function anymore but use webpack's "context" config
 function resolveParentModule(id) {
     // Sample node modules paths for 'vitaminjs-runtime/src/server/components/HTMLLayout',
@@ -56,6 +41,21 @@ function resolveParentModule(id) {
     return resolveModule(id, basedir);
 }
 
+function resolveConfigModule(id) {
+    // This is used in a context with the following dependency graph:
+    //      app -> vitaminjs
+    //      vitaminjs -> vitaminjs-build
+    //      vitaminjs -> vitaminjs-runtime -> vitaminjs-build
+    // So runtime package resolving will not always be relative to the app
+    // (where the .vitaminrc file is located). We try resolve the runtime
+    // package by walking up the dependency tree.
+    if (id.startsWith('__vitamin_runtime__/')) {
+        return resolveParentModule(id.replace('__vitamin_runtime__', 'vitaminjs-runtime'));
+    }
+    // .vitaminrc relative resolution
+    return resolveModule(id, dirname(resolveRcPath()));
+}
+
 function isExternalModulePath(path) {
     // There is a theoretical edge case when the application is contained in a
     // parent directory called "node_modules". In that case any internal
@@ -74,6 +74,7 @@ function isExternalModule(id) {
     return !INTERNAL_REGEXP.test(id);
 }
 
+// eslint-disable-next-line no-unused-vars
 function isRuntimeModule(id, basedir) {
     // FIXME
     return /vitaminjs-runtime/.test(id);

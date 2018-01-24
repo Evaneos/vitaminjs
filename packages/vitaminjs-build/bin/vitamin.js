@@ -134,7 +134,7 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
         hotCallback,
         restartServer,
     )
-:
+    :
     commonBuild(webpackConfigClient, 'client bundle(s)', options)
         .then(({ buildStats }) => commonBuild(
             webpackConfigServer, 'server bundle...',
@@ -263,8 +263,7 @@ program
                 }
                 process.exit(1);
             });
-        }
-    );
+    });
 
 program
     .command('clean')
@@ -286,8 +285,7 @@ program
                     console.log(err.stack || err);
                 }
                 process.exit(1);
-            }),
-    );
+            }));
 
 program
     .command('serve')

@@ -85,7 +85,8 @@ function loadExtendedConfig(config, configPath) {
 }
 
 
-const rcPath = exports.rcPath = resolveRcPath();
+const rcPath = resolveRcPath();
+exports.rcPath = rcPath;
 
 exports.default = () => {
     let config = loadConfigFile(rcPath);
@@ -119,16 +120,16 @@ exports.default = () => {
     const moduleMap = getModuleMap(modulePaths);
 
     // Cleanify config export by removing module paths
-    modulePaths.forEach(path =>
-        deletePath(path, config),
+    modulePaths.forEach(
+        path => deletePath(path, config)
     );
 
     // Resolve app path to absolute paths
     [
         ['server', 'buildPath'],
         ['client', 'buildPath'],
-    ].forEach(path =>
-        updatePath(path, resolveConfigPath, config),
+    ].forEach(
+        path => updatePath(path, resolveConfigPath, config),
     );
 
     // Prepend / to publicPath and basePath if necessary

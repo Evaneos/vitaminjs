@@ -32,14 +32,18 @@
         // PropType.Shape seems buggy
         "react/no-unused-prop-types": [2, { "skipShapeProps": true }],
         "import/extensions" : 0,
-        "import/no-unresolved": [2, {
-            "ignore": [
-                // App dependancies, as global modules
-                "__app_modules__",
-                // Peer dependancies
-                "react",
-                "react-dom"
-            ]
-        } ]
+        "import/no-extraneous-dependencies": 0,
+        "import/no-unresolved": 0,
+        "function-paren-newline": [2, "consistent"],
+        "object-curly-newline": [2, {
+            "consistent": true
+        }],
+        "comma-dangle": [2, {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "never"
+        }]
     }
 }

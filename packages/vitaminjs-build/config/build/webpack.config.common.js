@@ -18,16 +18,16 @@ function createBabelLoader(env, options) {
     return {
         test: /\.js(x?)$/,
         loader: 'babel-loader',
-        include: path => {
+        include: path =>
             // We only want to transpile user land application code and our own runtime
-            return (
+            (
                 !isExternalModulePath(path) ||
                 __isVitaminFacadeModulePath(path) ||
                 isRuntimeModulePath(path) ||
-                // FIXME This is only required for parts of the runtime that require the build system
+                // FIXME This is only required for parts of the runtime
+                // that require the build system
                 isBuildModulePath(path)
-            );
-        },
+            ),
         query: babelrc(env, options),
     };
 }
@@ -112,7 +112,7 @@ function config(options) {
         resolve: {
             alias: {
                 ...options.moduleMap,
-                '__vitamin_runtime_config__': require.resolve('../runtimeConfig'),
+                __vitamin_runtime_config__: require.resolve('../runtimeConfig'),
             },
             // Commmented out beause absolute paths were opting out of node resolve algorithm
             // modules: MODULES_DIRECTORIES,
