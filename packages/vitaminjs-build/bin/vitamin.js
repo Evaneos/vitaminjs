@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
 const program = require('commander');
 const webpack = require('webpack');
 const path = require('path');
@@ -84,7 +85,7 @@ const createCompiler = (webpackConfig, message, options) => {
             clearConsole: !!options.hot,
         }));
     }
-    
+
     return compiler;
 };
 
@@ -95,14 +96,14 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
         const compiler = createCompiler(webpackConfig, message, options);
         return { compiler, config };
     };
-    
+
     if (!options.hot) {
         const { compiler, config } = createCompilerCommonBuild();
         return new Promise((resolve, reject) => (
             compiler.run(buildCallback(buildStats => resolve({ config, buildStats }), reject))
         ));
     }
-    
+
     let webpackWatcher;
     const watch = () => (
         new Promise((resolve) => {
@@ -114,30 +115,30 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
             webpackWatcher = compiler.watch({}, callbackWatch);
         })
     );
-    
+
     fs.watchFile(configRcPath, throttle(() => {
         webpackWatcher.close(() => watch().then(restartServer));
     }));
-    
+
     return watch();
 };
 
 const build = (options, hotCallback, restartServer) => (options.hot
-    ? commonBuild(
-        webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
-        options,
-        hotCallback,
-        restartServer
-    )
-    : commonBuild(webpackConfigClient, 'client bundle(s)', options)
-        .then(({ buildStats }) => commonBuild(
-            webpackConfigServer, 'server bundle...',
-            // Cannot build in parallel because server-side rendering
-            // needs client bundle name in the html layout for script path
-            Object.assign({}, options, { assetsByChunkName: buildStats.toJson().assetsByChunkName })
-        ))
-        .then(({ config }) => restartServer && restartServer(config))
+        ? commonBuild(
+            webpackConfigServer,
+            `server bundle ${chalk.bold('[hot]')}`,
+            options,
+            hotCallback,
+            restartServer
+        )
+        : commonBuild(webpackConfigClient, 'client bundle(s)', options)
+            .then(({ buildStats }) => commonBuild(
+                webpackConfigServer, 'server bundle...',
+                // Cannot build in parallel because server-side rendering
+                // needs client bundle name in the html layout for script path
+                Object.assign({}, options, { assetsByChunkName: buildStats.toJson().assetsByChunkName })
+            ))
+            .then(({ config }) => restartServer && restartServer(config))
 );
 
 
@@ -146,7 +147,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         if (!config.test) {
             throw new Error('Please specify a test file path in .vitaminrc');
         }
-        
+
         console.log(chalk.blue(`${symbols.clock} Launching tests...`));
         const serverFile = path.join(
             config.server.buildPath,
@@ -154,7 +155,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         );
         spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
-    
+
     commonBuild(webpackConfigTest, 'tests', { hot, dev: DEV }, launchTest);
 };
 
@@ -182,7 +183,7 @@ const serve = (config) => {
 
 const start = (options) => {
     let serverProcess;
-    
+
     let exiting = false;
     listenExitSignal((signal) => {
         exiting = true;
@@ -191,8 +192,8 @@ const start = (options) => {
             console.log('exiting'); process.exit();
         });
     });
-    
-    
+
+
     function startServer(config) {
         if (exiting) return;
         if (serverProcess) {
@@ -211,55 +212,55 @@ const start = (options) => {
             serverProcess = null;
         });
     }
-    
+
     const sendSignal = (config) => {
         if (!serverProcess) {
             startServer(config);
             return;
         }
-        
+
         serverProcess.kill('SIGUSR2');
     };
-    
+
     return build(options, sendSignal, startServer);
 };
 
 program
-.description('Build framework for react/redux ecosystem')
-.version(version);
+    .description('Build framework for react/redux ecosystem')
+    .version(version);
 
 program
-.command('test [runnerArgs...]')
-.alias('t')
-.description('Build test suite')
-.option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
-.option('--no-hmr', 'Disable hot reload')
-.action((runnerArgs, { runner, hmr }) => {
-    test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
-})
-.on('--help', () => {
-    console.log('  Examples:');
-    console.log('');
-    console.log('    $ vitamin test -r mocha -- --color');
-    console.log('');
-});
-
-program
-.command('build')
-.alias('b')
-.description('Build server and client bundles')
-.option('-h, --hot', 'Activate hot module reload')
-.option('--with-source-maps', 'Generate source maps')
-.action(({ hot, withSourceMaps }) => {
-    build({ hot: checkHot(hot), withSourceMaps })
-    .catch((err) => {
-        if (err !== BUILD_FAILED) {
-            console.log(err.stack || err);
-        }
-        process.exit(1);
+    .command('test [runnerArgs...]')
+    .alias('t')
+    .description('Build test suite')
+    .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
+    .option('--no-hmr', 'Disable hot reload')
+    .action((runnerArgs, { runner, hmr }) => {
+        test({ hot: hmr, runner, runnerArgs: runnerArgs.join(' ') });
+    })
+    .on('--help', () => {
+        console.log('  Examples:');
+        console.log('');
+        console.log('    $ vitamin test -r mocha -- --color');
+        console.log('');
     });
-}
-);
+
+program
+    .command('build')
+    .alias('b')
+    .description('Build server and client bundles')
+    .option('-h, --hot', 'Activate hot module reload')
+    .option('--with-source-maps', 'Generate source maps')
+    .action(({ hot, withSourceMaps }) => {
+        build({ hot: checkHot(hot), withSourceMaps })
+                .catch((err) => {
+                    if (err !== BUILD_FAILED) {
+                        console.log(err.stack || err);
+                    }
+                    process.exit(1);
+                });
+    }
+    );
 
 program
     .command('clean')
@@ -275,13 +276,13 @@ program
     .option('--no-hmr', 'Disable hot reload')
     .action(({ hmr }) =>
         clean()
-        .then(() => start({ hot: checkHot(hmr) }))
-        .catch((err) => {
-            if (err !== BUILD_FAILED) {
-                console.log(err.stack || err);
-            }
-            process.exit(1);
-        })
+            .then(() => start({ hot: checkHot(hmr) }))
+            .catch((err) => {
+                if (err !== BUILD_FAILED) {
+                    console.log(err.stack || err);
+                }
+                process.exit(1);
+            })
     );
 
 program
@@ -289,13 +290,13 @@ program
     .description('Start application server')
     .action(() => {
         const serverProcess = serve(parseConfig());
-        
+
         listenExitSignal((signal) => {
             killProcess(serverProcess, { signal })
-            .then(() => process.exit());
+                .then(() => process.exit());
         });
-        
-        
+
+
         serverProcess.on('close', (code) => {
             if (!code) {
                 return;

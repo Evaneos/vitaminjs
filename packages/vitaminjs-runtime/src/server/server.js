@@ -19,7 +19,7 @@ function appServer() {
     app.use(
         process.env.NODE_ENV === 'production' ? currentApp
             // ecapsulate app for hot reload
-            : (ctx, next) => currentApp(ctx, next),
+            : (ctx, next) => currentApp(ctx, next)
     );
     return app.callback();
 }
@@ -50,7 +50,7 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
                 }
                 clientBuilt = true;
                 process.stdout.write(`\x1b[0G${chalk.green('\u2713')
-                    } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
+                    } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`
                 );
             },
             serverSideRender: true,
