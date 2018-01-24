@@ -31,7 +31,7 @@ const clean = () => new Promise((resolve, reject) => {
     const config = parseConfig();
     return rimraf(
         path.join(config.server.buildPath, '*'),
-        (err, data) => (!err ? resolve(data) : reject(err)),
+        (err, data) => (!err ? resolve(data) : reject(err))
     );
 });
 
@@ -39,7 +39,7 @@ const checkHot = (hot) => {
     if (hot && !DEV) {
         console.log(chalk.yellow(
             '[WARNING]: Hot module reload option ignored in production environment.\n' +
-            '(based on your NODE_ENV variable)\n',
+            '(based on your NODE_ENV variable)\n'
         ));
         /* eslint no-param-reassign: 0 */
         return false;
@@ -75,7 +75,7 @@ const createCompiler = (webpackConfig, message, options) => {
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
             `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
+            { incomplete: ' ', total: 60, clear: true, stream: process.stdout }
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
             bar.update(percentage, { msg });
@@ -91,11 +91,12 @@ const createCompiler = (webpackConfig, message, options) => {
 const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
     const createCompilerCommonBuild = () => {
         const config = parseConfig();
-        const webpackConfig = createWebpackConfig({
-            ...options,
-            dev: DEV,
-            ...config,
-        });
+        const webpackConfig = createWebpackConfig(Object.assign(
+            {},
+            options,
+            { dev: DEV },
+            config
+        ));
         const compiler = createCompiler(webpackConfig, message, options);
         return { compiler, config };
     };
@@ -132,7 +133,7 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
         `server bundle ${chalk.bold('[hot]')}`,
         options,
         hotCallback,
-        restartServer,
+        restartServer
     )
     :
     commonBuild(webpackConfigClient, 'client bundle(s)', options)
@@ -140,7 +141,11 @@ const build = (options, hotCallback, restartServer) => (options.hot ?
             webpackConfigServer, 'server bundle...',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
-            { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },
+            Object.assign(
+                {},
+                options,
+                { assetsByChunkName: buildStats.toJson().assetsByChunkName }
+            )
         ))
         .then(({ config }) => restartServer && restartServer(config))
 );
@@ -155,7 +160,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         console.log(chalk.blue(`${symbols.clock} Launching tests...`));
         const serverFile = path.join(
             config.server.buildPath,
-            'tests',
+            'tests'
         );
         spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
@@ -168,7 +173,7 @@ const serve = (config) => {
     process.stdout.write(chalk.blue(`${symbols.clock} Launching server...`));
     const serverFile = path.join(
         config.server.buildPath,
-        config.server.filename,
+        config.server.filename
     );
     try {
         fs.accessSync(serverFile, fs.F_OK);
@@ -178,7 +183,7 @@ const serve = (config) => {
         console.error(chalk.red(
             `\n\nCannot access the server bundle file. Make sure you built
 the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`,
+the file is accessible by the current user`
         ));
         process.exit(1);
     }
@@ -310,7 +315,7 @@ program
                 '- If it occurs during initialization, it is probably an error in your app. Check the' +
                 ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
                 '- If your positive it\'s not any of that, it might be because of a problem with ' +
-                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
+                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues'
             ));
             process.exit(1);
         });
