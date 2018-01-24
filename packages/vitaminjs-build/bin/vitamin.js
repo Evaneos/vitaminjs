@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/* eslint no-console: 0 */
 
+/* eslint-disable no-console */
 const program = require('commander');
 const webpack = require('webpack');
 const path = require('path');
@@ -17,6 +17,7 @@ const webpackConfigServer = require('../config/build/webpack.config.server');
 const webpackConfigClient = require('../config/build/webpack.config.client');
 const webpackConfigTest = require('../config/build/webpack.config.tests');
 const { default: parseConfig, rcPath: configRcPath } = require('../config');
+
 const { version } = require('../package.json');
 
 process.env.VITAMIN_PATH = path.resolve(__dirname, '..');
@@ -29,9 +30,9 @@ const symbols = {
 
 const clean = () => new Promise((resolve, reject) => {
     const config = parseConfig();
-    return rimraf(
+    rimraf(
         path.join(config.server.buildPath, '*'),
-        (err, data) => (!err ? resolve(data) : reject(err)),
+        (err, data) => (!err ? resolve(data) : reject(err))
     );
 });
 
@@ -39,7 +40,7 @@ const checkHot = (hot) => {
     if (hot && !DEV) {
         console.log(chalk.yellow(
             '[WARNING]: Hot module reload option ignored in production environment.\n' +
-            '(based on your NODE_ENV variable)\n',
+            '(based on your NODE_ENV variable)\n'
         ));
         /* eslint no-param-reassign: 0 */
         return false;
@@ -75,7 +76,7 @@ const createCompiler = (webpackConfig, message, options) => {
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
             `${chalk.blue(`${symbols.clock} Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
+            { incomplete: ' ', total: 60, clear: true, stream: process.stdout }
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
             bar.update(percentage, { msg });
@@ -91,11 +92,7 @@ const createCompiler = (webpackConfig, message, options) => {
 const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
     const createCompilerCommonBuild = () => {
         const config = parseConfig();
-        const webpackConfig = createWebpackConfig({
-            ...options,
-            dev: DEV,
-            ...config,
-        });
+        const webpackConfig = createWebpackConfig(Object.assign({}, options, { dev: DEV }, config));
         const compiler = createCompiler(webpackConfig, message, options);
         return { compiler, config };
     };
@@ -126,23 +123,24 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     return watch();
 };
 
-const build = (options, hotCallback, restartServer) => (options.hot ?
-    commonBuild(
-        webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
-        options,
-        hotCallback,
-        restartServer,
-    )
-:
-    commonBuild(webpackConfigClient, 'client bundle(s)', options)
-        .then(({ buildStats }) => commonBuild(
-            webpackConfigServer, 'server bundle...',
-            // Cannot build in parallel because server-side rendering
-            // needs client bundle name in the html layout for script path
-            { ...options, assetsByChunkName: buildStats.toJson().assetsByChunkName },
-        ))
-        .then(({ config }) => restartServer && restartServer(config))
+const build = (options, hotCallback, restartServer) => (options.hot
+        ? commonBuild(
+            webpackConfigServer,
+            `server bundle ${chalk.bold('[hot]')}`,
+            options,
+            hotCallback,
+            restartServer
+        )
+        : commonBuild(webpackConfigClient, 'client bundle(s)', options)
+            .then(({ buildStats }) => commonBuild(
+                webpackConfigServer, 'server bundle...',
+                // Cannot build in parallel because server-side rendering
+                // needs client bundle name in the html layout for script path
+                Object.assign({}, options, {
+                    assetsByChunkName: buildStats.toJson().assetsByChunkName,
+                })
+            ))
+            .then(({ config }) => restartServer && restartServer(config))
 );
 
 
@@ -155,7 +153,7 @@ const test = ({ hot, runner, runnerArgs }) => {
         console.log(chalk.blue(`${symbols.clock} Launching tests...`));
         const serverFile = path.join(
             config.server.buildPath,
-            'tests',
+            'tests'
         );
         spawn(`${runner} ${serverFile} ${runnerArgs}`, { stdio: 'pipe' });
     };
@@ -168,7 +166,7 @@ const serve = (config) => {
     process.stdout.write(chalk.blue(`${symbols.clock} Launching server...`));
     const serverFile = path.join(
         config.server.buildPath,
-        config.server.filename,
+        config.server.filename
     );
     try {
         fs.accessSync(serverFile, fs.F_OK);
@@ -177,8 +175,8 @@ const serve = (config) => {
         console.error(e);
         console.error(chalk.red(
             `\n\nCannot access the server bundle file. Make sure you built
-the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`,
+            the app with \`vitamin build\` before calling \`vitamin serve\`, and that
+            the file is accessible by the current user`
         ));
         process.exit(1);
     }
@@ -257,13 +255,13 @@ program
     .option('--with-source-maps', 'Generate source maps')
     .action(({ hot, withSourceMaps }) => {
         build({ hot: checkHot(hot), withSourceMaps })
-            .catch((err) => {
-                if (err !== BUILD_FAILED) {
-                    console.log(err.stack || err);
-                }
-                process.exit(1);
-            });
-        }
+                .catch((err) => {
+                    if (err !== BUILD_FAILED) {
+                        console.log(err.stack || err);
+                    }
+                    process.exit(1);
+                });
+    }
     );
 
 program
@@ -286,7 +284,7 @@ program
                     console.log(err.stack || err);
                 }
                 process.exit(1);
-            }),
+            })
     );
 
 program
@@ -312,7 +310,7 @@ program
                 '- If it occurs during initialization, it is probably an error in your app. Check the' +
                 ' stacktrace for more info (`ReferenceError` are pretty common)\n' +
                 '- If your positive it\'s not any of that, it might be because of a problem with ' +
-                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues',
+                'vitaminjs itself. Please report it to https://github.com/Evaneos/vitaminjs/issues'
             ));
             process.exit(1);
         });

@@ -32,7 +32,7 @@ module.exports = function clientConfig(options) {
             options.hot && new webpack.NoEmitOnErrorsPlugin(),
             !options.dev && new webpack.optimize.UglifyJsPlugin({
                 sourceMap: options.withSourceMaps,
-                minimize: true
+                minimize: true,
             }),
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
                 // FIXME Move resolving with other config props
@@ -47,4 +47,4 @@ module.exports = function clientConfig(options) {
             module: 'empty',
         },
     }, concat);
-}
+};
