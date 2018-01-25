@@ -1,4 +1,4 @@
-/* eslint-disable global-require, no-console */
+/* eslint-disable indent,global-require,no-console */
 
 import { parse as parseUrl } from 'url';
 import Koa from 'koa';
@@ -8,8 +8,8 @@ import fetch from 'node-fetch';
 import readline from 'readline';
 import httpGracefulShutdown from 'http-graceful-shutdown';
 
-import appMiddleware from './appMiddleware';
 import config from '__vitamin_runtime_config__';
+import appMiddleware from './appMiddleware';
 
 global.fetch = fetch;
 
@@ -49,7 +49,8 @@ if (process.env.NODE_ENV !== 'production' && module.hot) {
                     return;
                 }
                 clientBuilt = true;
-                process.stdout.write(`\x1b[0G${chalk.green('\u2713')
+                process.stdout.write(
+                    `\x1b[0G${chalk.green('\u2713')
                     } Client bundle(s) successfully ${chalk.bold('built in memory')}\n\n`,
                 );
             },

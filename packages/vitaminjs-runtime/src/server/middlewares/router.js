@@ -5,13 +5,14 @@ import routes from '__app_modules__routes__';
 const routesWithStore = typeof routes === 'function' ? store => routes(store) : () => routes;
 
 export default () => async (ctx, next) => {
-    const url = ctx.req.url;
-    const history = ctx.state.history;
+    const { url } = ctx.req;
+    const { history } = ctx.state;
 
     const appRoutes = await routesWithStore(ctx.state.store);
 
     await new Promise((resolve, reject) => {
-        match({ routes: appRoutes, location: url, history },
+        match(
+            { routes: appRoutes, location: url, history },
             (error, redirectLocation, renderProps) => {
                 if (error) {
                     reject(error);

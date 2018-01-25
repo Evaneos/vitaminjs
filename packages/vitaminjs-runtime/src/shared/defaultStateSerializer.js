@@ -1,2 +1,1 @@
-export const stringify = JSON.stringify;
-export const parse = JSON.parse;
+export const { stringify, parse } = JSON;

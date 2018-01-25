@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 export default class CSSProvider extends Component {
-
     static propTypes = {
         insertCss: PropTypes.func.isRequired,
         children: PropTypes.element.isRequired,

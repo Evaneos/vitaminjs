@@ -24,4 +24,4 @@ module.exports = function testConfig(options) {
             'react/lib/ReactContext': true,
         },
     }, concat);
-}
+};
