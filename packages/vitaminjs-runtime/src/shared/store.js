@@ -18,7 +18,7 @@ export function create(history, reducers, middlewares, initialState) {
     const createStoreWithMiddleware = compose(
         applyMiddleware(...middlewares, thunk, routerMiddleware(history)),
         ...devEnhancers,
-        ...appEnhancers,
+        ...appEnhancers
     )(createStore);
 
     const rootReducer = createRootReducer(reducers);

@@ -48,18 +48,23 @@ function config(options) {
         },
         {
             loader: 'css-loader',
-            options: {
-                minimize: !options.dev,
-                discardComments: {
-                    removeAll: !options.dev,
-                },
-                importLoaders: 1,
-                ...(modules ? {
-                    localIdentName: options.dev ?
-                        '[name]__[local]___[hash:base64:5]' : '[hash:base64]',
-                    modules: true,
-                } : {}),
-            },
+            options: (() => {
+                const cssOptions = {
+                    minimize: !options.dev,
+                    discardComments: {
+                        removeAll: !options.dev,
+                    },
+                    importLoaders: 1,
+                };
+                if (modules) {
+                    Object.assign(cssOptions, {
+                        localIdentName: options.dev ?
+                            '[name]__[local]___[hash:base64:5]' : '[hash:base64]',
+                        modules: true,
+                    });
+                }
+                return cssOptions;
+            })(),
         },
         'postcss-loader',
     ];
@@ -110,10 +115,11 @@ function config(options) {
         },
         cache: options.hot,
         resolve: {
-            alias: {
-                ...options.moduleMap,
-                __vitamin_runtime_config__: require.resolve('../runtimeConfig'),
-            },
+            alias: Object.assign(
+                {},
+                options.moduleMap,
+                { __vitamin_runtime_config__: require.resolve('../runtimeConfig') }
+            ),
             // Commmented out beause absolute paths were opting out of node resolve algorithm
             // modules: MODULES_DIRECTORIES,
             extensions: ['.js', '.jsx', '.json', '.css'],

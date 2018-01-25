@@ -19,7 +19,7 @@ export default () => async (ctx, next) => {
                 } else if (redirectLocation) {
                     ctx.redirect(
                         (redirectLocation.basename || '') +
-                        redirectLocation.pathname + redirectLocation.search,
+                        redirectLocation.pathname + redirectLocation.search
                     );
                 } else if (renderProps) {
                     ctx.status = 200;
@@ -29,7 +29,7 @@ export default () => async (ctx, next) => {
                     ctx.body = 'Not found';
                 }
                 resolve();
-            },
+            }
         );
     });
 

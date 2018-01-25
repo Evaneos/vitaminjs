@@ -129,7 +129,7 @@ exports.default = () => {
         ['server', 'buildPath'],
         ['client', 'buildPath'],
     ].forEach(
-        path => updatePath(path, resolveConfigPath, config),
+        path => updatePath(path, resolveConfigPath, config)
     );
 
     // Prepend / to publicPath and basePath if necessary
@@ -137,7 +137,7 @@ exports.default = () => {
         ((path.startsWith('/') || path.match(/^(http|\/|$)/)) ? '' : '/') + path
     );
     [['publicPath'], ['basePath']].forEach(
-        path => updatePath(path, prependSlash, config),
+        path => updatePath(path, prependSlash, config)
     );
 
     // If public path is not absolute url, prepend basePath
@@ -145,8 +145,7 @@ exports.default = () => {
         (!publicPath.match(/^(http|\/\/)/) ? config.basePath.replace(/\/$/, '') : '') + config.publicPath,
     config);
 
-    return {
-        ...config,
-        moduleMap,
-    };
+    config.moduleMap = moduleMap;
+
+    return config;
 };
