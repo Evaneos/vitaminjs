@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const clean = require('./clean');
-
+const clean = require('../cli/clean');
 require('./setVitaminPath');
+
 clean();
