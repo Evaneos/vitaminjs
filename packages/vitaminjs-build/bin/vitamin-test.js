@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const program = require('commander');
-
 require('./setVitaminPath');
 
 program
@@ -14,8 +13,26 @@ program
     })
     .parse(process.argv);
 
-test({
-    hot: program.hmr,
-    runner: program.runner,
-    runnerArgs: program.args.join(' ')
-});
+const launchTest = (config) => {
+    if (!config.test) {
+        throw new Error('Please specify a test file path in .vitaminrc');
+    }
+
+    console.log(chalk.blue(`${symbols.clock} Launching tests...`));
+    const serverFile = path.join(
+        config.server.buildPath,
+        'tests'
+    );
+    spawn(
+        // FIXME I think this breaks with parameters that contains spaces
+        `${program.runner} ${serverFile} ${program.args.join(' ')}`,
+        { stdio: 'pipe' }
+    );
+};
+
+commonBuild(
+    webpackConfigTest,
+    'tests',
+    { hot: program.hmr, dev: process.env.NODE_ENV !== 'production' },
+    launchTest
+);
