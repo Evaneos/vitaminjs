@@ -4,10 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = (config) => {
-    process.stdout.write(chalk.blue(`\uD83D\uDD50 ' Launching server...`));
+    process.stdout.write(chalk.blue(`\uD83D\uDD50 Launching server...`));
     const serverFile = path.join(
         config.server.buildPath,
-        config.server.filename,
+        config.server.filename
     );
     try {
         fs.accessSync(serverFile, fs.F_OK);
@@ -17,7 +17,7 @@ module.exports = (config) => {
         console.error(chalk.red(
             `\n\nCannot access the server bundle file. Make sure you built
 the app with \`vitamin build\` before calling \`vitamin serve\`, and that
-the file is accessible by the current user`,
+the file is accessible by the current user`
         ));
         process.exit(1);
     }

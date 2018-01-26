@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 const program = require('commander');
+const build = require('../cli/build');
+const { BUILD_FAILED } = require('../cli/commonBuild');
+const checkHot = require('../cli/checkHot');
 
-const build = require('./build');
-const checkHot = require('./checkHot');
-const { BUILD_FAILED } = require('./commonBuild');
-
-require('./setVitaminPath');
+require('../cli/setVitaminPath');
 
 program
+    .name('build')
+    .alias('b')
     .option('-h, --hot', 'Activate hot module reload')
     .option('--with-source-maps', 'Generate source maps')
     .parse(process.argv);

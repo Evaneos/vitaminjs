@@ -4,8 +4,7 @@
   "description": "The build toolchain against JavaScript Fatigue",
   "main": "index.js",
   "bin": {
-    "vitamin": "./bin/vitamin.sh",
-    "vitamin-version": "./bin/vitamin-version.js"
+    "vitamin": "./bin/vitamin.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +30,7 @@
     "react": "^0.14.9 || ^15.3.0"
   },
   "dependencies": {
+    "commander": "^2.11.0",
     "react-dom": "^0.14.9 || ^15.3.0",
     "react-helmet": "^5.0.3",
     "react-redux": "^5.0.4",

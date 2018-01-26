@@ -1,10 +1,12 @@
+const killProcess = require('../config/utils/killProcess');
+const build = require('./build');
+const checkHot = require('./checkHot');
+const { BUILD_FAILED } = require('./commonBuild');
+const clean = require('./clean');
+const listenExitSignal = require('./listenExitSignal');
 const serve = require('./serve');
 
-const build = require('./build');
-const killProcess = require('../config/utils/killProcess');
-const listenExitSignal = require('./listenExitSignal');
-
-module.exports = (options) => {
+const start = (options) => {
     let serverProcess;
 
     let exiting = false;
@@ -15,7 +17,6 @@ module.exports = (options) => {
             console.log('exiting'); process.exit();
         });
     });
-
 
     function startServer(config) {
         if (exiting) return;
@@ -46,4 +47,15 @@ module.exports = (options) => {
     };
 
     return build(options, sendSignal, startServer);
+};
+
+module.exports = (hmr) => {
+    clean()
+        .then(() => start({ hot: checkHot(hmr) }))
+        .catch((err) => {
+            if (err !== BUILD_FAILED) {
+                console.log(err.stack || err);
+            }
+            process.exit(1);
+        });
 };

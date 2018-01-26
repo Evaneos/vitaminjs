@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 const program = require('commander');
-require('./setVitaminPath');
+
+require('../cli/setVitaminPath');
 
 program
+    .name('test')
+    .alias('t')
     .option('-r, --runner [type]', 'Choose your test runner (e.g mocha, jest, jasmine...)')
     .option('--no-hmr', 'Disable hot reload')
     .on('--help', () => {

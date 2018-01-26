@@ -1,11 +1,9 @@
 const chalk = require('chalk');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const fs = require('fs');
 const ProgressBar = require('progress');
-
 const webpack = require('webpack');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-
 const { default: parseConfig, rcPath: configRcPath } = require('../config');
 
 const BUILD_FAILED = Symbol('BUILD_FAILED');
@@ -25,13 +23,12 @@ const buildCallback = (resolve, reject) => (err, stats) => {
     return resolve(stats);
 };
 
-
 const createCompiler = (webpackConfig, message, options) => {
     const compiler = webpack(webpackConfig);
     if (process.stdout.isTTY) {
         const bar = new ProgressBar(
             `${chalk.blue(`\uD83D\uDD50 Building ${message}...`)} :percent [:bar]`,
-            { incomplete: ' ', total: 60, clear: true, stream: process.stdout },
+            { incomplete: ' ', total: 60, clear: true, stream: process.stdout }
         );
         compiler.apply(new ProgressPlugin((percentage, msg) => {
             bar.update(percentage, { msg });
@@ -47,11 +44,12 @@ const createCompiler = (webpackConfig, message, options) => {
 const commonBuild = (createWebpackConfig, message, options, hotCallback, restartServer) => {
     const createCompilerCommonBuild = () => {
         const config = parseConfig();
-        const webpackConfig = createWebpackConfig({
-            ...options,
-            dev: process.env.NODE_ENV !== 'production',
-            ...config,
-        });
+        const webpackConfig = createWebpackConfig(Object.assign(
+            {},
+            options,
+            { dev: process.env.NODE_ENV !== 'production' },
+            config
+        ));
         const compiler = createCompiler(webpackConfig, message, options);
         return { compiler, config };
     };
@@ -82,5 +80,7 @@ const commonBuild = (createWebpackConfig, message, options, hotCallback, restart
     return watch();
 };
 
-exports.BUILD_FAILED = BUILD_FAILED;
-exports.commonBuild = commonBuild;
+module.exports = {
+    BUILD_FAILED,
+    commonBuild,
+};
