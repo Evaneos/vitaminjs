@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const killProcess = require('../config/utils/killProcess');
 const build = require('./build');
 const checkHot = require('./checkHot');

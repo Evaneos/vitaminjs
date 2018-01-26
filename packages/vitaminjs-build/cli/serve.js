@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 const chalk = require('chalk');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 module.exports = (config) => {
-    process.stdout.write(chalk.blue(`\uD83D\uDD50 Launching server...`));
+    process.stdout.write(chalk.blue('\uD83D\uDD50 Launching server...'));
     const serverFile = path.join(
         config.server.buildPath,
         config.server.filename

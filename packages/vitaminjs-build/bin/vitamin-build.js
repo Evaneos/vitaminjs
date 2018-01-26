@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 const program = require('commander');
 const build = require('../cli/build');
 const { BUILD_FAILED } = require('../cli/commonBuild');

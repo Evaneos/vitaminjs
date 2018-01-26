@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 const chalk = require('chalk');
 const listenExitSignal = require('vitaminjs-build/cli/listenExitSignal');
 const serve = require('vitaminjs-build/cli/serve');

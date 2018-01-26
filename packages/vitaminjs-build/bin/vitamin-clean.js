@@ -7,6 +7,6 @@ require('../cli/setVitaminPath');
 program
     .name('clean')
     .alias('c')
-    .parse(process.argv)
+    .parse(process.argv);
 
 clean();

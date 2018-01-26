@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable newline-per-chained-call */
 const program = require('commander'); // FIXME Add to package.json
 const { version } = require('../package.json');
 
