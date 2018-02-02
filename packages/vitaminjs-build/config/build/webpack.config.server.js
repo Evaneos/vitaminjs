@@ -25,7 +25,7 @@ function externals(context, request, callback) {
         !__hasWebpackLoader(request)
     ) {
         // FIXME Why commonjs2 over commonjs
-        callback(null, `commonjs2 + ${request}`);
+        callback(null, `commonjs2 ${request}`);
         return;
     }
 

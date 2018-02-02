@@ -3,7 +3,7 @@
 const chalk = require('chalk');
 const listenExitSignal = require('vitaminjs-build/cli/listenExitSignal');
 const serve = require('vitaminjs-build/cli/serve');
-const parseConfig = require('vitaminjs-build/config');
+const { default: parseConfig } = require('vitaminjs-build/config');
 const killProcess = require('vitaminjs-build/config/utils/killProcess');
 
 require('vitaminjs-build/cli/setVitaminPath');
