@@ -3,7 +3,7 @@
 const program = require('commander');
 const chalk = require('chalk');
 const path = require('path');
-const spawn = require('spawn');
+const { spawn } = require('child_process');
 const { commonBuild } = require('../cli/commonBuild');
 const webpackConfigTest = require('../config/build/webpack.config.tests');
 require('../cli/setVitaminPath');
