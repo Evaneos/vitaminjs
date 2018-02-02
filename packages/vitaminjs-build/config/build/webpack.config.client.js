@@ -6,7 +6,7 @@ const { createBabelLoader, createResolveConfigLoader, config } = require('./webp
 const { resolveConfigModule, resolveParentModule } = require('../resolve');
 const { concat } = require('../utils');
 
-module.exports = function clientConfig(options) {
+module.exports = function webpackConfigClient(options) {
     const hotMiddlewareEntry =
         `webpack-hot-middleware/client?path=${options.publicPath}/__webpack_hmr`;
     return mergeWith({}, config(options), {

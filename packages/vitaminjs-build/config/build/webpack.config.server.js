@@ -33,7 +33,7 @@ function externals(context, request, callback) {
 }
 
 
-module.exports = function serverConfig(options) {
+module.exports = function webpackConfigServer(options) {
     return mergeWith({}, config(options), {
         entry: [
             options.hot && require.resolve('../utils/hot'),
