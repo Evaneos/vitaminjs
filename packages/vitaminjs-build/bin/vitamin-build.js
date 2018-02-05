@@ -5,8 +5,6 @@ const build = require('../cli/build');
 const { BUILD_FAILED } = require('../cli/commonBuild');
 const checkHot = require('../cli/checkHot');
 
-require('../cli/setVitaminPath');
-
 program
     .name('build')
     .alias('b')

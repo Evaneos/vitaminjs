@@ -1,3 +1,4 @@
+const path = require('path');
 const presetEnv = require('babel-preset-env');
 const presetReact = require('babel-preset-react');
 const presetStage1 = require('babel-preset-stage-1');
@@ -12,7 +13,6 @@ const pluginMinifyGuardedExpressions = require('babel-plugin-minify-guarded-expr
 const pluginDiscardModuleReferences = require('babel-plugin-discard-module-references').default;
 const pluginReactJsxSource = require('babel-plugin-transform-react-jsx-source');
 const pluginReactJsxSelf = require('babel-plugin-transform-react-jsx-self');
-const { vitaminResolve } = require('../utils');
 
 module.exports = (env, options) => ({
     // order is: last to first
@@ -58,5 +58,6 @@ module.exports = (env, options) => ({
         // easier debugging on export default arrow functions with the filename
         pluginTransformExportDefaultName,
     ].filter(Boolean),
-    sourceRoot: vitaminResolve(),
+    // TODO later: check utility of sourceRoot and remove if not needed
+    sourceRoot: path.resolve(__dirname, '..', '..'),
 });

@@ -1,6 +1,6 @@
 const mergeWith = require('lodash.mergewith');
 const { concat } = require('../utils');
-const { config, createBabelLoader } = require('./webpack.config.common');
+const { config, createBabelLoader, createResolveConfigLoader } = require('./webpack.config.common');
 
 module.exports = function testConfig(options) {
     return mergeWith({}, config(options), {
@@ -12,11 +12,8 @@ module.exports = function testConfig(options) {
         module: {
             loaders: [
                 createBabelLoader('client', true),
-                // The following loader will resolve the config to its final value during the build
-                {
-                    test: require.resolve('../runtimeConfig'),
-                    loader: require.resolve('./resolveConfigLoader'),
-                }],
+                createResolveConfigLoader(),
+            ],
         },
         externals: {
             'react/addons': true,

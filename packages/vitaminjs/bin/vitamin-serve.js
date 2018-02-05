@@ -6,8 +6,6 @@ const serve = require('vitaminjs-build/cli/serve');
 const { default: parseConfig } = require('vitaminjs-build/config');
 const killProcess = require('vitaminjs-build/config/utils/killProcess');
 
-require('vitaminjs-build/cli/setVitaminPath');
-
 const serverProcess = serve(parseConfig());
 
 listenExitSignal((signal) => {

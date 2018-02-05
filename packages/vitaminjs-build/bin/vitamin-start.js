@@ -2,8 +2,6 @@
 const program = require('commander');
 const start = require('../cli/start');
 
-require('../cli/setVitaminPath');
-
 program
     .name('start')
     .alias('s')

@@ -1,10 +1,6 @@
 
 const path = require('path');
 
-function vitaminResolve(...args) {
-    return path.resolve(process.env.VITAMIN_PATH, ...args);
-}
-
 function appResolve(...args) {
     return path.resolve(process.cwd(), ...args);
 }
@@ -17,7 +13,6 @@ function concat(left, right) {
 }
 
 module.exports = {
-    vitaminResolve,
     appResolve,
     concat,
 };
