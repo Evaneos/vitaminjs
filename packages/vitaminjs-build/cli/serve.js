@@ -3,8 +3,9 @@ const chalk = require('chalk');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const parseConfig = require('../config').default;
 
-module.exports = (config) => {
+module.exports = (config = parseConfig()) => {
     process.stdout.write(chalk.blue('\uD83D\uDD50 Launching server...'));
     const serverFile = path.join(
         config.server.buildPath,

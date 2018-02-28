@@ -1,3 +1,5 @@
+console.warn('[DEPRECATED] Prefer use of `compile.js`')
+
 const chalk = require('chalk');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const fs = require('fs');

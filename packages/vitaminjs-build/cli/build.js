@@ -1,10 +1,10 @@
 const chalk = require('chalk');
 const webpackConfigClient = require('../config/build/webpack.config.client');
 const webpackConfigServer = require('../config/build/webpack.config.server');
-const { commonBuild } = require('./commonBuild');
+const { compile } = require('../cli/compile');
 
 module.exports = (options, hotCallback, restartServer) => (options.hot ?
-    commonBuild(
+    compile(
         webpackConfigServer,
         `server bundle ${chalk.bold('[hot]')}`,
         options,
@@ -12,8 +12,8 @@ module.exports = (options, hotCallback, restartServer) => (options.hot ?
         restartServer
     )
     :
-    commonBuild(webpackConfigClient, 'client bundle(s)', options)
-        .then(({ buildStats }) => commonBuild(
+    compile(webpackConfigClient, 'client bundle(s)', options)
+        .then(({ buildStats }) => compile(
             webpackConfigServer, 'server bundle...',
             // Cannot build in parallel because server-side rendering
             // needs client bundle name in the html layout for script path
