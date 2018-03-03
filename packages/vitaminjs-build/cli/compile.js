@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 
-const parseConfig = require('../config').default;
+const resolveConfig = require('../config').resolveConfig
 
 const BUILD_FAILED = Symbol('BUILD_FAILED');
 
@@ -30,7 +30,7 @@ function run(compiler, callback) {
 
 function compile(buildWebpackConfig, target, options, onSuccess, onError) {
     debug('build application config');
-    const appConfig = parseConfig();
+    const appConfig = resolveConfig();
 
     debug('build %s webpack config', target);
     const webpackConfig = buildWebpackConfig(buildOptions(appConfig, options));

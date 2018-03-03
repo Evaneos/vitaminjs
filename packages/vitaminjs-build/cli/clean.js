@@ -1,6 +1,6 @@
 const path = require('path');
 const rimraf = require('rimraf');
-const appConfig = require('../config').default();
+const appConfig = require('../config').resolveConfig();
 
 function clean() {
     return new Promise((resolve, reject) => {

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const debug = require('debug')('vitamin:server');
-const appConfig = require('../config').default();
+const appConfig = require('../config').resolveConfig();
 
 // FIXME: server try to start twice hot mode, module is loaded twice
 

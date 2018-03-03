@@ -86,9 +86,8 @@ function loadExtendedConfig(config, configPath) {
 
 
 const rcPath = resolveRcPath();
-exports.rcPath = rcPath;
 
-exports.default = () => {
+function resolveConfig() {
     let config = loadConfigFile(rcPath);
 
     const getModuleMap = (configPaths) => {
@@ -148,4 +147,9 @@ exports.default = () => {
     config.moduleMap = moduleMap;
 
     return config;
+};
+
+module.exports = {
+    rcPath,
+    resolveConfig,
 };
