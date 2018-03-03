@@ -1,11 +1,14 @@
 const path = require('path');
 const rimraf = require('rimraf');
-const parseConfig = require('../config').default;
+const appConfig = require('../config').default();
 
-module.exports = () => new Promise((resolve, reject) => {
-    const config = parseConfig();
-    return rimraf(
-        path.join(config.server.buildPath, '*'),
-        (err, data) => (!err ? resolve(data) : reject(err))
-    );
-});
+function clean() {
+    return new Promise((resolve, reject) => {
+        return rimraf(
+            path.join(appConfig.server.buildPath, '*'),
+            (err, data) => (err ? reject(err) : resolve(data))
+        );
+    });
+}
+
+module.exports = clean;
