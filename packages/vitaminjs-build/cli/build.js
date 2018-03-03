@@ -1,27 +1,39 @@
-const chalk = require('chalk');
 const webpackConfigClient = require('../config/build/webpack.config.client');
 const webpackConfigServer = require('../config/build/webpack.config.server');
-const { compile } = require('../cli/compile');
+const { compile, BUILD_FAILED } = require('../cli/compile');
 
-module.exports = (options, hotCallback, restartServer) => (options.hot ?
-    compile(
-        webpackConfigServer,
-        `server bundle ${chalk.bold('[hot]')}`,
-        options,
-        hotCallback,
-        restartServer
-    )
-    :
-    compile(webpackConfigClient, 'client bundle(s)', options)
-        .then(({ buildStats }) => compile(
-            webpackConfigServer, 'server bundle...',
-            // Cannot build in parallel because server-side rendering
-            // needs client bundle name in the html layout for script path
-            Object.assign(
-                {},
-                options,
-                { assetsByChunkName: buildStats.toJson().assetsByChunkName }
-            )
-        ))
-        .then(({ config }) => restartServer && restartServer(config))
-);
+function buildAndWatch(options, onChange) {
+    return compile(webpackConfigServer, 'server', options, onChange);
+}
+
+function buildAndExit(options, onSuccess) {
+    return new Promise((resolve, reject) => {
+        compile(webpackConfigClient, 'client', options)
+            .then(({ stats, compiler }) => {
+                const assetsByChunkName = stats.toJson().assetsByChunkName;
+                const serverOptions = Object.assign({}, options, {
+                    assetsByChunkName
+                });
+
+                compile(webpackConfigServer, 'server', serverOptions)
+                    .then(resolve)
+                    .catch(err => {
+                        if (err !== BUILD_FAILED) {
+                            reject(err.stack || err);
+                        }
+                        process.exit(1);
+                    });
+            })
+            .catch(err => {
+                if (err !== BUILD_FAILED) {
+                    reject(err.stack || err);
+                }
+                process.exit(1);
+            });
+    });
+}
+
+module.exports = {
+    buildAndWatch,
+    buildAndExit
+};
