@@ -1,7 +1,10 @@
-const fs = require('fs');
+const debug = require('debug')('vitamin:compile');
+
 const webpack = require('webpack');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+
 const parseConfig = require('../config').default;
-const configRcPath = require('../config').rcPath;
 
 const BUILD_FAILED = Symbol('BUILD_FAILED');
 
@@ -11,49 +14,38 @@ function buildOptions(appOptions, baseOptions) {
     });
 }
 
-function watch(compiler, callback, restartServer) {
-    // trigger watch and attach listeners
-    const watcher = compiler.watch({}, callback);
-
-    // FIXME: disabled: refresh on vitaminrc change event & should not be there => restart server 🤯
-    // fs.watchFile(configRcPath, () => {
-    //     watcher.close(() => watch(compiler, callback, restartServer));
-    //     restartServer(); // TODO: must wait for build to finish
-    // });
+function watch(compiler, callback) {
+    debug('compiler watch');
+    compiler.apply(new FriendlyErrorsWebpackPlugin());
+    compiler.watch({}, (...args) => {
+        debug('files changed, running compiler');
+        callback(...args);
+    });
 }
 
 function run(compiler, callback) {
-    // trigger run and attach listeners
+    debug('compiler run');
     compiler.run(callback);
 }
 
-function compile(
-    buildWebpackConfig,
-    message,
-    options,
-    hotCallback,
-    restartServer
-) {
-    const onSuccess = hotCallback;
-    const onFailure = () => {};
-
+function compile(buildWebpackConfig, target, options, onSuccess, onError) {
+    debug('build application config');
     const appConfig = parseConfig();
+
+    debug('build %s webpack config', target);
     const webpackConfig = buildWebpackConfig(buildOptions(appConfig, options));
 
     const compiler = webpack(webpackConfig);
-
-    // FIXME: exec sould not be trigger here (hot logic)
-    const exec = options.hot ? watch : run;
-
     return new Promise((resolve, reject) => {
-        exec(compiler, (err, stats) => {
-            if (err || stats.hasErrors()) {
-                if ('function' === typeof onFailure) onFailure();
+        (options.hot ? watch : run)(compiler, (error, stats) => {
+            if (error || stats.hasErrors()) {
+                debug('build %s failed', target);
+                if (typeof onError === 'function') onError();
                 return reject(BUILD_FAILED);
             }
-            if ('function' === typeof onSuccess) onSuccess();
-            // FIXME: app config should not be exposed by compiler
-            return resolve({ buildStats: stats, config: appConfig });
+            debug('build %s succeed', target);
+            if (typeof onSuccess === 'function') onSuccess();
+            return resolve({ stats, compiler });
         });
     });
 }
