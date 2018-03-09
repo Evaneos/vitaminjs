@@ -4,7 +4,7 @@ const presetReact = require('babel-preset-react');
 const presetStage1 = require('babel-preset-stage-1');
 // FIXME This dependency is not exposing a valid CommonJS module, hence the trailing ".default"
 const pluginReactRequire = require('babel-plugin-react-require').default;
-const pluginTransformExportDefaultName = require('babel-plugin-transform-export-default-name-forked');
+const pluginTransformNameExportDefault = require('babel-plugin-transform-name-export-default');
 const pluginMinifyReplace = require('babel-plugin-minify-replace');
 const pluginNodeEnvInline = require('babel-plugin-transform-node-env-inline');
 const pluginMinifyDeadCodeElimination = require('babel-plugin-minify-dead-code-elimination');
@@ -56,7 +56,7 @@ module.exports = (env, options) => ({
         // Remove server-only or client-only imports
         pluginDiscardModuleReferences,
         // easier debugging on export default arrow functions with the filename
-        pluginTransformExportDefaultName,
+        pluginTransformNameExportDefault,
     ].filter(Boolean),
     // TODO later: check utility of sourceRoot and remove if not needed
     sourceRoot: path.resolve(__dirname, '..', '..'),

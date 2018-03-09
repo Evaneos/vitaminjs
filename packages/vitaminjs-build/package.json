@@ -30,7 +30,7 @@
     "babel-plugin-minify-guarded-expressions": "0.0.4",
     "babel-plugin-minify-replace": "0.0.4",
     "babel-plugin-react-require": "^3.0.0",
-    "babel-plugin-transform-export-default-name-forked": "^1.2.2",
+    "babel-plugin-transform-name-export-default": "^1.0.0",
     "babel-plugin-transform-node-env-inline": "^6.8.0",
     "babel-plugin-transform-react-jsx-self": "^6.22.0",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
