@@ -14,6 +14,19 @@ const pluginDiscardModuleReferences = require('babel-plugin-discard-module-refer
 const pluginReactJsxSource = require('babel-plugin-transform-react-jsx-source');
 const pluginReactJsxSelf = require('babel-plugin-transform-react-jsx-self');
 
+function envSpecificReplacements(env) {
+    return [
+        {
+            identifierName: 'IS_CLIENT',
+            replacement: { type: 'booleanLiteral', value: env === 'client' },
+        },
+        {
+            identifierName: 'IS_SERVER',
+            replacement: { type: 'booleanLiteral', value: env === 'server' },
+        },
+    ];
+}
+
 const plugins = [
     // Make optional the explicit import of React in JSX files
     {
@@ -67,19 +80,6 @@ const plugins = [
     },
 ];
 
-function envSpecificReplacements(env) {
-    return [
-        {
-            identifierName: 'IS_CLIENT',
-            replacement: { type: 'booleanLiteral', value: env === 'client' },
-        },
-        {
-            identifierName: 'IS_SERVER',
-            replacement: { type: 'booleanLiteral', value: env === 'server' },
-        },
-    ];
-}
-
 function shouldInclude(plugin, options, key) {
     if (!(key in plugin)) return true;
     return (
@@ -104,7 +104,7 @@ module.exports = (env, options) => ({
     // order is: last to first
     presets: [
         [presetEnv, {
-            modules: false,
+            modules: options.jest ? 'commonjs' : false,
             useBuiltIns: true,
             targets: env !== 'client' ? { node: 'current' }
                 : { browsers: options.client.targetBrowsers },
@@ -114,6 +114,7 @@ module.exports = (env, options) => ({
     ].filter(Boolean),
     plugins: plugins
         .filter(pluginsPredicate(env, options))
+        // eslint-disable-next-line no-shadow
         .map(({ plugin, options = {} }) => [plugin, options]),
     sourceRoot: path.resolve(__dirname, '..', '..'),
 });

@@ -9,5 +9,6 @@ program
     .command('build', 'Build server and client bundles').alias('b')
     .command('clean', 'Delete server and client builds').alias('c')
     .command('start', 'Build and start application server').alias('s')
+    .command('jest', 'Launch test suite with Jest', { noHelp: true }).alias('j')
     .command('serve', 'Start application server')
     .parse(process.argv);
