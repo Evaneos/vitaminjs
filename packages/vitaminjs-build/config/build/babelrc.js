@@ -116,54 +116,6 @@ module.exports = (env, options) => ({
         .filter(pluginsPredicate(env, options))
         // eslint-disable-next-line no-shadow
         .map(({ plugin, options = {} }) => [plugin, options]),
-    sourceRoot: path.resolve(__dirname, '..', '..'),
-});
-/*
-module.exports = (env, options) => ({
-    // order is: last to first
-    presets: [
-        [presetEnv, {
-            modules: false,
-            useBuiltIns: true,
-            targets: env !== 'client' ? { node: 'current' }
-                : { browsers: options.client.targetBrowsers },
-        }],
-        presetReact,
-        presetStage1,
-    ].filter(Boolean),
-    // order is: first to last
-    plugins: [
-        // Make optional the explicit import of React in JSX files
-        pluginReactRequire,
-        // Adds component stack to warning messages
-        options.dev && pluginReactJsxSource,
-        // Adds __self attribute to JSX which React will use for some warnings
-        options.dev && pluginReactJsxSelf,
-        // replace process.env.NODE_ENV by its current value
-        pluginNodeEnvInline,
-        // replace IS_CLIENT and IS_SERVER
-        [pluginMinifyReplace, {
-            replacements: [
-                {
-                    identifierName: 'IS_CLIENT',
-                    replacement: { type: 'booleanLiteral', value: env === 'client' },
-                },
-                {
-                    identifierName: 'IS_SERVER',
-                    replacement: { type: 'booleanLiteral', value: env === 'server' },
-                },
-            ],
-        }],
-        // Dead code elimination (for example: if (IS_CLIENT) { ... } becames if (false) { }
-        [pluginMinifyDeadCodeElimination, { keepFnName: true }],
-        // transforms `IS_CLIENT && doSomething()` => `false && doSomething()` to `false`
-        pluginMinifyGuardedExpressions,
-        // Remove server-only or client-only imports
-        pluginDiscardModuleReferences,
-        // easier debugging on export default arrow functions with the filename
-        pluginTransformExportDefaultName,
-    ].filter(Boolean),
     // TODO later: check utility of sourceRoot and remove if not needed
     sourceRoot: path.resolve(__dirname, '..', '..'),
 });
-*/
