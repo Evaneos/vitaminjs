@@ -9,7 +9,7 @@
 ## How to use ?
 In your project, install the package as a dev dependency:
 ```
-npm install --dev vitaminjs-jest
+npm install --save-dev vitaminjs-jest
 ```
 or
 ```
