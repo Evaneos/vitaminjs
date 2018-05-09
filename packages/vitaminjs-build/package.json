@@ -19,7 +19,7 @@
   "bin": {
     "vitamin-build": "bin/vitamin-build.js",
     "vitamin-clean": "bin/vitamin-clean.js",
-    "vitamin-start": "bin/vitamin-start.js",
+    "vitamin-start": "bin/vitamin-start.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
