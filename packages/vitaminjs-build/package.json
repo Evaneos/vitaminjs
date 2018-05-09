@@ -20,7 +20,6 @@
     "vitamin-build": "bin/vitamin-build.js",
     "vitamin-clean": "bin/vitamin-clean.js",
     "vitamin-start": "bin/vitamin-start.js",
-    "vitamin-test": "bin/vitamin-test.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
