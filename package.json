@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"lint": "./node_modules/.bin/eslint scripts packages --ext .js .jsx"
+		"lint": "./node_modules/.bin/eslint scripts packages --ext .js .jsx",
+		"watch": "node ./watchman.js"
 	},
 	"devDependencies": {
 		"babel-eslint": "^8.2.1",
@@ -9,6 +10,8 @@
 		"eslint-plugin-import": "^2.8.0",
 		"eslint-plugin-jsx-a11y": "^6.0.3",
 		"eslint-plugin-react": "^7.5.1",
+		"fb-watchman": "^2.0.0",
+		"fs-extra": "^6.0.1",
 		"lerna": "^2.0.0"
 	}
 }
