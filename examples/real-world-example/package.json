@@ -6,7 +6,7 @@
     "humps": "^1.1.0",
     "lodash": "^4.17.4",
     "normalizr": "3.0.0",
-    "react": "^15.4.2",
+    "react": "^16.6.3",
     "vitaminjs": "file:../.."
   },
   "scripts": {
