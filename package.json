@@ -37,10 +37,10 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
-    "react": "^15.5.4"
+    "react": "^16.6.3"
   },
   "peerDependencies": {
-    "react": "^15.4.0"
+    "react": "^15.4.0 || ^16.0.0"
   },
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
@@ -90,7 +90,7 @@
     "progress": "^2.0.0",
     "prop-types": "^15.6.2",
     "react-dev-utils": "^0.5.2",
-    "react-dom": "^15.5.4",
+    "react-dom": "^16.6.3",
     "react-helmet": "^5.0.3",
     "react-redux": "^5.0.4",
     "react-resolver": "^3.1.0",
