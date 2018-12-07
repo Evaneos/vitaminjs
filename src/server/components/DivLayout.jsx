@@ -1,6 +1,6 @@
 /* eslint react/no-danger: 0 */
 
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 const propTypes = {
     head: PropTypes.object.isRequired,

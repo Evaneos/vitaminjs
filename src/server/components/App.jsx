@@ -1,6 +1,6 @@
 import jsStringEscape from 'js-string-escape';
 import { RouterContext } from 'react-router';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { stringify as stateStringifier } from '__app_modules__redux_stateSerializer__';
