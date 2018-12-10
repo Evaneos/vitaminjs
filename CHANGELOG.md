@@ -1,3 +1,22 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/evaneos/vitaminjs/compare/v1.2.1...v2.0.0) (2018-12-10)
+
+
+### Features
+
+* update to react 16 ([ccf6f72](https://github.com/evaneos/vitaminjs/commit/ccf6f72))
+
+
+### BREAKING CHANGES
+
+* it does not rely on React.PropType anymore
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/evaneos/vitaminjs/compare/v1.2.0...v1.2.1) (2017-04-14)
 ### Bug Fixes
@@ -54,6 +73,3 @@ bugs with the z-index rebasing [#358](https://github.com/evaneos/vitaminjs/issue
 
 * sourcemap support for browser ([c5d3c3f](https://github.com/evaneos/vitaminjs/commit/c5d3c3f))
 * **error-handler:** error page was not displayed ([f0c900d](https://github.com/evaneos/vitaminjs/commit/f0c900d))
-
-
-
