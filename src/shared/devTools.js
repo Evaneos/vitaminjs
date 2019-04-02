@@ -1,8 +1,8 @@
 const storeEnhancers = [];
 if (process.env.NODE_ENV !== 'production') {
     if (typeof window !== 'undefined' &&
-        typeof window.devToolsExtension !== 'undefined') {
-        storeEnhancers.push(window.devToolsExtension());
+        typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') {
+        storeEnhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
     }
 }
 
