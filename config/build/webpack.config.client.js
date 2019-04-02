@@ -28,7 +28,7 @@ export default function clientConfig(options) {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             }),
             options.hot && new webpack.NoEmitOnErrorsPlugin(),
-            !options.dev && new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+            !options.dev && new webpack.optimize.UglifyJsPlugin({ sourceMap: true, minimize: true }),
             options.client.serviceWorker && new ServiceWorkerWebpackPlugin({
                 entry: appResolve(options.client.serviceWorker),
             }),
